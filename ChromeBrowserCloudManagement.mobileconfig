@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadDescription</key>
+	<string>Cloud Management enrollment for the Google Chrome web browser</string>
+	<key>PayloadDisplayName</key>
+	<string>Chrome Browser Cloud Management</string>
+	<key>PayloadIdentifier</key>
+	<string>io.kandji.chrome.FDB0E555-2C6E-49AE-B117-AF62C787444C</string>
+	<key>PayloadOrganization</key>
+	<string>Kandji, Inc.</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>FDB0E555-2C6E-49AE-B117-AF62C787444C</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+				<key>CloudManagementEnrollmentToken</key>
+				<string>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</string>
+				<key>CloudManagementEnrollmentMandatory</key>
+				<true/>
+				<key>PayloadEnabled</key>
+				<true/>
+				<key>PayloadDisplayName</key>
+				<string>Chrome Browser Settings</string>
+				<key>PayloadIdentifier</key>
+				<string>com.google.Chrome.4F720473-6832-4CE0-A895-E9C3FC6F8CBD</string>
+				<key>PayloadUUID</key>
+				<string>4F720473-6832-4CE0-A895-E9C3FC6F8CBD</string>
+				<key>PayloadType</key>
+				<string>com.google.Chrome</string>
+				<key>PayloadVersion</key>
+				<integer>1</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
