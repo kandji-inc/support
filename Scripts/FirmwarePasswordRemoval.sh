@@ -33,7 +33,7 @@
 #Specify your current firmware password
 firmwarePasswd="FirmwarePasswordHere"
 
-#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similiar to other forced restarts) 
+#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similar to other forced restarts) 
 rebootDelayInSeconds="1800"
 
 #Do not modify below this line
