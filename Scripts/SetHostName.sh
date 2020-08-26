@@ -9,7 +9,7 @@
 ################################################################################################
 # This script sets the Mac computers HostName
 # The HostName should not be set unless the device is acting as a server
-# However, some security solutions use the HostName as the primary means of identitifcaiton
+# However, some security solutions use the HostName as the primary means of identification
 # This script sets the HostName as the current Local Host Name + a domain appended
 #
 # Typically this script is used in conjuction with the Set Computer Name parameter
