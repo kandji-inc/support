@@ -41,7 +41,7 @@
 ################################################################################################
 
 #Set this value to a domain, typically your corporate search domain would be used
-DomainAppend="kandji.io"
+DomainAppend="ExampleDomain.com"
 
 LocalHostName=$(/usr/sbin/scutil --get LocalHostName)
 
