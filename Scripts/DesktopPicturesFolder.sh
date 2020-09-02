@@ -8,7 +8,7 @@
 # Software Information
 ################################################################################################
 # This script is designed to be used as a pre install script for a "zip" custom app 
-# The scrpt checks for the /Library/Desktop Pictures/ and creates it if it doesnt exist 
+# The scrpt checks for the /Library/Desktop Pictures/ folder and creates it if it doesn't exist 
 # The purpose is to pre create the desktop pictures folder so that a custom image can be 
 # Extracted to that folder and then set at the desktop picture with a config profile
 ################################################################################################
