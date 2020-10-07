@@ -1,12 +1,16 @@
-#!/bin/bash
+#!/bin/zsh
+
 ################################################################################################
 # Created by Nicholas McDonald | se@kandji.io | Kandji, Inc. | Solutions Engineering
 ################################################################################################
-# Created on 08/14/2020 updated 08/18/2020
+# Created on 09/02/2020
 ################################################################################################
 # Software Information
 ################################################################################################
-# This script is designed to remove an existing firmware password and force a restart
+# This script is designed to be used as a pre install script for a "zip" custom app 
+# The scrpt checks for the /Library/Desktop Pictures/ folder and creates it if it doesn't exist 
+# The purpose is to pre create the desktop pictures folder so that a custom image can be 
+# Extracted to that folder and then set at the desktop picture with a config profile
 ################################################################################################
 # License Information
 ################################################################################################
@@ -30,40 +34,15 @@
 #
 ################################################################################################
 
-#Specify your current firmware password
-firmwarePasswd="FirmwarePasswordHere"
-
-#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similar to other forced restarts) 
-rebootDelayInSeconds="1800"
-
-#Do not modify below this line
-
-firmwarePasswdStatus=$(/usr/sbin/firmwarepasswd -check | /usr/bin/awk 'FNR == 1 {print $3}' )
-
-if [ "${firmwarePasswdStatus}" = "No" ]; then
-echo "Firmware password is already disabled..."
-exit 0
-fi 
-
-escapedFirmwarePasswd=$(echo ${firmwarePasswd} | /usr/bin/python -c "import re, sys; print(re.escape(sys.stdin.read().strip()))")
-
-removeCommand=$(/usr/bin/expect<<EOF
-
-spawn /usr/sbin/firmwarepasswd -delete
-expect {
-	"Enter password:" {
-		send "${escapedFirmwarePasswd}\r"
-		exp_continue
-	}
-}
-EOF
-)
-
-if [[ "${removeCommand}" = *"Must restart before changes will take effect"* ]]; then 
-	echo "Firmware Password Removed... changes will take affect after reboot"
-	/usr/local/bin/kandji reboot --delaySeconds ${rebootDelayInSeconds}
-	exit 0
+#This line checks if the folder exist 
+if [ ! -e "/Library/Desktop Pictures/" ]; then
+	echo "/Library/Desktop Pictures/ does not yet exist... creating now..."
+	
+	#This line creates the folder if it does not exist
+	/bin/mkdir "/Library/Desktop Pictures/"
+	/usr/sbin/chown root:wheel "/Library/Desktop Pictures/"
 else
-	echo "Firmware password was not removed... an unknown error occured"
-	exit 1
+	echo "/Library/Desktop Pictures/ already exist..."
 fi
+
+exit 0

@@ -1,12 +1,13 @@
-#!/bin/bash
+#!/bin/zsh
+
 ################################################################################################
 # Created by Nicholas McDonald | se@kandji.io | Kandji, Inc. | Solutions Engineering
 ################################################################################################
-# Created on 08/14/2020 updated 08/18/2020
+# Created on 08/27/2020
 ################################################################################################
 # Software Information
 ################################################################################################
-# This script is designed to remove an existing firmware password and force a restart
+# This script is designed to remove any user-level profiles that were manually installed
 ################################################################################################
 # License Information
 ################################################################################################
@@ -30,40 +31,28 @@
 #
 ################################################################################################
 
-#Specify your current firmware password
-firmwarePasswd="FirmwarePasswordHere"
+#This collects a list of all installed configuration profiles, removes the last line stating the number of profiles installed
+profileDump=$(sudo /usr/bin/profiles -P | /usr/bin/grep -vw "There")
 
-#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similar to other forced restarts) 
-rebootDelayInSeconds="1800"
+#This line filters out the computerlevel profiles, leaving only the user-level profiles in the list
+profileLevel=$(echo ${profileDump} | /usr/bin/grep -vw "_computerlevel" | /usr/bin/awk '{print $1}')
 
-#Do not modify below this line
+#This line determines the profile(s) identifiers
+profilesToRemove=$(echo "${profileDump}" | /usr/bin/grep -F "${profileLevel} attribute: profileIdentifier: " | /usr/bin/awk '{print $4}')
 
-firmwarePasswdStatus=$(/usr/sbin/firmwarepasswd -check | /usr/bin/awk 'FNR == 1 {print $3}' )
 
-if [ "${firmwarePasswdStatus}" = "No" ]; then
-echo "Firmware password is already disabled..."
+for profile in ${=profilesToRemove}; do
+	
+	#This line determines the username of the account with the user-level profile installed 
+	Username=$(echo ${profileDump} | /usr/bin/grep "${profile}" | /usr/bin/grep -vw "_computerlevel" | /usr/bin/awk '{print $1}' | /usr/bin/cut -f1 -d "[")
+	
+	echo "Profile Identifier: ${profile} installed for User: ${Username}... removing profile"
+	
+	#This line removes the profile for the specific user it is installed for
+	/usr/bin/profiles -R -p ${profile} -U ${Username}
+	
+done 
+
+echo "Done removing User Level Profiles..."
+
 exit 0
-fi 
-
-escapedFirmwarePasswd=$(echo ${firmwarePasswd} | /usr/bin/python -c "import re, sys; print(re.escape(sys.stdin.read().strip()))")
-
-removeCommand=$(/usr/bin/expect<<EOF
-
-spawn /usr/sbin/firmwarepasswd -delete
-expect {
-	"Enter password:" {
-		send "${escapedFirmwarePasswd}\r"
-		exp_continue
-	}
-}
-EOF
-)
-
-if [[ "${removeCommand}" = *"Must restart before changes will take effect"* ]]; then 
-	echo "Firmware Password Removed... changes will take affect after reboot"
-	/usr/local/bin/kandji reboot --delaySeconds ${rebootDelayInSeconds}
-	exit 0
-else
-	echo "Firmware password was not removed... an unknown error occured"
-	exit 1
-fi

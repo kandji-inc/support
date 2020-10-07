@@ -1,12 +1,22 @@
-#!/bin/bash
+#!/bin/zsh
+
 ################################################################################################
 # Created by Nicholas McDonald | se@kandji.io | Kandji, Inc. | Solutions Engineering
 ################################################################################################
-# Created on 08/14/2020 updated 08/18/2020
+# Created on 08/26/2020
 ################################################################################################
 # Software Information
 ################################################################################################
-# This script is designed to remove an existing firmware password and force a restart
+# This script sets the Mac computers HostName
+# The HostName should not be set unless the device is acting as a server
+# However, some security solutions use the HostName as the primary means of identification
+# This script sets the HostName as the current Local Host Name + a domain appended
+#
+# Typically this script is used in conjuction with the Set Computer Name parameter
+# in order to match the naming convention set for ComputerName and LocalHostName to the HostName
+#
+# You will need to set the "DomainAppend" value on line 38 to the domain you want to append
+#
 ################################################################################################
 # License Information
 ################################################################################################
@@ -30,40 +40,34 @@
 #
 ################################################################################################
 
-#Specify your current firmware password
-firmwarePasswd="FirmwarePasswordHere"
+#Set this value to a domain, typically your corporate search domain would be used
+DomainAppend="ExampleDomain.com"
 
-#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similar to other forced restarts) 
-rebootDelayInSeconds="1800"
+LocalHostName=$(/usr/sbin/scutil --get LocalHostName)
 
-#Do not modify below this line
+SetHostName="${LocalHostName}.${DomainAppend}"
 
-firmwarePasswdStatus=$(/usr/sbin/firmwarepasswd -check | /usr/bin/awk 'FNR == 1 {print $3}' )
+HostName=$(/usr/sbin/scutil --get HostName)
 
-if [ "${firmwarePasswdStatus}" = "No" ]; then
-echo "Firmware password is already disabled..."
-exit 0
-fi 
+echo "Current HostName is ${HostName}"
 
-escapedFirmwarePasswd=$(echo ${firmwarePasswd} | /usr/bin/python -c "import re, sys; print(re.escape(sys.stdin.read().strip()))")
-
-removeCommand=$(/usr/bin/expect<<EOF
-
-spawn /usr/sbin/firmwarepasswd -delete
-expect {
-	"Enter password:" {
-		send "${escapedFirmwarePasswd}\r"
-		exp_continue
-	}
-}
-EOF
-)
-
-if [[ "${removeCommand}" = *"Must restart before changes will take effect"* ]]; then 
-	echo "Firmware Password Removed... changes will take affect after reboot"
-	/usr/local/bin/kandji reboot --delaySeconds ${rebootDelayInSeconds}
-	exit 0
-else
-	echo "Firmware password was not removed... an unknown error occured"
-	exit 1
+if [ "${HostName}" != "${SetHostName}" ]; then 
+	echo "Current HostName ${HostName} doesnt not match desired value"
+	
+	#This line sets the hostname to the Mac computer's current LocalHostName appended by a domain 
+	/usr/sbin/scutil --set HostName ${SetHostName}
+	
+	#Check Host Name
+	HostName=$(/usr/sbin/scutil --get HostName)
+	
+	#Validates if the HostName changed
+	if [ "${HostName}" != "${SetHostName}" ]; then 
+		echo "Set HostName Failed..."
+		echo "HostName is ${HostName}"
+		exit 1
+	else 
+		echo "Set HostName Succeeded..."
+		echo "HostName is now ${HostName}"
+		exit 0
+	fi
 fi
