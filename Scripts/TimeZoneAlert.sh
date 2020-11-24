@@ -33,13 +33,13 @@
 #
 ################################################################################################
 
-# Set the value of this variable to the expected time zone, you can find this value by running this command in terminal on a Mac set to your expected time zon
+# Set the value of this variable to the expected time zone, you can find this value by running this command in terminal on a Mac set to your expected time zone
 # Example command: /usr/sbin/systemsetup -gettimezone | awk '{ print $3 }'
 
 expectedTimeZone="America/Los_Angeles"
 
 # Do not modify below this line 
-currentTimeZone=$(/usr/sbin/systemsetup -gettimezone | awk '{ print $3 }')
+currentTimeZone=$(/usr/sbin/systemsetup -gettimezone | /usr/bin/awk '{ print $3 }')
 
 echo "Current time zone is ${currentTimeZone}...desired time zone is ${expectedTimeZone}"
 
