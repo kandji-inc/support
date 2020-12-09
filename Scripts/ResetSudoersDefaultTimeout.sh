@@ -30,6 +30,17 @@
 #
 ################################################################################################
 
+#Gets the current value for the timestamp_timeout value
+timestampTimeoutCurrenState=$(cat "/etc/sudoers" | grep 'Defaults timestamp_timeout=')
+
+#Checks if the current value is already set to 5
+if [ "${timestampTimeoutCurrenState}" = "Defaults timestamp_timeout=5" ]; then
+	echo "timestamp_timeout is already set to 5 minutes... no changed needed..."
+	exit 0
+else 
+	echo "timestamp_timeout is not set to 5 minutes...changes needed..."
+fi 
+	
 #Copies the current sudoers file
 /bin/cp /etc/sudoers /tmp/sudoers-tmp
 
@@ -75,7 +86,7 @@ fDeleteTmpFiles ()
 	/bin/rm -f "/tmp/sudoers-tmp"
 }
 
-#Checks if the validation was successful; if so, proceeds with copying the new file.
+##Checks if the validation was successful; if so, proceeds with copying the new file.
 if [ $? -eq 0 ]; then
 	echo "Sudoers file validated... attempting copy"
 	fCopyModifiedFile
