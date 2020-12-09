@@ -31,7 +31,7 @@
 ################################################################################################
 
 #Gets the current value for the timestamp_timeout value
-timestampTimeoutCurrenState=$(cat "/etc/sudoers" | grep 'Defaults timestamp_timeout=')
+timestampTimeoutCurrenState=$(/bin/cat "/etc/sudoers" | /usr/bin/grep 'Defaults timestamp_timeout=')
 
 #Checks if the current value is already set to 5
 if [ "${timestampTimeoutCurrenState}" = "Defaults timestamp_timeout=5" ]; then
