@@ -28,11 +28,11 @@
 			<key>PayloadDisplayName</key>
 			<string>Web Content Filter</string>
 			<key>PayloadIdentifier</key>
-			<string>2C5CBFD0-7CFE-41CB-95BC-A681F4D293B8</string>
+			<string>2C5CBFD0-8CFE-41CB-95BC-A681F4D293B8</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
-			<string>2C5CBFD0-7CFE-41CB-95BC-A681F4D293B8</string>
+			<string>2C5CBFD0-8CFE-41CB-95BC-A681F4D293B8</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>PluginBundleID</key>
@@ -63,13 +63,42 @@
 			<key>PayloadDisplayName</key>
 			<string>System Extensions</string>
 			<key>PayloadIdentifier</key>
-			<string>20258B06-5866-4424-8893-A3AF1AFAAEDC</string>
+			<string>20258B06-5889-4424-8893-A3AF1AFAAEDC</string>
 			<key>PayloadOrganization</key>
 			<string>CrowdStrike Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>20258B06-5866-4424-8893-A3AF1AFAAEDC</string>
+			<string>20258B06-5889-4424-8893-A3AF1AFAAEDC</string>
+		</dict>
+		<dict>
+			<key>NotificationSettings</key>
+			<array>
+				<dict>
+					<key>AlertType</key>
+					<integer>1</integer>
+					<key>BundleIdentifier</key>
+					<string>com.crowdstrike.falcon.UserAgent</string>
+					<key>CriticalAlertEnabled</key>
+					<false/>
+					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInLockScreen</key>
+					<false/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+				</dict>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Notifications</string>
+			<key>PayloadIdentifier</key>
+			<string>61090B22-3DCD-435E-ABB2-BE997B3CB78D</string>
+			<key>PayloadType</key>
+			<string>com.apple.notificationsettings</string>
+			<key>PayloadUUID</key>
+			<string>61090B22-3DCD-435E-ABB2-BE997B3CB78D</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>AllowedTeamIdentifiers</key>
@@ -81,13 +110,13 @@
 			<key>PayloadDisplayName</key>
 			<string>Kernel Extensions</string>
 			<key>PayloadIdentifier</key>
-			<string>5671B4FB-3B3A-4D93-B12A-E8487BD9B5EE</string>
+			<string>5671B4FB-3B4B-4D93-B12A-E8487BD9B5EE</string>
 			<key>PayloadOrganization</key>
 			<string>CrowdStrike Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.syspolicy.kernel-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>5671B4FB-3B3A-4D93-B12A-E8487BD9B5EE</string>
+			<string>5671B4FB-3B4B-4D93-B12A-E8487BD9B5EE</string>
 		</dict>
 		<dict>
 			<key>PayloadDescription</key>
@@ -95,13 +124,13 @@
 			<key>PayloadDisplayName</key>
 			<string>Privacy Preferences</string>
 			<key>PayloadIdentifier</key>
-			<string>9A10BE5D-5E46-4C22-89C9-20597A04B616</string>
+			<string>9A10BE5D-5E57-4C22-89C9-20597A04B616</string>
 			<key>PayloadOrganization</key>
 			<string>CrowdStrike Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
-			<string>9A10BE5D-5E46-4C22-89C9-20597A04B616</string>
+			<string>9A10BE5D-5E57-4C22-89C9-20597A04B616</string>
 			<key>Services</key>
 			<dict>
 				<key>SystemPolicyAllFiles</key>
@@ -141,7 +170,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>84251cb2-c8ef-4854-aab7-a5836f2eae8b</string>
+	<string>84251cb2-c8gs-4854-aab7-a5836f2eae8b</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
