@@ -7,8 +7,13 @@
 #
 # Kandji, Inc | Solutions | se@kandji.io
 ################################################################################################
-# Created on 02/02/2021
-# Version 1.0
+# Created on 02/02/2021 Modified on 02/16/2021
+#
+# Script Version - 1.1
+#
+# Change Log
+# Version 1.0 - Original
+# Version 1.1 - Added support to upgrade 11-11.2 Mac computers to 11.2.1
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -74,7 +79,7 @@ processorBrand=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
 #collects the current macOS Version
 currentmacOSVersion=$(/usr/bin/sw_vers -productVersion)
 
-if [ "${currentmacOSVersion}" == "11.1" ] || [ "${currentmacOSVersion}" == "11.0.1" ] || [ "${currentmacOSVersion}" == "11.0" ]; then
+if [ "${currentmacOSVersion}" == "11.1" ] || [ "${currentmacOSVersion}" == "11.0.1" ] || [ "${currentmacOSVersion}" == "11.0" ] || [ "${currentmacOSVersion}" == "11.2" ]; then
 	/bin/echo "Current macOS Version is: ${currentmacOSVersion}"
 else
 	/bin/echo "macOS Version is ${currentmacOSVersion} and does not meet the qualifications for this script."
@@ -178,10 +183,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/04/34/071-00838-A_16DMRFYPPS/g072hb2wh066rj040ekzry97wx2hggfuse/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/00/60/071-05432-A_QOY2QE0UMR/puuz6c0epc7o0ozyovvi6tjxhzpf6uf04s/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="b81ef85aa9b0d6c9656e28681b7b82f1ffe6e3a041bb78bab2f92a26f32ee332"
+	fileChecksum="5c9b4a85eb1248a5a6611f5a17c137d231c9674cf545b933c8571bbf150212a5"
 	
 	################################################################################################
 	
@@ -340,8 +345,8 @@ fDownloadInstaller ()
 			/bin/sleep 2
 		else
 			/bin/echo "The Big Sur installer is present"
-			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :DTPlatformVersion" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "11.2" ]]; then
+			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
+			if [[ "${installerVersion}" != "16.4.06" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
