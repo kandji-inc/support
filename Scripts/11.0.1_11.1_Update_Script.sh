@@ -7,17 +7,18 @@
 #
 # Kandji, Inc | Solutions | se@kandji.io
 ################################################################################################
-# Created on 02/02/2021 Modified on 02/16/2021
+# Created on 02/02/2021 Modified on 03/09/2021
 #
-# Script Version - 1.1
+# Script Version - 1.2
 #
 # Change Log
 # Version 1.0 - Original
 # Version 1.1 - Added support to upgrade 11-11.2 Mac computers to 11.2.1
+# Version 1.2 - added support to upgrade 11-11.2.2 Mac computers to 11.2.3
 ################################################################################################
 # Software Information
 ################################################################################################
-# This script is designed to upgrade macOS 11.0/11.0.1/11.1 clients to macOS 11.2 using the
+# This script is designed to upgrade macOS 11.0-11.2.2 clients to macOS 11.2.3 using the
 # full macOS installer. This is required as the software update mecahnisms are broken in these
 # macOS versions.
 #
@@ -73,17 +74,25 @@ osatimeout="180"
 
 passwordTry="0"
 
+instVers="11.2.3"
+minOsVers="11.0"
+
 #Determine the processor brand
 processorBrand=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
 
 #collects the current macOS Version
 currentmacOSVersion=$(/usr/bin/sw_vers -productVersion)
 
-if [ "${currentmacOSVersion}" == "11.1" ] || [ "${currentmacOSVersion}" == "11.0.1" ] || [ "${currentmacOSVersion}" == "11.0" ] || [ "${currentmacOSVersion}" == "11.2" ]; then
-	/bin/echo "Current macOS Version is: ${currentmacOSVersion}"
-else
+if (( $(/bin/echo "${currentmacOSVersion} ${minOsVers}" | /usr/bin/awk '{print ($1 < $2)}') )); then
+	/bin/echo "This script is not designed to update 10.15 or below Mac computers"
+	exit 0
+fi
+
+if (( $(/bin/echo "${currentmacOSVersion} ${instVers}" | /usr/bin/awk '{print ($1 >= $2)}') )); then
 	/bin/echo "macOS Version is ${currentmacOSVersion} and does not meet the qualifications for this script."
 	exit 0
+else
+	/bin/echo "Current macOS Version is: ${currentmacOSVersion}... Mac is eligible for update..."
 fi
 
 if [ ! -e /usr/local/bin/kandji ]; then
@@ -139,7 +148,7 @@ fPowerCheck ()
 		exit 7
 	fi
 	
-	title="macOS 11.2 Update - Connect to power"
+	title="macOS ${instVers} Update - Connect to power"
 	message="Your Mac is not yet connected to power.\n\nPlease connect to power and click Try Again."
 	powerInput=$(/usr/bin/osascript<<END
 	with timeout of ${osatimeout} seconds
@@ -183,10 +192,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/00/60/071-05432-A_QOY2QE0UMR/puuz6c0epc7o0ozyovvi6tjxhzpf6uf04s/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/12/32/071-14766-A_Q2H6ELXGVG/zx8saim8tei7fezrmvu4vuab80m0e8a5ll/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="5c9b4a85eb1248a5a6611f5a17c137d231c9674cf545b933c8571bbf150212a5"
+	fileChecksum="0fd7cf05746316145012fadcf266413bbb862b3dfb8b5e58d9b0ca1e98f57f01"
 	
 	################################################################################################
 	
@@ -226,7 +235,7 @@ fInitManualSusDownload ()
 	}
 	
 	getDownloadSize() {
-		/usr/bin/curl -sI "$finalURL" | /usr/bin/grep -i Content-Length | /usr/bin/awk '{print $2}' | /usr/bin/tr -d '\r'
+		/usr/bin/curl -sI "$finalURL" | /usr/bin/grep -i "^Content-Length" | /usr/bin/awk '{print $2}' | /usr/bin/tr -d '\r'
 	}
 	
 	dlPercent() {
@@ -308,7 +317,7 @@ fWelcomeB ()
 		fi
 	fi
 	
-	title="macOS 11.2 Update"
+	title="macOS ${instVers} Update"
 	message="Your Mac is pending the install of a critical macOS update. This update has been approved by ${orgAndDeptName}.\n\nThis update will take approximately 60 minutes to install.\n\nYou may defer this update for ${deferralWindow} hour(s) or update now.\n\nPlease ensure your Mac is connected to a power source."
 	welcomeInput=$(/usr/bin/osascript<<END
 	with timeout of ${osatimeout} seconds
@@ -346,7 +355,7 @@ fDownloadInstaller ()
 		else
 			/bin/echo "The Big Sur installer is present"
 			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "16.4.06" ]]; then
+			if [[ "${installerVersion}" != "16.4.08" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
@@ -367,7 +376,7 @@ fDownloadInstaller ()
 
 fInstallPrompt ()
 {
-	title="macOS 11.2 Update - Install In Progress"
+	title="macOS ${instVers} Update - Install In Progress"
 	message="The update is now installing... Please do not use the computer...\n\nIt may take up to 35 minutes before the computer restarts."
 	osaWindow=$(/usr/bin/osascript<<END
 	with timeout of 10800 seconds
@@ -382,7 +391,7 @@ fErrorOut ()
 	/usr/bin/killall caffeinate
 	/usr/bin/killall osascript
 
-	title="macOS 11.2 Update - Install Failed"
+	title="macOS ${instVers} Update - Install Failed"
 	message="The update failed to install.\n\nPlease contact ${orgAndDeptName}"
 	osaWindow=$(/usr/bin/osascript<<END
 	display dialog "${message}" with icon file "${iconFile}" with title "${title}" buttons {"Close"} default button 1
@@ -439,7 +448,7 @@ fGetPassword()
 	until [ "${passwordTry}" -ge 5 ]
 	do
 
-	title="macOS 11.2 Update - Authentication Required"
+	title="macOS ${instVers} Update - Authentication Required"
 	message="Please enter your macOS login password."
 	passwordInput=$(/usr/bin/osascript<<END
 	with timeout of ${osatimeout} seconds
