@@ -7,14 +7,16 @@
 #
 # Kandji, Inc | Solutions | se@kandji.io
 ################################################################################################
-# Created on 02/02/2021 Modified on 03/09/2021
+# Created on 02/02/2021 Modified on 03/10/2021
 #
-# Script Version - 1.2
+# Script Version - 1.2.1
 #
 # Change Log
 # Version 1.0 - Original
 # Version 1.1 - Added support to upgrade 11-11.2 Mac computers to 11.2.1
 # Version 1.2 - added support to upgrade 11-11.2.2 Mac computers to 11.2.3
+# Version 1.2.1 - added SYSTEM_VERSION_COMPAT=0 to prevent retrieving "10.16"
+# as the OS version in early macOS 11 versions
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -81,7 +83,7 @@ minOsVers="11.0"
 processorBrand=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
 
 #collects the current macOS Version
-currentmacOSVersion=$(/usr/bin/sw_vers -productVersion)
+currentmacOSVersion=$(SYSTEM_VERSION_COMPAT=0 /usr/bin/sw_vers -productVersion)
 
 if (( $(/bin/echo "${currentmacOSVersion} ${minOsVers}" | /usr/bin/awk '{print ($1 < $2)}') )); then
 	/bin/echo "This script is not designed to update 10.15 or below Mac computers"
