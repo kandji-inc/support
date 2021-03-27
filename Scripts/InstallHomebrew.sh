@@ -41,8 +41,15 @@
 ################################################################################################
 
 mostCommonUser=$(/usr/bin/last -t console | awk '!/_mbsetupuser|root|wtmp/' | /usr/bin/cut -d" " -f1 | /usr/bin/uniq -c | /usr/bin/sort -nr | /usr/bin/head -n1 | /usr/bin/grep -o '[a-zA-Z].*')
+homebrewPath="/usr/local/bin/brew"
 
-if [ -e "/usr/local/bin/brew" ]; then 
+if [[ $(uname -p) == 'arm' ]]; then
+  /usr/sbin/softwareupdate --install-rosetta --agree-to-license 
+  homebrewPath="/opt/homebrew/bin/brew"
+fi
+
+
+if [ -e ${homebrewPath} ]; then 
 	echo "Brew is already installed..."
 	exit 0
 else 
@@ -86,13 +93,13 @@ unset HOME
 unset USER
 
 # Finish brew installation by forcing an update 
-/usr/bin/su - "${mostCommonUser}" -c "/usr/local/bin/brew update --force"
+/usr/bin/su - "${mostCommonUser}" -c "${homebrewPath} update --force"
 
 # Run brew cleanup prior to checking install status
-/usr/bin/su - "${mostCommonUser}" -c "/usr/local/bin/brew cleanup"
+/usr/bin/su - "${mostCommonUser}" -c "${homebrewPath} cleanup"
 
 # Check brew install status
-/usr/bin/su - "${mostCommonUser}" -c "/usr/local/bin/brew doctor"
+/usr/bin/su - "${mostCommonUser}" -c "${homebrewPath} doctor"
 
 # Checks the exit status of the brew doctor to command to ensure it exited 0, indicating a successful install
 if [[ $? -eq 0 ]]; then
