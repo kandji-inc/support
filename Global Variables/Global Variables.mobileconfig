@@ -10,7 +10,7 @@
 			<key>PayloadDisplayName</key>
 			<string>Kandji Global Variables</string>
 			<key>PayloadIdentifier</key>
-			<string>com.github.erikberglund.ProfileCreator.265684E2-8DCC-464B-8C6A-606E89C630DA.com.apple.mobiledevice.passwordpolicy.8AFB935E-EB53-448E-833C-822455FFB3D3</string>
+			<string>io.kandji.265684E2-8DCC-464B-8C6A-606E89C630DA.io.kandji.globalvariables.8AFB935E-EB53-448E-833C-822455FFB3D3</string>
 			<key>PayloadOrganization</key>
 			<string></string>
 			<key>PayloadType</key>
@@ -22,11 +22,11 @@
 			<key>SERIAL_NUMBER</key>
 			<string>$SERIAL_NUMBER</string>
 			<key>DEVICE_NAME</key>
-			<string>$DEVICE_NAME</string>			
+			<string>$DEVICE_NAME</string>
 			<key>ASSET_TAG</key>
-			<string>$ASSET_TAG</string>			
+			<string>$ASSET_TAG</string>
 			<key>UDID</key>
-			<string>$UDID</string>			
+			<string>$UDID</string>
 			<key>PROFILE_UUID</key>
 			<string>$PROFILE_UUID</string>
 			<key>EMAIL</key>
