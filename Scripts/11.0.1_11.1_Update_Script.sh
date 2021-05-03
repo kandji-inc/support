@@ -9,7 +9,7 @@
 ################################################################################################
 # Created on 02/02/2021 Modified on 03/10/2021
 #
-# Script Version - 1.2.1
+# Script Version - 1.3
 #
 # Change Log
 # Version 1.0 - Original
@@ -17,6 +17,7 @@
 # Version 1.2 - added support to upgrade 11-11.2.2 Mac computers to 11.2.3
 # Version 1.2.1 - added SYSTEM_VERSION_COMPAT=0 to prevent retrieving "10.16"
 # as the OS version in early macOS 11 versions
+# Version 1.3 - added support to upgrade 11-11.3 Mac computers to 11.3.1
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -76,7 +77,7 @@ osatimeout="180"
 
 passwordTry="0"
 
-instVers="11.2.3"
+instVers="11.3.1"
 minOsVers="11.0"
 
 #Determine the processor brand
@@ -194,10 +195,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/12/32/071-14766-A_Q2H6ELXGVG/zx8saim8tei7fezrmvu4vuab80m0e8a5ll/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/16/05/071-32414-A_33YH16R8HF/28ment5qr993c0l9i1qbh4fuknli9wzglp/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="0fd7cf05746316145012fadcf266413bbb862b3dfb8b5e58d9b0ca1e98f57f01"
+	fileChecksum="e75cf34dbf50342892d52a8f61269dfde92e28c014a13ef20d712e234907ba88"
 	
 	################################################################################################
 	
@@ -357,7 +358,7 @@ fDownloadInstaller ()
 		else
 			/bin/echo "The Big Sur installer is present"
 			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "16.4.08" ]]; then
+			if [[ "${installerVersion}" != "16.5.02" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
