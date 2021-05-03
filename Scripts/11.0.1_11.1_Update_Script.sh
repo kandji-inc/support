@@ -18,10 +18,12 @@
 # Version 1.2.1 - added SYSTEM_VERSION_COMPAT=0 to prevent retrieving "10.16"
 # as the OS version in early macOS 11 versions
 # Version 1.3 - added support to upgrade 11-11.2.3 Mac computers to 11.3
+# Version 1.4 - added support to upgrade 11-11.3 Mac computers to 11.3.1
+
 ################################################################################################
 # Software Information
 ################################################################################################
-# This script is designed to upgrade macOS 11.0-11.2.2 clients to macOS 11.3 using the
+# This script is designed to upgrade macOS 11.0-11.3 clients to macOS 11.3.1 using the
 # full macOS installer. This is required as the software update mecahnisms are broken in these
 # macOS versions.
 #
@@ -195,10 +197,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/40/42/071-29172-A_50FL5BT4I6/5w0xm8c31yigcf2iov4n4mlsvnw1upzo2q/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/16/05/071-32414-A_33YH16R8HF/28ment5qr993c0l9i1qbh4fuknli9wzglp/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="7009dad5da542b01147e86fe1bda191c2cea1439b42f82e65b5eb7d585e2e1b3"
+	fileChecksum="e75cf34dbf50342892d52a8f61269dfde92e28c014a13ef20d712e234907ba88"
 	
 	################################################################################################
 	
@@ -358,7 +360,7 @@ fDownloadInstaller ()
 		else
 			/bin/echo "The Big Sur installer is present"
 			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "16.5.01" ]]; then
+			if [[ "${installerVersion}" != "16.5.02" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
