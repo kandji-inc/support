@@ -7,7 +7,7 @@
 #
 # Kandji, Inc | Solutions | se@kandji.io
 ################################################################################################
-# Created on 02/02/2021 Modified on 03/10/2021
+# Created on 02/02/2021 Modified on 05/03/2021
 #
 # Script Version - 1.3
 #
