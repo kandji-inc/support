@@ -8,7 +8,7 @@ app-install-report leverages the Kandji API to generate a CSV report containing 
 
 ### bumbledore
 
-This commandline tool allows the user to interact with the Kandji(🐝) via the Kandji API. Right now this tool can pull device details against the Devices API endpoint.
+This commandline tool allows the user to interact with Kandji(🐝) via the Kandji API. Right now this tool can pull device details against the Devices API endpoint.
 
 ### update-device-record
 
