@@ -20,6 +20,8 @@
 # Version 1.3 - added support to upgrade 11-11.3 Mac computers to 11.3.1
 # Version 1.4 - added support to upgrade 11-11.3 Mac computers to 11.4
 # Version 1.5 - added support to upgrade 11-11.4 Mac computers to 11.5
+# Version 1.5.1 - added support to upgrade 11-11.4 Mac computers to 11.5.1
+
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -79,7 +81,7 @@ osatimeout="180"
 
 passwordTry="0"
 
-instVers="11.5"
+instVers="11.5.1"
 minOsVers="11.0"
 
 #Determine the processor brand
@@ -197,10 +199,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/49/54/071-71342-A_TOSWTG0P9A/0pl87hjdasybzmpr2liwamgm9pmmorqmzh/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/01/60/071-72781-A_CZ1D1FENMH/a09fvud3xxgih7qyau9a7lhtspho36mp0l/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="443fe76c856d399fb57f1a19fbd5beec463608bbc3812d6a40df0f8419a9ff9c"
+	fileChecksum="9455f003e3a78097e86ddc13c3c1e773a4d4c61512b185d2869d067c198951be"
 	
 	################################################################################################
 	
@@ -360,7 +362,7 @@ fDownloadInstaller ()
 		else
 			/bin/echo "The Big Sur installer is present"
 			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "16.7.01" ]]; then
+			if [[ "${installerVersion}" != "16.7.02" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
