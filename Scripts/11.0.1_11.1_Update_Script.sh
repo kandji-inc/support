@@ -19,6 +19,7 @@
 # as the OS version in early macOS 11 versions
 # Version 1.3 - added support to upgrade 11-11.3 Mac computers to 11.3.1
 # Version 1.4 - added support to upgrade 11-11.3 Mac computers to 11.4
+# version 1.5 = added support to upgrade 11-11.4 Mac computers to 11.5.1
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -78,7 +79,7 @@ osatimeout="180"
 
 passwordTry="0"
 
-instVers="11.4"
+instVers="11.5.1"
 minOsVers="11.0"
 
 #Determine the processor brand
@@ -196,10 +197,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/55/59/071-00696-A_4T69TQR1VO/9psvjmwyjlucyg708cqjeaiylrvb0xph94/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/01/60/071-72781-A_CZ1D1FENMH/a09fvud3xxgih7qyau9a7lhtspho36mp0l/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="3374333d98ff267f3520ef1efcdae978ec87043be0f70b790b4b6cd0465b98d7"
+	fileChecksum="9455f003e3a78097e86ddc13c3c1e773a4d4c61512b185d2869d067c198951be"
 	
 	################################################################################################
 	
