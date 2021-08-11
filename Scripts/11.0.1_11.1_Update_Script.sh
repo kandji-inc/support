@@ -9,7 +9,7 @@
 ################################################################################################
 # Created on 02/02/2021 Modified on 08/11/2021
 #
-# Script Version - 1.4
+# Script Version - 1.6
 #
 # Change Log
 # Version 1.0 - Original
