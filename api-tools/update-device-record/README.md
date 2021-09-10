@@ -23,7 +23,7 @@ An [example](https://github.com/kandji-inc/solutions-engineering/blob/master/kan
 
 - **User** - The assigned User can be updated if a Directory Services has been integrated with Kandji and the User exists in the Kandji console. The Kandji user ID Number must be used in the input file.
 
-    To find a Blueprint ID take the following steps:
+    To find a Kandji User ID number take the following steps:
 
     1. Log in to the Kandji web app
     2. Select the Users module

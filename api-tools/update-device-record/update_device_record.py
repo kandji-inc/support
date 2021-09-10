@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
-"""kandji_update_device_record.py
-Update device inventory information with a csv input file and the Kandji Enterprise API.
+"""update_device_record.py
+Update device inventory information with a csv input file and the Kandji API.
 """
 
 ###################################################################################################
-# Created by Matt Wilson | Senior Solutions Engineer
-#
-# Kandji, Inc | Solutions | se@kandji.io
+# Created by Matt Wilson | Senior Solutions Engineer | Kandji, Inc | Solutions | se@kandji.io
 ###################################################################################################
 #
-# Created: 06/03/2021 Modified:
+# Created:  06/03/2021
+# Modified: 08/18/2021
 #
 ###################################################################################################
 # Software Information
@@ -42,7 +41,7 @@ Update device inventory information with a csv input file and the Kandji Enterpr
 #
 ###################################################################################################
 
-__version__ = "1.0.0"
+__version__ = "1.0.3"
 
 
 # Standard library
@@ -124,7 +123,7 @@ def program_arguments():
 def load_input_file(input_file):
     """Load the CSV file for processing"""
     data = []
-    with open(input_file, mode="r") as csv_file:
+    with open(input_file, mode="r", encoding="utf-8-sig") as csv_file:
         reader = csv.DictReader(csv_file)
         for line in reader:
             data.append(line)
@@ -163,14 +162,14 @@ def get_all_devices():
     """Retrive all device inventory records from Kandji"""
 
     # The API endpont to target
-    endpoint = "devices/?limit='10000'"
+    endpoint = "devices/?limit=10000"
 
     # Initiate var that will be returned
     data = None
 
     try:
         # Make the api call to Kandji
-        response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=10)
+        response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=30)
 
         # Store the HTTP status code
         response_code = response.status_code
@@ -274,17 +273,18 @@ def main():
     print(f"Base URL: {BASE_URL}\n")
 
     # Get all device inventory records
+    print("Getting all device records from Kandji ...")
     kandji_device_inventory = get_all_devices()
 
-    # Hold any serial numbers that could not be found so that we can let the user know to check on
-    # these.
-    not_found = []
+    print(f"Total device records: {len(kandji_device_inventory)}")
 
     for device in input_file_data:
 
+        print(f"Looking for {device['serial_number']} ...")
+
         for record in kandji_device_inventory:
 
-            if device["serial_number"] == record["serial_number"]:
+            if device["serial_number"].upper() == record["serial_number"].upper():
                 print(f"Attempting to update record for {device['serial_number']} ...")
 
                 # Build the payload
@@ -298,22 +298,9 @@ def main():
 
                 break
 
-            # If the device could not be found in Kandji update the list so that we can
-            # display a report to the user once the script completes.
-            if device["serial_number"] not in not_found:
-                not_found.append(device["serial_number"])
-
     print()
 
-    # If the list contains any items, we want to display those items to the end-user.
-    # In this case we want to display any serial numbers in the input file that could
-    # not be found in Kandji
-    if len(not_found) > 0:
-        print("Device serial numbers not found in Kandji:")
-        for device in not_found:
-            print(device)
-
-    print("\nFinished ...")
+    print("Finished ...")
 
 
 if __name__ == "__main__":
