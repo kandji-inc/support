@@ -7,9 +7,9 @@
 #
 # Kandji, Inc | Solutions | se@kandji.io
 ################################################################################################
-# Created on 02/02/2021 Modified on 08/11/2021
+# Created on 02/02/2021 Modified on 09/17/2021
 #
-# Script Version - 1.6
+# Script Version - 1.7
 #
 # Change Log
 # Version 1.0 - Original
@@ -21,6 +21,7 @@
 # Version 1.4 - added support to upgrade 11-11.3 Mac computers to 11.4
 # version 1.5 = added support to upgrade 11-11.4 Mac computers to 11.5.1
 # version 1.6 = added support to upgrade 11-11.4 Mac computers to 11.5.2
+# version 1.7 = added support to upgrade 11-11.4 Mac computers to 11.6
 ################################################################################################
 # Software Information
 ################################################################################################
@@ -80,7 +81,7 @@ osatimeout="180"
 
 passwordTry="0"
 
-instVers="11.5.2"
+instVers="11.6"
 minOsVers="11.0"
 
 #Determine the processor brand
@@ -198,10 +199,10 @@ fInitManualSusDownload ()
 {
 	
 	# Download URL
-	dlURL="http://swcdn.apple.com/content/downloads/43/16/071-78704-A_U5B3K7DQY9/cj9xbdobsdoe67yq9e1w2x0cafwjk8ofkr/InstallAssistant.pkg"
+	dlURL="http://swcdn.apple.com/content/downloads/57/38/071-97382-A_OEKYSXCO6D/97vrhncortwd3i38zfogcscagmpwksdzce/InstallAssistant.pkg"
 	
 	# SHA256 checksum of the file for verification Example: shasum -a 256 PATH/TO/FILE
-	fileChecksum="57df690f7981706f0620cbcac678735f559e032aed26a7d4a3d611492de889ab"
+	fileChecksum="6142d4200f415d1253c437bdfcc7911bfb568ed16de1f0350bbc76299940647a"
 	
 	################################################################################################
 	
@@ -361,7 +362,7 @@ fDownloadInstaller ()
 		else
 			/bin/echo "The Big Sur installer is present"
 			installerVersion=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "/Applications/Install macOS Big Sur.app/Contents/Info.plist")
-			if [[ "${installerVersion}" != "16.7.04" ]]; then
+			if [[ "${installerVersion}" != "16.8.00" ]]; then
 				/bin/echo "Invalid installer version found... deleting...."
 				rm -rf "/Applications/Install macOS Big Sur.app"
 				fDownloadInstaller
