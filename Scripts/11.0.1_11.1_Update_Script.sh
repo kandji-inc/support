@@ -180,17 +180,17 @@ fDefer ()
 	/usr/bin/killall caffeinate
 	
 	if [ -e /var/tmp/.dfc.kandji ]; then
-		currentDefferalCount=$(/bin/cat /var/tmp/.dfc.kandji)
+		currentDeferralCount=$(/bin/cat /var/tmp/.dfc.kandji)
 	else
-		currentDefferalCount="0"
+		currentDeferralCount="0"
 	fi
 	
-	deferalCount=$((currentDefferalCount+1))
+	deferralCount=$((currentDeferralCount+1))
 	
-	/bin/echo "${deferalCount}" > /var/tmp/.dfc.kandji
+	/bin/echo "${deferralCount}" > /var/tmp/.dfc.kandji
 	/bin/echo "${currentTime}" > /var/tmp/.dft.kandji
 	
-	/bin/echo "User has chosen to defer, this is their ${deferalCount} defferal..."
+	/bin/echo "User has chosen to defer, this is their ${deferralCount} deferral..."
 	
 	exit 0
 }
