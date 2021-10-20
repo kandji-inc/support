@@ -5,6 +5,64 @@
 	<key>PayloadContent</key>
 	<array>
 		<dict>
+			<key>FilterPacketProviderBundleIdentifier</key>
+			<string>com.sophos.endpoint.networkextension</string>
+			<key>FilterPacketProviderDesignatedRequirement</key>
+			<string>identifier "com.sophos.endpoint.networkextension" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+			<key>FilterPackets</key>
+			<true/>
+			<key>FilterSockets</key>
+			<false/>
+			<key>FilterType</key>
+			<string>Plugin</string>
+			<key>PayloadDescription</key>
+			<string>Pre-approve the Sophos Web Network Extension</string>
+			<key>PayloadDisplayName</key>
+			<string>Sophos Web Content Filter</string>
+			<key>PayloadIdentifier</key>
+			<string>io.kandji.sophos.0ABFC7DA-DF66-4D25-8988-55E446857F39.com.apple.webcontent-filter.74641116-36DE-46AE-8200-7E00E197805E</string>
+			<key>PayloadOrganization</key>
+			<string>ThoughtWorks Inc.</string>
+			<key>PayloadType</key>
+			<string>com.apple.webcontent-filter</string>
+			<key>PayloadUUID</key>
+			<string>74641116-36DE-46AE-8200-7E00E197805E</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PluginBundleID</key>
+			<string>com.sophos.endpoint.network</string>
+			<key>UserDefinedName</key>
+			<string>SophosWebNetworkExtension</string>
+		</dict>
+		<dict>
+			<key>AllowUserOverrides</key>
+			<true/>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>2H5GFH3774</key>
+				<array>
+					<string>com.sophos.endpoint.networkextension</string>
+					<string>com.sophos.endpoint.scanextension</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string></string>
+			<key>PayloadDisplayName</key>
+			<string>Sophos System Extension Policy settings</string>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>io.kandji.sophos.system-extension-policy.B8133FF9-9539-4298-8774-11B153A6E151</string>
+			<key>PayloadOrganization</key>
+			<string>ThoughtWorks Inc..</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>B8133FF9-9539-4298-8774-11B153A6E151</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
 			<key>AllowUserOverrides</key>
 			<true/>
 			<key>AllowedTeamIdentifiers</key>
@@ -30,39 +88,15 @@
 			<key>NotificationSettings</key>
 			<array>
 				<dict>
-					<key>AlertType</key>
-					<integer>1</integer>
-					<key>BadgesEnabled</key>
-					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.sophos.endpoint.uiserver</string>
-					<key>CriticalAlertEnabled</key>
-					<false/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInLockScreen</key>
-					<true/>
-					<key>ShowInNotificationCenter</key>
-					<true/>
-					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 				<dict>
-					<key>AlertType</key>
-					<integer>1</integer>
-					<key>BadgesEnabled</key>
-					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.sophos.enc.sophos-encryption-agent</string>
-					<key>CriticalAlertEnabled</key>
-					<false/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInLockScreen</key>
-					<true/>
-					<key>ShowInNotificationCenter</key>
-					<true/>
-					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 			</array>
@@ -117,7 +151,7 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Kernel Extension, Notifications, and PPPC for Sophos Central macOS Endpoint Agent</string>
+	<string>Kernel Extension, System Extension, Content Filter, Notifications, and PPPC for Sophos Central macOS Endpoint Agent</string>
 	<key>PayloadDisplayName</key>
 	<string>Sophos Central Settings</string>
 	<key>PayloadIdentifier</key>
