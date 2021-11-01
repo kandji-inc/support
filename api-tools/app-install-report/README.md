@@ -2,16 +2,23 @@
 
 ### About
 
-This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) to generate a `CSV` report containing a list of every macOS application recorded by the Kandji Web App. The information includes any application found in the **Applications** directory on a Mac computer, the application version, and the number of Mac computers that have a particular version of the app installed.
+This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) to generate a `CSV` report containing a list of every macOS application recorded by the Kandji Web App. The information includes any application found in the Applications directory on a Mac computer, the application version, and the device serial numbers.
 
+### Kandji API
+
+- See the [Kandji API KB](https://support.kandji.io/api) article to see how to generate an API Token
+- The API permissions required to run the reporting script are as follows.
+
+    <img src="images/api_permissions_required.png" alt="drawing" width="1024"/>
+    
 ### Dependencies
 
-This script relies on Python 3 to run. Python 3 can be installed directly from [python.org](https://www.python.org/downloads/) or via [homebrew](https://brew.sh)
+- This script relies on Python 3 to run. Python 3 can be installed directly from [python.org](https://www.python.org/downloads/) or via [homebrew](https://brew.sh)
 
-Python dependencies can be installed individually or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
+- Python dependencies can be installed individually or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
 
-- request module
-- pathlib module
+    - request module
+    - pathlib module
 
 ### Script Modification
 
@@ -35,21 +42,12 @@ Python dependencies can be installed individually or with the included `requirem
 
     `cd ~/Desktop`
 
-3. Enter the following to run the script.
+3. Enter the following command in the Terminal window to run the script. 
 
-    `python app_install_report.py`
+    - `python3 app_report.py`  
 
-4. A file with the name `app_install_report_<YYYYMMDD>.csv` will be generated in the current directory.
+4. If the `app_install_report.py` script is executed, a file with the name `app_install_report_<YYYYMMDD>.csv` will be generated in the current directory, which, in this case would the `Desktop`.
 
-### Example Output
+### Example Report
 
-Below is an example of what he `CSV` output might look like. Click [here](https://github.com/kandji-inc/solutions-engineering/blob/master/kandji-api/api-examples/kandji-app-install-report/kandji_app_install_report_20210525.csv) to see an example `csv` ouput file.
-
-app_name | version | install_count
-:-- | :-- | :-- |
-Activity Monitor | 10.14 | 2
-AirPort Utility | 6.3.9 | 2
-App Store	| 3.0	| 2
-Atom |	1.54.0	| 1
-Atom	| 1.56.0	| 1
-Audio MIDI Setup	| 3.5	| 2
+Example reports can be viewed [here](https://github.com/kandji-inc/support/blob/master/api-tools/app-install-report/examples).

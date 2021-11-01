@@ -1,26 +1,24 @@
 #!/usr/bin/env python3
 
-"""kandji_app_install_report.py
-Return a report of all apps, app versions, and number of installationss from a
-specified Kondji instance.
+"""app_install_report.py
+Return a report of all apps, app versions, number of installationss, device name, and serial
+numbers where the, app is installed from a specified Kondji instance.
 """
 
 ###################################################################################################
-# Created by Matt Wilson | Senior Solutions Engineer
-#
-# Kandji, Inc | Solutions | se@kandji.io
+# Created by Matt Wilson | Senior Solutions Engineer | Kandji, Inc | Solutions | se@kandji.io
 ###################################################################################################
 #
-# Created: 06/03/2021 Modified:
+# Created:  2021.06.03
+# Modified: 2021.09.16
 #
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
 # This python3 script leverages the Kandji API to generate a CSV report containing a list of every
-# macOS application recorded by the Kandji Web App. The information includes any application found
-# in the Applications directory on a Mac computer, the application version, and the number of Mac
-# computers that have a particular version of the app installed.
+# installed application recorded by the Kandji Web App. The information includes application name,
+# the application version, the device name, and the device serial numbers.
 #
 ###################################################################################################
 # License Information
@@ -45,7 +43,7 @@ specified Kondji instance.
 #
 ###################################################################################################
 
-__version__ = "1.0.0"
+__version__ = "1.1.1"
 
 
 # Standard library
@@ -60,7 +58,7 @@ import sys
 # install it.
 try:
     import requests
-except ImportError as error:
+except ImportError as import_error:
     sys.exit(
         "Looks like you need to install the requests module. Open a Terminal and run python3 -m "
         "pip install requests."
@@ -76,7 +74,7 @@ except ImportError as error:
 # Kandji API base URL
 BASE_URL = "https://example.clients.us-1.kandji.io/api/v1/"
 # Kandji Bearer Token
-TOKEN = "api_token"
+TOKEN = "api_token_here"
 
 
 ###################################################################################################
@@ -93,7 +91,7 @@ HEADERS = {
 
 
 # Report name
-REPORT_NAME = "app_install_report_" + datetime.today().strftime("%Y%m%d") + ".csv"
+REPORT_NAME = f"app_install_report_{datetime.today().strftime('%Y%m%d')}.csv"
 
 # Current working directory
 HERE = pathlib.Path("__file__").parent
@@ -103,27 +101,46 @@ def get_all_devices():
     """Retrive all device inventory records from Kandji"""
 
     # The API endpont to target
-    endpoint = "devices/?limit='10000'?platform=Mac"
+    endpoint = "devices/?limit=10000"
 
     # Initiate var that will be returned
     data = None
 
-    try:
-        # Make the api call to Kandji
-        response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=10)
+    attempt = 0
+    response_code = None
 
-        # Store the HTTP status code
-        response_code = response.status_code
+    while response_code is not requests.codes["ok"] and attempt < 6:
 
-        if response_code == requests.codes["ok"]:
-            # HTTP Code 200 (successfull)
-            data = response.json()
-        else:
+        try:
+            # Make the api call to Kandji
+            response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=30)
+
+            # Store the HTTP status code
+            response_code = response.status_code
+
+            if response_code == requests.codes["ok"]:
+                # HTTP Code 200 (successfull)
+                data = response.json()
+                break
+
             # An error occurred so we need to report it
             response.raise_for_status()
 
-    except requests.exceptions.RequestException as error:
-        sys.exit(error)
+        except requests.exceptions.RequestException as error:
+            attempt += 1
+
+            if requests.codes["unauthorized"]:
+                # if HTTPS 401
+                print(
+                    "Check to make sure that the API token has the proper permissions to access the"
+                    " Application list ..."
+                )
+                sys.exit(f"\t{error}")
+
+            if attempt == 5:
+                print(error)
+                print("Made 5 attempts ...")
+                print("Exiting ...")
 
     return data
 
@@ -137,28 +154,41 @@ def get_device_apps(device_id):
     # Initiate var that will be returned
     data = None
 
-    # Make the api call to Kandji
-    response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=10)
+    try:
 
-    # Store the HTTP status code
-    response_status = response.status_code
+        # Make the api call to Kandji
+        response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=30)
 
-    if response_status == requests.codes["ok"]:
-        # HTTP Code 200 (successfull)
-        data = response.json()
+        # Store the HTTP status code
+        response_status = response.status_code
 
-    else:
-        print("Somthing bad happened ...")
-        sys.exit()
+        if response_status == requests.codes["ok"]:
+            # HTTP Code 200 (successfull)
+            data = response.json()
+
+        else:
+            response.raise_for_status()
+
+    except requests.exceptions.RequestException as error:
+
+        if requests.codes["unauthorized"]:
+            # if HTTPS 401
+            print(
+                "Check to make sure that the API token has the proper permissions to access the"
+                " Application list ..."
+            )
+            sys.exit(f"\t{error}")
+
+        sys.exit(f"{error}")
 
     return data
 
 
-def app_names_versions(devices):
-    """Return the app name and app version information from device app info"""
+def create_report_payload(devices):
+    """Create a JSON payload"""
 
-    # List of all apps
-    all_apps = []
+    # list of apps
+    data = []
 
     # Loop over all Mac computers in Kandji
     for device in devices:
@@ -169,37 +199,16 @@ def app_names_versions(devices):
             # Create a dictionary containing the application name, version, and
             # associated serial number.
             apps_dict = {
+                "device_name": device["device_name"],
+                "serial_number": device["serial_number"],
+                "platform": device["platform"],
                 "app_name": app["app_name"],
                 "version": app["version"],
             }
 
-            all_apps.append(apps_dict)
+            data.append(apps_dict)
 
-    return all_apps
-
-
-def return_unique_apps(app_list):
-    """Return a list of unique apps and the number of times that app is installed"""
-
-    unique_app_list = []
-    install_count = []
-
-    for app in app_list:
-
-        if app not in unique_app_list:
-
-            unique_app_list.append(app)
-            install_count.append(
-                {
-                    "app_name": app["app_name"],
-                    "version": app["version"],
-                    "install_count": app_list.count(app),
-                }
-            )
-
-            print(app, app_list.count(app))
-
-    return install_count
+    return data
 
 
 def write_report(app_list):
@@ -207,7 +216,7 @@ def write_report(app_list):
 
     # write report to csv file
     with open(REPORT_NAME, mode="w", encoding="utf-8") as report:
-        out_fields = ["app_name", "version", "install_count"]
+        out_fields = ["Device name", "Serial number", "Platform", "App name", "Version"]
         writer = csv.DictWriter(report, fieldnames=out_fields)
 
         # Write headers to CSV
@@ -219,10 +228,11 @@ def write_report(app_list):
             # Write row to csv file
             writer.writerow(
                 {
-                    "app_name": app["app_name"],
-                    "version": app["version"],
-                    "install_count": app["install_count"],
-                    # "serial_numbers": app["serial_number"],
+                    "Device name": app["device_name"],
+                    "Serial number": app["serial_number"].upper(),
+                    "Platform": app["platform"],
+                    "App name": app["app_name"],
+                    "Version": app["version"],
                 }
             )
 
@@ -237,20 +247,24 @@ def main():
     # Get all device inventory records
     kandji_device_inventory = get_all_devices()
 
+    print(f"Total device records: {len(kandji_device_inventory)}")
+
     # A list of dictionaries containing device ids and their serial numbers
-    devices = [
-        {"device_id": device["device_id"], "serial_number": device["serial_number"]}
+    device_list = [
+        {
+            "device_id": device["device_id"],
+            "device_name": device["device_name"],
+            "serial_number": device["serial_number"],
+            "platform": device["platform"],
+        }
         for device in kandji_device_inventory
     ]
 
-    # Get the app names and app versions from the app details by passing a list of device ids
-    app_list = app_names_versions(devices)
+    # create the report payload
+    report_payload = create_report_payload(device_list)
 
-    # A list of unique apps and the number of Mac devices they are installed on.
-    unique_apps = return_unique_apps(app_list)
-
-    print("Generating Kandji app report ...")
-    write_report(unique_apps)
+    print("Generating Kandji app install report ...")
+    write_report(report_payload)
 
     print("Kandji app report complete ...")
     print(f"Kandji app report at: {HERE.resolve()}/{REPORT_NAME} ")

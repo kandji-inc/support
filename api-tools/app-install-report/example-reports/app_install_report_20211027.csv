@@ -1,0 +1,999 @@
+Device name,Serial number,Platform,App name,Version
+delete-user-test,VMP4FUPM48DN,Mac,1Password 7,7.8.7
+autoapps-vm6,VMQVFDRPUDXR,Mac,1Password 7,7.8.7
+autoapps-vm4,VM9E9AKNGF8N,Mac,1Password 7,7.8.8
+autoapps-prd-vm2,C02YD0DJT90K,Mac,8x8 Work,7.9.4
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,8x8 Work,7.9.4
+autoapps-vm6,VMQVFDRPUDXR,Mac,Abstract,98.0.5
+autoapps-vm4,VM9E9AKNGF8N,Mac,Abstract,98.0.5
+Peter’s Mac,VMBTWSFTQANN,Mac,Activity Monitor,10.14
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Activity Monitor,10.14
+delete-user-test,VMP4FUPM48DN,Mac,Activity Monitor,10.14
+Captain America,C02YD0DJCI95,Mac,Activity Monitor,10.14
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Activity Monitor,10.14
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Activity Monitor,10.14
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Activity Monitor,10.14
+general-testing-vm,VMPODNSEMFFX,Mac,Activity Monitor,10.14
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Activity Monitor,10.14
+autoapps-vm6,VMQVFDRPUDXR,Mac,Activity Monitor,10.14
+autoapps-vm4,VM9E9AKNGF8N,Mac,Activity Monitor,10.14
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Activity Monitor,10.14
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Activity Monitor,10.14
+macos-server,VMQQPELMCD7N,Mac,Activity Monitor,10.14
+testuser-intunetest,C02YD0DJT80K,Mac,Activity Monitor,10.14
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Activity Monitor,10.14
+Peter’s Mac,VMBTWSFTQANN,Mac,AirPort Utility,6.3.9
+autoapps-prd-vm2,C02YD0DJT90K,Mac,AirPort Utility,6.3.9
+delete-user-test,VMP4FUPM48DN,Mac,AirPort Utility,6.3.9
+Captain America,C02YD0DJCI95,Mac,AirPort Utility,6.3.9
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,AirPort Utility,6.3.9
+autoapps-webex-test,VMWE0U7FBY5R,Mac,AirPort Utility,6.3.9
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,AirPort Utility,6.3.9
+general-testing-vm,VMPODNSEMFFX,Mac,AirPort Utility,6.3.9
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,AirPort Utility,6.3.9
+autoapps-vm6,VMQVFDRPUDXR,Mac,AirPort Utility,6.3.9
+autoapps-vm4,VM9E9AKNGF8N,Mac,AirPort Utility,6.3.9
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,AirPort Utility,6.3.9
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,AirPort Utility,6.3.9
+macos-server,VMQQPELMCD7N,Mac,AirPort Utility,6.3.9
+testuser-intunetest,C02YD0DJT80K,Mac,AirPort Utility,6.3.9
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,AirPort Utility,6.3.9
+Peter’s Mac,VMBTWSFTQANN,Mac,App Store,3.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,App Store,3.0
+delete-user-test,VMP4FUPM48DN,Mac,App Store,3.0
+Captain America,C02YD0DJCI95,Mac,App Store,3.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,App Store,3.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,App Store,3.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,App Store,3.0
+general-testing-vm,VMPODNSEMFFX,Mac,App Store,3.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,App Store,3.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,App Store,3.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,App Store,3.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,App Store,3.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,App Store,3.0
+macos-server,VMQQPELMCD7N,Mac,App Store,3.0
+testuser-intunetest,C02YD0DJT80K,Mac,App Store,3.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,App Store,3.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Apparency,1.2
+delete-user-test,VMP4FUPM48DN,Mac,Apparency,1.2
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Apparency,1.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Apparency,1.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Apparency,1.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Apparency,1.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Apparency,1.2
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Apparency,1.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Apparency,1.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Apple Configurator 2,2.14
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Atom,1.57.0
+delete-user-test,VMP4FUPM48DN,Mac,Atom,1.58.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Atom,1.58.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Atom,1.57.0
+general-testing-vm,VMPODNSEMFFX,Mac,Atom,1.57.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Atom,1.58.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Atom,1.58.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Audio MIDI Setup,3.5
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Audio MIDI Setup,3.5
+delete-user-test,VMP4FUPM48DN,Mac,Audio MIDI Setup,3.5
+Captain America,C02YD0DJCI95,Mac,Audio MIDI Setup,3.5
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Audio MIDI Setup,3.5
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Audio MIDI Setup,3.5
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Audio MIDI Setup,3.5
+general-testing-vm,VMPODNSEMFFX,Mac,Audio MIDI Setup,3.5
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Audio MIDI Setup,3.5
+autoapps-vm6,VMQVFDRPUDXR,Mac,Audio MIDI Setup,3.5
+autoapps-vm4,VM9E9AKNGF8N,Mac,Audio MIDI Setup,3.5
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Audio MIDI Setup,3.5
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Audio MIDI Setup,3.5
+macos-server,VMQQPELMCD7N,Mac,Audio MIDI Setup,3.5
+testuser-intunetest,C02YD0DJT80K,Mac,Audio MIDI Setup,3.5
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Audio MIDI Setup,3.5
+Peter’s Mac,VMBTWSFTQANN,Mac,Automator,2.10
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Automator,2.10
+delete-user-test,VMP4FUPM48DN,Mac,Automator,2.10
+Captain America,C02YD0DJCI95,Mac,Automator,2.10
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Automator,2.10
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Automator,2.10
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Automator,2.10
+general-testing-vm,VMPODNSEMFFX,Mac,Automator,2.10
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Automator,2.10
+autoapps-vm6,VMQVFDRPUDXR,Mac,Automator,2.10
+autoapps-vm4,VM9E9AKNGF8N,Mac,Automator,2.10
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Automator,2.10
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Automator,2.10
+macos-server,VMQQPELMCD7N,Mac,Automator,2.10
+testuser-intunetest,C02YD0DJT80K,Mac,Automator,2.10
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Automator,2.10
+autoapps-vm6,VMQVFDRPUDXR,Mac,BlueJeans,2.31.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,BlueJeans,2.31.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Bluetooth File Exchange,8.0.4
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Bluetooth File Exchange,8.0.5
+delete-user-test,VMP4FUPM48DN,Mac,Bluetooth File Exchange,8.0.5
+Captain America,C02YD0DJCI95,Mac,Bluetooth File Exchange,8.0.3
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Bluetooth File Exchange,8.0.5
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Bluetooth File Exchange,8.0.5
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Bluetooth File Exchange,7.0.6
+general-testing-vm,VMPODNSEMFFX,Mac,Bluetooth File Exchange,8.0.5
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Bluetooth File Exchange,8.0.5
+autoapps-vm6,VMQVFDRPUDXR,Mac,Bluetooth File Exchange,8.0.5
+autoapps-vm4,VM9E9AKNGF8N,Mac,Bluetooth File Exchange,7.0.6
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Bluetooth File Exchange,8.0.5
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Bluetooth File Exchange,9.0
+macos-server,VMQQPELMCD7N,Mac,Bluetooth File Exchange,8.0.5
+testuser-intunetest,C02YD0DJT80K,Mac,Bluetooth File Exchange,8.0.5
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Bluetooth File Exchange,8.0.5
+Peter’s Mac,VMBTWSFTQANN,Mac,Books,3.2
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Books,3.2
+delete-user-test,VMP4FUPM48DN,Mac,Books,3.2
+Captain America,C02YD0DJCI95,Mac,Books,3.1
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Books,3.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Books,3.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Books,2.4
+general-testing-vm,VMPODNSEMFFX,Mac,Books,3.2
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Books,3.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Books,3.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Books,2.4
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Books,3.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Books,4.1
+macos-server,VMQQPELMCD7N,Mac,Books,3.2
+testuser-intunetest,C02YD0DJT80K,Mac,Books,3.2
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Books,3.2
+Peter’s Mac,VMBTWSFTQANN,Mac,Boot Camp Assistant,6.1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Boot Camp Assistant,6.1.0
+delete-user-test,VMP4FUPM48DN,Mac,Boot Camp Assistant,6.1.0
+Captain America,C02YD0DJCI95,Mac,Boot Camp Assistant,6.1.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Boot Camp Assistant,6.1.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Boot Camp Assistant,6.1.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Boot Camp Assistant,6.1.0
+general-testing-vm,VMPODNSEMFFX,Mac,Boot Camp Assistant,6.1.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Boot Camp Assistant,6.1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Boot Camp Assistant,6.1.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Boot Camp Assistant,6.1.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Boot Camp Assistant,6.1.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Boot Camp Assistant,6.1.0
+macos-server,VMQQPELMCD7N,Mac,Boot Camp Assistant,6.1.0
+testuser-intunetest,C02YD0DJT80K,Mac,Boot Camp Assistant,6.1.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Boot Camp Assistant,6.1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Box,2.23.422
+autoapps-vm4,VM9E9AKNGF8N,Mac,Box,2.24.193
+Peter’s Mac,VMBTWSFTQANN,Mac,Brave Browser,91.1.26.67
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Brave Browser,91.1.26.77
+Captain America,C02YD0DJCI95,Mac,Brave Browser,91.1.26.67
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Brave Browser,91.1.26.77
+autoapps-vm6,VMQVFDRPUDXR,Mac,Brave Browser,93.1.29.81
+autoapps-vm4,VM9E9AKNGF8N,Mac,Brave Browser,93.1.29.81
+Peter’s Mac,VMBTWSFTQANN,Mac,Calculator,10.16
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Calculator,10.16
+delete-user-test,VMP4FUPM48DN,Mac,Calculator,10.16
+Captain America,C02YD0DJCI95,Mac,Calculator,10.16
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Calculator,10.16
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Calculator,10.16
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Calculator,10.15.4
+general-testing-vm,VMPODNSEMFFX,Mac,Calculator,10.16
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Calculator,10.16
+autoapps-vm6,VMQVFDRPUDXR,Mac,Calculator,10.16
+autoapps-vm4,VM9E9AKNGF8N,Mac,Calculator,10.15.4
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Calculator,10.16
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Calculator,10.16
+macos-server,VMQQPELMCD7N,Mac,Calculator,10.16
+testuser-intunetest,C02YD0DJT80K,Mac,Calculator,10.16
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Calculator,10.16
+Peter’s Mac,VMBTWSFTQANN,Mac,Calendar,11.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Calendar,11.0
+delete-user-test,VMP4FUPM48DN,Mac,Calendar,11.0
+Captain America,C02YD0DJCI95,Mac,Calendar,11.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Calendar,11.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Calendar,11.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Calendar,11.0
+general-testing-vm,VMPODNSEMFFX,Mac,Calendar,11.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Calendar,11.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Calendar,11.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Calendar,11.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Calendar,11.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Calendar,11.0
+macos-server,VMQQPELMCD7N,Mac,Calendar,11.0
+testuser-intunetest,C02YD0DJT80K,Mac,Calendar,11.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Calendar,11.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Chess,3.18
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Chess,3.18
+delete-user-test,VMP4FUPM48DN,Mac,Chess,3.18
+Captain America,C02YD0DJCI95,Mac,Chess,3.18
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Chess,3.18
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Chess,3.18
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Chess,3.17
+general-testing-vm,VMPODNSEMFFX,Mac,Chess,3.18
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Chess,3.18
+autoapps-vm6,VMQVFDRPUDXR,Mac,Chess,3.18
+autoapps-vm4,VM9E9AKNGF8N,Mac,Chess,3.17
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Chess,3.18
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Chess,3.18
+macos-server,VMQQPELMCD7N,Mac,Chess,3.18
+testuser-intunetest,C02YD0DJT80K,Mac,Chess,3.18
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Chess,3.18
+Peter’s Mac,VMBTWSFTQANN,Mac,Cisco Webex Meetings,41.7.1.8
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Cisco Webex Meetings,41.8.3.8
+Captain America,C02YD0DJCI95,Mac,Cisco Webex Meetings,41.5.3.15
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Cisco Webex Meetings,41.8.3.8
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Cisco Webex Meetings,41.8.4.11
+autoapps-vm6,VMQVFDRPUDXR,Mac,Cisco Webex Meetings,41.8.6.10
+autoapps-vm4,VM9E9AKNGF8N,Mac,Cisco Webex Meetings,41.10.3.19
+general-testing-vm,VMPODNSEMFFX,Mac,Cloudflare WARP,1.5.207.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Cloudflare WARP,1.6.27.0
+Peter’s Mac,VMBTWSFTQANN,Mac,ColorSync Utility,4.14.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,ColorSync Utility,4.14.0
+delete-user-test,VMP4FUPM48DN,Mac,ColorSync Utility,4.14.0
+Captain America,C02YD0DJCI95,Mac,ColorSync Utility,4.14.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,ColorSync Utility,4.14.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,ColorSync Utility,4.14.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,ColorSync Utility,4.14.0
+general-testing-vm,VMPODNSEMFFX,Mac,ColorSync Utility,4.14.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,ColorSync Utility,4.14.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,ColorSync Utility,4.14.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,ColorSync Utility,4.14.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,ColorSync Utility,4.14.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,ColorSync Utility,12.0.0
+macos-server,VMQQPELMCD7N,Mac,ColorSync Utility,4.14.0
+testuser-intunetest,C02YD0DJT80K,Mac,ColorSync Utility,4.14.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,ColorSync Utility,4.14.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Console,1.1
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Console,1.1
+delete-user-test,VMP4FUPM48DN,Mac,Console,1.1
+Captain America,C02YD0DJCI95,Mac,Console,1.1
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Console,1.1
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Console,1.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Console,1.1
+general-testing-vm,VMPODNSEMFFX,Mac,Console,1.1
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Console,1.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Console,1.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,Console,1.1
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Console,1.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Console,1.1
+macos-server,VMQQPELMCD7N,Mac,Console,1.1
+testuser-intunetest,C02YD0DJT80K,Mac,Console,1.1
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Console,1.1
+Peter’s Mac,VMBTWSFTQANN,Mac,Contacts,13.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Contacts,13.0
+delete-user-test,VMP4FUPM48DN,Mac,Contacts,13.0
+Captain America,C02YD0DJCI95,Mac,Contacts,13.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Contacts,13.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Contacts,13.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Contacts,12.0
+general-testing-vm,VMPODNSEMFFX,Mac,Contacts,13.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Contacts,13.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Contacts,13.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Contacts,12.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Contacts,13.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Contacts,No value
+macos-server,VMQQPELMCD7N,Mac,Contacts,13.0
+testuser-intunetest,C02YD0DJT80K,Mac,Contacts,13.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Contacts,13.0
+Peter’s Mac,VMBTWSFTQANN,Mac,DEPNotify,1.1.6
+autoapps-vm6,VMQVFDRPUDXR,Mac,Dialpad,19.7.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,Dialpad,19.7.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Dictionary,2.3.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Dictionary,2.3.0
+delete-user-test,VMP4FUPM48DN,Mac,Dictionary,2.3.0
+Captain America,C02YD0DJCI95,Mac,Dictionary,2.3.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Dictionary,2.3.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Dictionary,2.3.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Dictionary,2.3.0
+general-testing-vm,VMPODNSEMFFX,Mac,Dictionary,2.3.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Dictionary,2.3.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Dictionary,2.3.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Dictionary,2.3.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Dictionary,2.3.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Dictionary,2.3.0
+macos-server,VMQQPELMCD7N,Mac,Dictionary,2.3.0
+testuser-intunetest,C02YD0DJT80K,Mac,Dictionary,2.3.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Dictionary,2.3.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Digital Color Meter,5.22
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Digital Color Meter,5.22
+delete-user-test,VMP4FUPM48DN,Mac,Digital Color Meter,5.22
+Captain America,C02YD0DJCI95,Mac,Digital Color Meter,5.22
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Digital Color Meter,5.22
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Digital Color Meter,5.22
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Digital Color Meter,5.15
+general-testing-vm,VMPODNSEMFFX,Mac,Digital Color Meter,5.22
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Digital Color Meter,5.22
+autoapps-vm6,VMQVFDRPUDXR,Mac,Digital Color Meter,5.22
+autoapps-vm4,VM9E9AKNGF8N,Mac,Digital Color Meter,5.15
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Digital Color Meter,5.22
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Digital Color Meter,5.22
+macos-server,VMQQPELMCD7N,Mac,Digital Color Meter,5.22
+testuser-intunetest,C02YD0DJT80K,Mac,Digital Color Meter,5.22
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Digital Color Meter,5.22
+Peter’s Mac,VMBTWSFTQANN,Mac,Disk Utility,20.1
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Disk Utility,20.1
+delete-user-test,VMP4FUPM48DN,Mac,Disk Utility,20.1
+Captain America,C02YD0DJCI95,Mac,Disk Utility,20.1
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Disk Utility,20.1
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Disk Utility,20.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Disk Utility,19.0
+general-testing-vm,VMPODNSEMFFX,Mac,Disk Utility,20.1
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Disk Utility,20.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Disk Utility,20.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,Disk Utility,19.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Disk Utility,20.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Disk Utility,21.0
+macos-server,VMQQPELMCD7N,Mac,Disk Utility,20.1
+testuser-intunetest,C02YD0DJT80K,Mac,Disk Utility,20.1
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Disk Utility,20.1
+Peter’s Mac,VMBTWSFTQANN,Mac,Dropbox,125.4.3474
+autoapps-vm6,VMQVFDRPUDXR,Mac,Dropbox,130.4.4978
+autoapps-vm4,VM9E9AKNGF8N,Mac,Dropbox,130.4.4978
+Peter’s Mac,VMBTWSFTQANN,Mac,FaceTime,5.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,FaceTime,5.0
+delete-user-test,VMP4FUPM48DN,Mac,FaceTime,5.0
+Captain America,C02YD0DJCI95,Mac,FaceTime,5.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,FaceTime,5.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,FaceTime,5.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,FaceTime,5.0
+general-testing-vm,VMPODNSEMFFX,Mac,FaceTime,5.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,FaceTime,5.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,FaceTime,5.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,FaceTime,5.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,FaceTime,5.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,FaceTime,5.0
+macos-server,VMQQPELMCD7N,Mac,FaceTime,5.0
+testuser-intunetest,C02YD0DJT80K,Mac,FaceTime,5.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,FaceTime,5.0
+delete-user-test,VMP4FUPM48DN,Mac,Falcon,6.20
+autoapps-vm6,VMQVFDRPUDXR,Mac,Falcon,6.20
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Falcon,6.20
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Falcon,6.30
+Peter’s Mac,VMBTWSFTQANN,Mac,Fellow,1.0.34
+Peter’s Mac,VMBTWSFTQANN,Mac,Figma,99.0.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Figma,101.6.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Figma,101.6.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Figma,101.6.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Figma,101.6.0
+Peter’s Mac,VMBTWSFTQANN,Mac,FindMy,2.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,FindMy,2.0
+delete-user-test,VMP4FUPM48DN,Mac,FindMy,2.0
+Captain America,C02YD0DJCI95,Mac,FindMy,2.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,FindMy,2.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,FindMy,2.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,FindMy,1.0
+general-testing-vm,VMPODNSEMFFX,Mac,FindMy,2.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,FindMy,2.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,FindMy,2.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,FindMy,1.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,FindMy,2.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,FindMy,3.0
+macos-server,VMQQPELMCD7N,Mac,FindMy,2.0
+testuser-intunetest,C02YD0DJT80K,Mac,FindMy,2.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,FindMy,2.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Firefox,91.0.1
+delete-user-test,VMP4FUPM48DN,Mac,Firefox,92.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Firefox,91.0.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Firefox,92.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Firefox,92.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Font Book,10.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Font Book,10.0
+delete-user-test,VMP4FUPM48DN,Mac,Font Book,10.0
+Captain America,C02YD0DJCI95,Mac,Font Book,10.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Font Book,10.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Font Book,10.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Font Book,10.0
+general-testing-vm,VMPODNSEMFFX,Mac,Font Book,10.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Font Book,10.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Font Book,10.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Font Book,10.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Font Book,10.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Font Book,10.0
+macos-server,VMQQPELMCD7N,Mac,Font Book,10.0
+testuser-intunetest,C02YD0DJT80K,Mac,Font Book,10.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Font Book,10.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,GitHub Desktop,2.9.3
+autoapps-vm4,VM9E9AKNGF8N,Mac,GitHub Desktop,2.9.3
+Peter’s Mac,VMBTWSFTQANN,Mac,Google Chrome,91.0.4472.114
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Google Chrome,92.0.4515.159
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Google Chrome,92.0.4515.159
+autoapps-vm6,VMQVFDRPUDXR,Mac,Google Chrome,93.0.4577.82
+autoapps-vm4,VM9E9AKNGF8N,Mac,Google Chrome,94.0.4606.71
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Google Chrome,94.0.4606.71
+autoapps-vm6,VMQVFDRPUDXR,Mac,Google Docs,51.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Google Docs,51.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Google Drive,51.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Google Drive,51.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Google Sheets,51.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Google Sheets,51.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Google Slides,51.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Google Slides,51.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Grammarly,Version 1.5.78
+autoapps-vm4,VM9E9AKNGF8N,Mac,Grammarly,Version 1.5.78
+Peter’s Mac,VMBTWSFTQANN,Mac,Grapher,2.7
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Grapher,2.7
+delete-user-test,VMP4FUPM48DN,Mac,Grapher,2.7
+Captain America,C02YD0DJCI95,Mac,Grapher,2.7
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Grapher,2.7
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Grapher,2.7
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Grapher,2.7
+general-testing-vm,VMPODNSEMFFX,Mac,Grapher,2.7
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Grapher,2.7
+autoapps-vm6,VMQVFDRPUDXR,Mac,Grapher,2.7
+autoapps-vm4,VM9E9AKNGF8N,Mac,Grapher,2.7
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Grapher,2.7
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Grapher,2.7
+macos-server,VMQQPELMCD7N,Mac,Grapher,2.7
+testuser-intunetest,C02YD0DJT80K,Mac,Grapher,2.7
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Grapher,2.7
+Peter’s Mac,VMBTWSFTQANN,Mac,Home,5.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Home,5.0
+delete-user-test,VMP4FUPM48DN,Mac,Home,5.0
+Captain America,C02YD0DJCI95,Mac,Home,5.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Home,5.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Home,5.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Home,4.0
+general-testing-vm,VMPODNSEMFFX,Mac,Home,5.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Home,5.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Home,5.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Home,4.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Home,5.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Home,6.0
+macos-server,VMQQPELMCD7N,Mac,Home,5.0
+testuser-intunetest,C02YD0DJT80K,Mac,Home,5.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Home,5.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Image Capture,8.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Image Capture,8.0
+delete-user-test,VMP4FUPM48DN,Mac,Image Capture,8.0
+Captain America,C02YD0DJCI95,Mac,Image Capture,8.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Image Capture,8.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Image Capture,8.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Image Capture,8.0
+general-testing-vm,VMPODNSEMFFX,Mac,Image Capture,8.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Image Capture,8.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Image Capture,8.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Image Capture,8.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Image Capture,8.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Image Capture,8.0
+macos-server,VMQQPELMCD7N,Mac,Image Capture,8.0
+testuser-intunetest,C02YD0DJT80K,Mac,Image Capture,8.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Image Capture,8.0
+delete-user-test,VMP4FUPM48DN,Mac,Insomnia,2021.5.3
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Insomnia,2021.4.1
+Peter’s Mac,VMBTWSFTQANN,Mac,Kandji Self Service,1.4
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Kandji Self Service,1.4
+delete-user-test,VMP4FUPM48DN,Mac,Kandji Self Service,1.4
+Captain America,C02YD0DJCI95,Mac,Kandji Self Service,1.4
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Kandji Self Service,1.4
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Kandji Self Service,1.4
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Kandji Self Service,1.4
+general-testing-vm,VMPODNSEMFFX,Mac,Kandji Self Service,1.4
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Kandji Self Service,1.4
+autoapps-vm6,VMQVFDRPUDXR,Mac,Kandji Self Service,1.4
+autoapps-vm4,VM9E9AKNGF8N,Mac,Kandji Self Service,1.4
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Kandji Self Service,1.4
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Kandji Self Service,1.4
+macos-server,VMQQPELMCD7N,Mac,Kandji Self Service,1.4
+testuser-intunetest,C02YD0DJT80K,Mac,Kandji Self Service,1.4
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Kandji Self Service,1.4
+Peter’s Mac,VMBTWSFTQANN,Mac,Keychain Access,11.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Keychain Access,11.0
+delete-user-test,VMP4FUPM48DN,Mac,Keychain Access,11.0
+Captain America,C02YD0DJCI95,Mac,Keychain Access,11.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Keychain Access,11.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Keychain Access,11.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Keychain Access,10.5
+general-testing-vm,VMPODNSEMFFX,Mac,Keychain Access,11.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Keychain Access,11.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Keychain Access,11.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Keychain Access,10.5
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Keychain Access,11.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Keychain Access,11.0
+macos-server,VMQQPELMCD7N,Mac,Keychain Access,11.0
+testuser-intunetest,C02YD0DJT80K,Mac,Keychain Access,11.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Keychain Access,11.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Launchpad,1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Launchpad,1.0
+delete-user-test,VMP4FUPM48DN,Mac,Launchpad,1.0
+Captain America,C02YD0DJCI95,Mac,Launchpad,1.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Launchpad,1.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Launchpad,1.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Launchpad,1.0
+general-testing-vm,VMPODNSEMFFX,Mac,Launchpad,1.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Launchpad,1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Launchpad,1.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Launchpad,1.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Launchpad,1.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Launchpad,1.0
+macos-server,VMQQPELMCD7N,Mac,Launchpad,1.0
+testuser-intunetest,C02YD0DJT80K,Mac,Launchpad,1.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Launchpad,1.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Mail,14.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Mail,14.0
+delete-user-test,VMP4FUPM48DN,Mac,Mail,14.0
+Captain America,C02YD0DJCI95,Mac,Mail,14.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Mail,14.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Mail,14.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Mail,13.4
+general-testing-vm,VMPODNSEMFFX,Mac,Mail,14.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Mail,14.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Mail,14.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Mail,13.4
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Mail,14.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Mail,15.0
+macos-server,VMQQPELMCD7N,Mac,Mail,14.0
+testuser-intunetest,C02YD0DJT80K,Mac,Mail,14.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Mail,14.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Maps,3.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Maps,3.0
+delete-user-test,VMP4FUPM48DN,Mac,Maps,3.0
+Captain America,C02YD0DJCI95,Mac,Maps,3.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Maps,3.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Maps,3.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Maps,2.1
+general-testing-vm,VMPODNSEMFFX,Mac,Maps,3.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Maps,3.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Maps,3.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Maps,2.1
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Maps,3.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Maps,3.0
+macos-server,VMQQPELMCD7N,Mac,Maps,3.0
+testuser-intunetest,C02YD0DJT80K,Mac,Maps,3.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Maps,3.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Messages,14.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Messages,14.0
+delete-user-test,VMP4FUPM48DN,Mac,Messages,14.0
+Captain America,C02YD0DJCI95,Mac,Messages,14.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Messages,14.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Messages,14.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Messages,13.0
+general-testing-vm,VMPODNSEMFFX,Mac,Messages,14.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Messages,14.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Messages,14.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Messages,13.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Messages,14.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Messages,14.0
+macos-server,VMQQPELMCD7N,Mac,Messages,14.0
+testuser-intunetest,C02YD0DJT80K,Mac,Messages,14.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Messages,14.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Microsoft Edge,93.0.961.44
+autoapps-vm4,VM9E9AKNGF8N,Mac,Microsoft Edge,94.0.992.38
+delete-user-test,VMP4FUPM48DN,Mac,Microsoft Teams,1.00.422265
+autoapps-vm6,VMQVFDRPUDXR,Mac,Microsoft Teams,1.00.422265
+autoapps-vm4,VM9E9AKNGF8N,Mac,Microsoft Teams,1.00.422265
+Peter’s Mac,VMBTWSFTQANN,Mac,Migration Assistant,11.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Migration Assistant,11.4
+delete-user-test,VMP4FUPM48DN,Mac,Migration Assistant,11.5
+Captain America,C02YD0DJCI95,Mac,Migration Assistant,11.2
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Migration Assistant,11.5
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Migration Assistant,11.5
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Migration Assistant,10.15
+general-testing-vm,VMPODNSEMFFX,Mac,Migration Assistant,11.4
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Migration Assistant,11.6
+autoapps-vm6,VMQVFDRPUDXR,Mac,Migration Assistant,11.5
+autoapps-vm4,VM9E9AKNGF8N,Mac,Migration Assistant,10.15
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Migration Assistant,11.5
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Migration Assistant,12.0
+macos-server,VMQQPELMCD7N,Mac,Migration Assistant,11.5
+testuser-intunetest,C02YD0DJT80K,Mac,Migration Assistant,11.4
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Migration Assistant,11.5
+Peter’s Mac,VMBTWSFTQANN,Mac,Mission Control,1.2
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Mission Control,1.2
+delete-user-test,VMP4FUPM48DN,Mac,Mission Control,1.2
+Captain America,C02YD0DJCI95,Mac,Mission Control,1.2
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Mission Control,1.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Mission Control,1.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Mission Control,1.2
+general-testing-vm,VMPODNSEMFFX,Mac,Mission Control,1.2
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Mission Control,1.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Mission Control,1.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Mission Control,1.2
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Mission Control,1.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Mission Control,1.2
+macos-server,VMQQPELMCD7N,Mac,Mission Control,1.2
+testuser-intunetest,C02YD0DJT80K,Mac,Mission Control,1.2
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Mission Control,1.2
+Peter’s Mac,VMBTWSFTQANN,Mac,Music,1.1.4
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Music,1.1.5
+delete-user-test,VMP4FUPM48DN,Mac,Music,1.1.6
+Captain America,C02YD0DJCI95,Mac,Music,1.1.3
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Music,1.1.6
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Music,1.1.6
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Music,1.0.6
+general-testing-vm,VMPODNSEMFFX,Mac,Music,1.1.5
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Music,1.1.6
+autoapps-vm6,VMQVFDRPUDXR,Mac,Music,1.1.6
+autoapps-vm4,VM9E9AKNGF8N,Mac,Music,1.0.6
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Music,1.1.6
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Music,1.2
+macos-server,VMQQPELMCD7N,Mac,Music,1.1.6
+testuser-intunetest,C02YD0DJT80K,Mac,Music,1.1.5
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Music,1.1.6
+Peter’s Mac,VMBTWSFTQANN,Mac,News,6.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,News,6.4
+delete-user-test,VMP4FUPM48DN,Mac,News,6.4.1
+Captain America,C02YD0DJCI95,Mac,News,6.2.1
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,News,6.4.1
+autoapps-webex-test,VMWE0U7FBY5R,Mac,News,6.4.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,News,5.5
+general-testing-vm,VMPODNSEMFFX,Mac,News,6.4
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,News,6.4.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,News,6.4.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,News,5.5
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,News,6.4.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,News,7.1
+macos-server,VMQQPELMCD7N,Mac,News,6.4.1
+testuser-intunetest,C02YD0DJT80K,Mac,News,6.4
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,News,6.4.1
+Peter’s Mac,VMBTWSFTQANN,Mac,Notes,4.8.1
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Notes,4.8.1
+delete-user-test,VMP4FUPM48DN,Mac,Notes,4.8.1
+Captain America,C02YD0DJCI95,Mac,Notes,4.8
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Notes,4.8.1
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Notes,4.8.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Notes,4.7
+general-testing-vm,VMPODNSEMFFX,Mac,Notes,4.8.1
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Notes,4.8.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Notes,4.8.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,Notes,4.7
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Notes,4.8.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Notes,4.9
+macos-server,VMQQPELMCD7N,Mac,Notes,4.8.1
+testuser-intunetest,C02YD0DJT80K,Mac,Notes,4.8.1
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Notes,4.8.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,OneDrive,21.170.0822
+autoapps-prd-vm2,C02YD0DJT90K,Mac,PPPC Utility,1.3.0
+delete-user-test,VMP4FUPM48DN,Mac,PPPC Utility,1.3.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Paw,3.2.4
+autoapps-vm4,VM9E9AKNGF8N,Mac,Paw,3.2.4
+Peter’s Mac,VMBTWSFTQANN,Mac,Photo Booth,11.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Photo Booth,11.0
+delete-user-test,VMP4FUPM48DN,Mac,Photo Booth,11.0
+Captain America,C02YD0DJCI95,Mac,Photo Booth,11.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Photo Booth,11.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Photo Booth,11.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Photo Booth,11.0
+general-testing-vm,VMPODNSEMFFX,Mac,Photo Booth,11.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Photo Booth,11.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Photo Booth,11.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Photo Booth,11.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Photo Booth,11.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Photo Booth,12.0
+macos-server,VMQQPELMCD7N,Mac,Photo Booth,11.0
+testuser-intunetest,C02YD0DJT80K,Mac,Photo Booth,11.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Photo Booth,11.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Photos,6.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Photos,6.0
+delete-user-test,VMP4FUPM48DN,Mac,Photos,6.0
+Captain America,C02YD0DJCI95,Mac,Photos,6.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Photos,6.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Photos,6.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Photos,5.0
+general-testing-vm,VMPODNSEMFFX,Mac,Photos,6.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Photos,6.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Photos,6.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Photos,5.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Photos,6.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Photos,7.0
+macos-server,VMQQPELMCD7N,Mac,Photos,6.0
+testuser-intunetest,C02YD0DJT80K,Mac,Photos,6.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Photos,6.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Plantronics Hub,3.22.53279.33311
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Plantronics Hub,3.22.53279.33311
+autoapps-vm6,VMQVFDRPUDXR,Mac,Plantronics Hub,3.23.53335.34198
+autoapps-vm4,VM9E9AKNGF8N,Mac,Plantronics Hub,3.23.53335.34198
+Peter’s Mac,VMBTWSFTQANN,Mac,Podcasts,1.1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Podcasts,1.1.0
+delete-user-test,VMP4FUPM48DN,Mac,Podcasts,1.1.0
+Captain America,C02YD0DJCI95,Mac,Podcasts,1.1.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Podcasts,1.1.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Podcasts,1.1.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Podcasts,1.0.0
+general-testing-vm,VMPODNSEMFFX,Mac,Podcasts,1.1.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Podcasts,1.1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Podcasts,1.1.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Podcasts,1.0.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Podcasts,1.1.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Podcasts,1.1.0
+macos-server,VMQQPELMCD7N,Mac,Podcasts,1.1.0
+testuser-intunetest,C02YD0DJT80K,Mac,Podcasts,1.1.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Podcasts,1.1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Postman,8.10.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Postman,8.11.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Postman,8.10.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Postman,8.12.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Postman,8.12.2
+Peter’s Mac,VMBTWSFTQANN,Mac,Preview,11.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Preview,11.0
+delete-user-test,VMP4FUPM48DN,Mac,Preview,11.0
+Captain America,C02YD0DJCI95,Mac,Preview,11.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Preview,11.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Preview,11.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Preview,11.0
+general-testing-vm,VMPODNSEMFFX,Mac,Preview,11.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Preview,11.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Preview,11.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Preview,11.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Preview,11.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Preview,11.0
+macos-server,VMQQPELMCD7N,Mac,Preview,11.0
+testuser-intunetest,C02YD0DJT80K,Mac,Preview,11.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Preview,11.0
+Peter’s Mac,VMBTWSFTQANN,Mac,QuickTime Player,10.5
+autoapps-prd-vm2,C02YD0DJT90K,Mac,QuickTime Player,10.5
+delete-user-test,VMP4FUPM48DN,Mac,QuickTime Player,10.5
+Captain America,C02YD0DJCI95,Mac,QuickTime Player,10.5
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,QuickTime Player,10.5
+autoapps-webex-test,VMWE0U7FBY5R,Mac,QuickTime Player,10.5
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,QuickTime Player,10.5
+general-testing-vm,VMPODNSEMFFX,Mac,QuickTime Player,10.5
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,QuickTime Player,10.5
+autoapps-vm6,VMQVFDRPUDXR,Mac,QuickTime Player,10.5
+autoapps-vm4,VM9E9AKNGF8N,Mac,QuickTime Player,10.5
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,QuickTime Player,10.5
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,QuickTime Player,10.5
+macos-server,VMQQPELMCD7N,Mac,QuickTime Player,10.5
+testuser-intunetest,C02YD0DJT80K,Mac,QuickTime Player,10.5
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,QuickTime Player,10.5
+delete-user-test,VMP4FUPM48DN,Mac,RH QuickSupport,15.9.4
+Peter’s Mac,VMBTWSFTQANN,Mac,Reminders,7.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Reminders,7.0
+delete-user-test,VMP4FUPM48DN,Mac,Reminders,7.0
+Captain America,C02YD0DJCI95,Mac,Reminders,7.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Reminders,7.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Reminders,7.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Reminders,7.0
+general-testing-vm,VMPODNSEMFFX,Mac,Reminders,7.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Reminders,7.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Reminders,7.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Reminders,7.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Reminders,7.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Reminders,7.0
+macos-server,VMQQPELMCD7N,Mac,Reminders,7.0
+testuser-intunetest,C02YD0DJT80K,Mac,Reminders,7.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Reminders,7.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,RingCentral,21.3.22.1859
+autoapps-vm4,VM9E9AKNGF8N,Mac,RingCentral,21.3.22.1859
+Peter’s Mac,VMBTWSFTQANN,Mac,Safari,14.1
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Safari,14.1.1
+delete-user-test,VMP4FUPM48DN,Mac,Safari,14.1.2
+Captain America,C02YD0DJCI95,Mac,Safari,14.0.3
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Safari,14.1.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Safari,14.1.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Safari,13.1.3
+general-testing-vm,VMPODNSEMFFX,Mac,Safari,14.1.1
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Safari,14.1.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Safari,14.1.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Safari,13.1.3
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Safari,14.1.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Safari,15.1
+macos-server,VMQQPELMCD7N,Mac,Safari,14.1.2
+testuser-intunetest,C02YD0DJT80K,Mac,Safari,14.1.1
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Safari,14.1.2
+Peter’s Mac,VMBTWSFTQANN,Mac,Screenshot,1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Screenshot,1.0
+delete-user-test,VMP4FUPM48DN,Mac,Screenshot,1.0
+Captain America,C02YD0DJCI95,Mac,Screenshot,1.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Screenshot,1.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Screenshot,1.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Screenshot,1.0
+general-testing-vm,VMPODNSEMFFX,Mac,Screenshot,1.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Screenshot,1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Screenshot,1.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Screenshot,1.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Screenshot,1.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Screenshot,1.0
+macos-server,VMQQPELMCD7N,Mac,Screenshot,1.0
+testuser-intunetest,C02YD0DJT80K,Mac,Screenshot,1.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Screenshot,1.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Script Editor,2.11
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Script Editor,2.11
+delete-user-test,VMP4FUPM48DN,Mac,Script Editor,2.11
+Captain America,C02YD0DJCI95,Mac,Script Editor,2.11
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Script Editor,2.11
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Script Editor,2.11
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Script Editor,2.11
+general-testing-vm,VMPODNSEMFFX,Mac,Script Editor,2.11
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Script Editor,2.11
+autoapps-vm6,VMQVFDRPUDXR,Mac,Script Editor,2.11
+autoapps-vm4,VM9E9AKNGF8N,Mac,Script Editor,2.11
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Script Editor,2.11
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Script Editor,2.11
+macos-server,VMQQPELMCD7N,Mac,Script Editor,2.11
+testuser-intunetest,C02YD0DJT80K,Mac,Script Editor,2.11
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Script Editor,2.11
+macos-server,VMQQPELMCD7N,Mac,Server,5.11.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Shortcuts,5.0
+Peter’s Mac,VMBTWSFTQANN,Mac,Siri,1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Siri,1.0
+delete-user-test,VMP4FUPM48DN,Mac,Siri,1.0
+Captain America,C02YD0DJCI95,Mac,Siri,1.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Siri,1.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Siri,1.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Siri,1.0
+general-testing-vm,VMPODNSEMFFX,Mac,Siri,1.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Siri,1.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,Siri,1.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Siri,1.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Siri,1.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Siri,1.0
+macos-server,VMQQPELMCD7N,Mac,Siri,1.0
+testuser-intunetest,C02YD0DJT80K,Mac,Siri,1.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Siri,1.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Sketch,74.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Sketch,74.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Sketch,76.1
+delete-user-test,VMP4FUPM48DN,Mac,Sourcetree,4.1.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Spotify,1.1.64.561.g71bd09eb
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Spotify,1.1.64.561.g71bd09eb
+autoapps-vm6,VMQVFDRPUDXR,Mac,Spotify,1.1.66.580.gbd43cbc9
+autoapps-vm4,VM9E9AKNGF8N,Mac,Spotify,1.1.66.580.gbd43cbc9
+Peter’s Mac,VMBTWSFTQANN,Mac,Stickies,10.2
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Stickies,10.2
+delete-user-test,VMP4FUPM48DN,Mac,Stickies,10.2
+Captain America,C02YD0DJCI95,Mac,Stickies,10.2
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Stickies,10.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Stickies,10.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Stickies,10.2
+general-testing-vm,VMPODNSEMFFX,Mac,Stickies,10.2
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Stickies,10.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,Stickies,10.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,Stickies,10.2
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Stickies,10.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Stickies,10.2
+macos-server,VMQQPELMCD7N,Mac,Stickies,10.2
+testuser-intunetest,C02YD0DJT80K,Mac,Stickies,10.2
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Stickies,10.2
+Peter’s Mac,VMBTWSFTQANN,Mac,Stocks,3.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Stocks,3.4
+delete-user-test,VMP4FUPM48DN,Mac,Stocks,3.4.1
+Captain America,C02YD0DJCI95,Mac,Stocks,3.2.1
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Stocks,3.4.1
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Stocks,3.4.1
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Stocks,2.5
+general-testing-vm,VMPODNSEMFFX,Mac,Stocks,3.4
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Stocks,3.4.1
+autoapps-vm6,VMQVFDRPUDXR,Mac,Stocks,3.4.1
+autoapps-vm4,VM9E9AKNGF8N,Mac,Stocks,2.5
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Stocks,3.4.1
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Stocks,4.1
+macos-server,VMQQPELMCD7N,Mac,Stocks,3.4.1
+testuser-intunetest,C02YD0DJT80K,Mac,Stocks,3.4
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Stocks,3.4.1
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Sublime Text,Build 3211
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Sublime Text,Build 3211
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Superhuman,11.0.32
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Superhuman,11.0.32
+Peter’s Mac,VMBTWSFTQANN,Mac,System Information,11.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,System Information,11.0
+delete-user-test,VMP4FUPM48DN,Mac,System Information,11.0
+Captain America,C02YD0DJCI95,Mac,System Information,11.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,System Information,11.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,System Information,11.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,System Information,10.14
+general-testing-vm,VMPODNSEMFFX,Mac,System Information,11.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,System Information,11.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,System Information,11.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,System Information,10.14
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,System Information,11.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,System Information,11.0
+macos-server,VMQQPELMCD7N,Mac,System Information,11.0
+testuser-intunetest,C02YD0DJT80K,Mac,System Information,11.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,System Information,11.0
+Peter’s Mac,VMBTWSFTQANN,Mac,System Preferences,14.0
+autoapps-prd-vm2,C02YD0DJT90K,Mac,System Preferences,14.0
+delete-user-test,VMP4FUPM48DN,Mac,System Preferences,14.0
+Captain America,C02YD0DJCI95,Mac,System Preferences,14.0
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,System Preferences,14.0
+autoapps-webex-test,VMWE0U7FBY5R,Mac,System Preferences,14.0
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,System Preferences,14.0
+general-testing-vm,VMPODNSEMFFX,Mac,System Preferences,14.0
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,System Preferences,14.0
+autoapps-vm6,VMQVFDRPUDXR,Mac,System Preferences,14.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,System Preferences,14.0
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,System Preferences,14.0
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,System Preferences,15.0
+macos-server,VMQQPELMCD7N,Mac,System Preferences,14.0
+testuser-intunetest,C02YD0DJT80K,Mac,System Preferences,14.0
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,System Preferences,14.0
+Peter’s Mac,VMBTWSFTQANN,Mac,TV,1.1.4
+autoapps-prd-vm2,C02YD0DJT90K,Mac,TV,1.1.5
+delete-user-test,VMP4FUPM48DN,Mac,TV,1.1.6
+Captain America,C02YD0DJCI95,Mac,TV,1.1.3
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,TV,1.1.6
+autoapps-webex-test,VMWE0U7FBY5R,Mac,TV,1.1.6
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,TV,1.0.6
+general-testing-vm,VMPODNSEMFFX,Mac,TV,1.1.5
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,TV,1.1.6
+autoapps-vm6,VMQVFDRPUDXR,Mac,TV,1.1.6
+autoapps-vm4,VM9E9AKNGF8N,Mac,TV,1.0.6
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,TV,1.1.6
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,TV,1.2
+macos-server,VMQQPELMCD7N,Mac,TV,1.1.6
+testuser-intunetest,C02YD0DJT80K,Mac,TV,1.1.5
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,TV,1.1.6
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,TeamViewerQS,15.21.4
+Peter’s Mac,VMBTWSFTQANN,Mac,Terminal,2.11
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Terminal,2.11
+delete-user-test,VMP4FUPM48DN,Mac,Terminal,2.11
+Captain America,C02YD0DJCI95,Mac,Terminal,2.11
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Terminal,2.11
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Terminal,2.11
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Terminal,2.10
+general-testing-vm,VMPODNSEMFFX,Mac,Terminal,2.11
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Terminal,2.11
+autoapps-vm6,VMQVFDRPUDXR,Mac,Terminal,2.11
+autoapps-vm4,VM9E9AKNGF8N,Mac,Terminal,2.10
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Terminal,2.11
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Terminal,2.12
+macos-server,VMQQPELMCD7N,Mac,Terminal,2.11
+testuser-intunetest,C02YD0DJT80K,Mac,Terminal,2.11
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Terminal,2.11
+Peter’s Mac,VMBTWSFTQANN,Mac,TextEdit,1.16
+autoapps-prd-vm2,C02YD0DJT90K,Mac,TextEdit,1.16
+delete-user-test,VMP4FUPM48DN,Mac,TextEdit,1.16
+Captain America,C02YD0DJCI95,Mac,TextEdit,1.16
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,TextEdit,1.16
+autoapps-webex-test,VMWE0U7FBY5R,Mac,TextEdit,1.16
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,TextEdit,1.15
+general-testing-vm,VMPODNSEMFFX,Mac,TextEdit,1.16
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,TextEdit,1.16
+autoapps-vm6,VMQVFDRPUDXR,Mac,TextEdit,1.16
+autoapps-vm4,VM9E9AKNGF8N,Mac,TextEdit,1.15
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,TextEdit,1.16
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,TextEdit,1.17
+macos-server,VMQQPELMCD7N,Mac,TextEdit,1.16
+testuser-intunetest,C02YD0DJT80K,Mac,TextEdit,1.16
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,TextEdit,1.16
+autoapps-prd-vm2,C02YD0DJT90K,Mac,TextExpander,6.8.5
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,TextExpander,6.8.5
+Peter’s Mac,VMBTWSFTQANN,Mac,Time Machine,1.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Time Machine,1.3
+delete-user-test,VMP4FUPM48DN,Mac,Time Machine,1.3
+Captain America,C02YD0DJCI95,Mac,Time Machine,1.3
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,Time Machine,1.3
+autoapps-webex-test,VMWE0U7FBY5R,Mac,Time Machine,1.3
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,Time Machine,1.3
+general-testing-vm,VMPODNSEMFFX,Mac,Time Machine,1.3
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,Time Machine,1.3
+autoapps-vm6,VMQVFDRPUDXR,Mac,Time Machine,1.3
+autoapps-vm4,VM9E9AKNGF8N,Mac,Time Machine,1.3
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,Time Machine,1.3
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,Time Machine,1.3
+macos-server,VMQQPELMCD7N,Mac,Time Machine,1.3
+testuser-intunetest,C02YD0DJT80K,Mac,Time Machine,1.3
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,Time Machine,1.3
+autoapps-prd-vm2,C02YD0DJT90K,Mac,VirtualBox,6.1.26
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,VirtualBox,6.1.26
+autoapps-vm6,VMQVFDRPUDXR,Mac,Visual Studio Code,1.60.0
+autoapps-vm4,VM9E9AKNGF8N,Mac,Visual Studio Code,1.60.0
+Peter’s Mac,VMBTWSFTQANN,Mac,VoiceMemos,2.2
+autoapps-prd-vm2,C02YD0DJT90K,Mac,VoiceMemos,2.2
+delete-user-test,VMP4FUPM48DN,Mac,VoiceMemos,2.2
+Captain America,C02YD0DJCI95,Mac,VoiceMemos,2.2
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,VoiceMemos,2.2
+autoapps-webex-test,VMWE0U7FBY5R,Mac,VoiceMemos,2.2
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,VoiceMemos,2.1
+general-testing-vm,VMPODNSEMFFX,Mac,VoiceMemos,2.2
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,VoiceMemos,2.2
+autoapps-vm6,VMQVFDRPUDXR,Mac,VoiceMemos,2.2
+autoapps-vm4,VM9E9AKNGF8N,Mac,VoiceMemos,2.1
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,VoiceMemos,2.2
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,VoiceMemos,2.3
+macos-server,VMQQPELMCD7N,Mac,VoiceMemos,2.2
+testuser-intunetest,C02YD0DJT80K,Mac,VoiceMemos,2.2
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,VoiceMemos,2.2
+Peter’s Mac,VMBTWSFTQANN,Mac,VoiceOver Utility,10
+autoapps-prd-vm2,C02YD0DJT90K,Mac,VoiceOver Utility,10
+delete-user-test,VMP4FUPM48DN,Mac,VoiceOver Utility,10
+Captain America,C02YD0DJCI95,Mac,VoiceOver Utility,10
+Internal - Matt Wilson - VMmPx2hwhR4z,VMMPX2HWHR4Z,Mac,VoiceOver Utility,10
+autoapps-webex-test,VMWE0U7FBY5R,Mac,VoiceOver Utility,10
+autoapps-prd’-vm3,C02YD0DKK02K,Mac,VoiceOver Utility,10
+general-testing-vm,VMPODNSEMFFX,Mac,VoiceOver Utility,10
+macos-11.6.1-ad-general,VMCY7EHIUJ8U,Mac,VoiceOver Utility,10
+autoapps-vm6,VMQVFDRPUDXR,Mac,VoiceOver Utility,10
+autoapps-vm4,VM9E9AKNGF8N,Mac,VoiceOver Utility,10
+crowdstrike-falcon-test,VM0CJ7QW0S1Q,Mac,VoiceOver Utility,10
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,VoiceOver Utility,10
+macos-server,VMQQPELMCD7N,Mac,VoiceOver Utility,10
+testuser-intunetest,C02YD0DJT80K,Mac,VoiceOver Utility,10
+AVENGER VMp6p1TC8pPG,VMP6P1TC8PPG,Mac,VoiceOver Utility,10
+autoapps-prd-vm2,C02YD0DJT90K,Mac,Webex,41.7.0.19440
+autoapps-vm6,VMQVFDRPUDXR,Mac,iTerm,3.4.10
+autoapps-vm4,VM9E9AKNGF8N,Mac,iTerm,3.4.10
+testuser’s MacBook Air,C02FL5YXQ6LC,Mac,securEnvoy-network-provider,15.8.2.61563
+Peter’s Mac,VMBTWSFTQANN,Mac,zoom.us,5.7.1 (499)
+autoapps-vm6,VMQVFDRPUDXR,Mac,zoom.us,5.7.6 (1320)
+autoapps-vm4,VM9E9AKNGF8N,Mac,zoom.us,5.7.6 (1320)
