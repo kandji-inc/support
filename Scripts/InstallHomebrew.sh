@@ -109,7 +109,8 @@ else
     echo "Apple Processor is not present... rosetta not needed"
 fi
 
-# Install Homebrew | strip out all interactive prompts
+echo "About to install homebrew"
+echo $mostCommonUser
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sed "s/abort \"Don't run this as root\!\"/\ echo \"WARNING: Running as root...\"/" | sed 's/  wait_for_user/  :/')" 2>&1 | tee "${BREW_INSTALL_LOG}"
 
 # Reset Homebrew permissions for target user
@@ -119,13 +120,15 @@ brew_dir_paths=$(/usr/bin/sed '1,/==> The following new directories/d;/==> /,$d'
 brew_bin=$(echo "${brew_file_paths}" | grep "/bin/brew")
 brew_bin_path=${brew_bin%/brew}
 # shellcheck disable=SC2086
-/usr/sbin/chown -R "${mostCommonUser}":admin ${brew_file_paths} ${brew_dir_paths}
+/usr/sbin/chown -R "${mostCommonUser}":admin ${brew_file_paths} ${brew_dir_paths} /usr/local/lib
 /usr/bin/chgrp admin ${brew_bin_path}/
 /bin/chmod g+w ${brew_bin_path}
+/bin/chmod u+w /usr/local/lib
 
 # Unset home/user environment variables
 unset HOME
 unset USER
+
 
 # Finish up Homebrew install as target user
 /usr/bin/su - "${mostCommonUser}" -c "${brew_bin} update --force"
