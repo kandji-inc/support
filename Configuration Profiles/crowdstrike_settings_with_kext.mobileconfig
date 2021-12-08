@@ -28,7 +28,7 @@
 			<key>PayloadDisplayName</key>
 			<string>Web Content Filter</string>
 			<key>PayloadIdentifier</key>
-			<string>2C5CBFD0-8CFE-41CB-95BC-A681F4D293B8</string>
+			<string>io.kandji.crowdstrike.2C5CBFD0-8CFE-41CB-95BC-A681F4D293B8</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
@@ -75,17 +75,9 @@
 			<key>NotificationSettings</key>
 			<array>
 				<dict>
-					<key>AlertType</key>
-					<integer>1</integer>
 					<key>BundleIdentifier</key>
 					<string>com.crowdstrike.falcon.UserAgent</string>
-					<key>CriticalAlertEnabled</key>
-					<false/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInLockScreen</key>
-					<false/>
-					<key>ShowInNotificationCenter</key>
 					<true/>
 				</dict>
 			</array>
@@ -149,14 +141,29 @@
 						<key>StaticCode</key>
 						<false/>
 					</dict>
+					<dict>
+                        <key>Allowed</key>
+                        <true/>
+                        <key>CodeRequirement</key>
+                        <string>identifier "com.crowdstrike.falcon.App" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = X9E956P446</string>
+                        <key>Comment</key>
+                        <string>
+                        </string>
+                        <key>Identifier</key>
+                        <string>com.crowdstrike.falcon.App</string>
+                        <key>IdentifierType</key>
+                        <string>bundleID</string>
+                        <key>StaticCode</key>
+                        <false/>
+                    </dict>
 				</array>
 			</dict>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Kernel Extensions, System Extensions, and Privacy Preferences</string>
+	<string>Network Content Filter, Kernel Extensions, System Extensions, and Privacy Preferences</string>
 	<key>PayloadDisplayName</key>
-	<string>Crowdstrike</string>
+	<string>Crowdstrike Settings with KEXT</string>
 	<key>PayloadEnabled</key>
 	<true/>
 	<key>PayloadIdentifier</key>
@@ -170,7 +177,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>84251cb2-c8gs-4854-aab7-a5836f2eae8b</string>
+	<string>bbc888dc-6f2c-479d-9f3a-ce0593e6420e</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
