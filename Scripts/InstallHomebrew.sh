@@ -109,8 +109,7 @@ else
     echo "Apple Processor is not present... rosetta not needed"
 fi
 
-echo "About to install homebrew"
-echo $mostCommonUser
+# Install Homebrew | strip out all interactive prompts
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | sed "s/abort \"Don't run this as root\!\"/\ echo \"WARNING: Running as root...\"/" | sed 's/  wait_for_user/  :/')" 2>&1 | tee "${BREW_INSTALL_LOG}"
 
 # Reset Homebrew permissions for target user
