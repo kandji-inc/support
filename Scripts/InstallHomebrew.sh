@@ -128,7 +128,6 @@ brew_bin_path=${brew_bin%/brew}
 unset HOME
 unset USER
 
-
 # Finish up Homebrew install as target user
 /usr/bin/su - "${mostCommonUser}" -c "${brew_bin} update --force"
 
