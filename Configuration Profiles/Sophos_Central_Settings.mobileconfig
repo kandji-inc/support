@@ -22,11 +22,11 @@
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.sophos.0ABFC7DA-DF66-4D25-8988-55E446857F39.com.apple.webcontent-filter.74641116-36DE-46AE-8200-7E00E197805E</string>
 			<key>PayloadOrganization</key>
-			<string>ThoughtWorks Inc.</string>
+			<string>Kandji.io Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
-			<string>74641116-36DE-46AE-8200-7E00E197805E</string>
+			<string>AAB318C4-2280-4DC6-8099-109CD883B8DC</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>PluginBundleID</key>
@@ -49,16 +49,14 @@
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>Sophos System Extension Policy settings</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.sophos.system-extension-policy.B8133FF9-9539-4298-8774-11B153A6E151</string>
 			<key>PayloadOrganization</key>
-			<string>ThoughtWorks Inc..</string>
+			<string>Kandji.io Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>B8133FF9-9539-4298-8774-11B153A6E151</string>
+			<string>37A4C430-E6BF-4081-9FDF-39033E57EADA</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -80,7 +78,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.syspolicy.kernel-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>565AC497-393F-4689-A5D9-6DC22CE6D244</string>
+			<string>E3D36174-C071-4AA5-8E7A-868E299DC011</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -88,12 +86,16 @@
 			<key>NotificationSettings</key>
 			<array>
 				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.sophos.endpoint.uiserver</string>
 					<key>NotificationsEnabled</key>
 					<true/>
 				</dict>
 				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.sophos.enc.sophos-encryption-agent</string>
 					<key>NotificationsEnabled</key>
@@ -127,7 +129,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
-			<string>950960E8-C14E-4A18-8119-BCCD0F5E3F79</string>
+			<string>E27E39AE-6367-425B-951C-D80D1D0CCBFD</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>Services</key>
@@ -138,13 +140,169 @@
 						<key>Allowed</key>
 						<true/>
 						<key>CodeRequirement</key>
-						<string>identifier "com.sophos.macendpoint.Sophos-Endpoint" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<string>identifier "com.sophos.endpoint.scanextension" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
 						<key>Comment</key>
-						<string></string>
+						<string>All Sophos products</string>
 						<key>Identifier</key>
-						<string>com.sophos.macendpoint.Sophos-Endpoint</string>
+						<string>com.sophos.endpoint.scanextension</string>
 						<key>IdentifierType</key>
 						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.liveresponse" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>Sophos Central only</string>
+						<key>Identifier</key>
+						<string>com.sophos.liveresponse</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier SophosMDR and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>Sophos Central with MDR only</string>
+						<key>Identifier</key>
+						<string>/Library/Sophos Managed Detection and Response/SophosMDR</string>
+						<key>IdentifierType</key>
+						<string>path</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.autoupdate" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>Sophos OPM only</string>
+						<key>Identifier</key>
+						<string>com.sophos.autoupdate</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.macendpoint.CleanD" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.macendpoint.CleanD</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.SophosScanAgent" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.SophosScanAgent</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.macendpoint.SophosServiceManager" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.macendpoint.SophosServiceManager</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.endpoint.uiserver" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>Sophos Central only</string>
+						<key>Identifier</key>
+						<string>com.sophos.endpoint.uiserver</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.SDU4OSX" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.SDU4OSX</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.endpoint.SophosAgent" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.endpoint.SophosAgent</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.SophosAntiVirus" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.SophosAntivirus</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.Sophos.macendpoint.SophosSXLD" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.Sophos.macendpoint.SophosSXLD</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
 					</dict>
 				</array>
 			</dict>
@@ -163,7 +321,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>1e69d4c7-3bb2-44c3-a5c4-be0570305ebc</string>
+	<string>118B95D2-AE04-4DFC-932C-B156BF244932</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
