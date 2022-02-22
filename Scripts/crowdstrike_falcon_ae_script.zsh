@@ -154,11 +154,11 @@ else
 fi
 
 # Get the falcon PID
-falcon_process_id="None"
+falcon_process_id=""
 loop_counter=0
 
 # Loop until the falcon pid is found or we have checked the status 5 times
-while [[ "$falcon_process_id" == "None" ]] && [[ "$loop_counter" -lt 6 ]]; do
+while [[ "$falcon_process_id" == "" ]] && [[ "$loop_counter" -lt 6 ]]; do
 
     # Get the falcon PID
     falcon_process_id="$(/usr/bin/pgrep com.crowdstrike.falcon.Agent)"
