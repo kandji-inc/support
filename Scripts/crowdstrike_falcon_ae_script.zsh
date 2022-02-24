@@ -1,18 +1,16 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by David Larrea & Matt Wilson | se@kandji.io | Kandji, Inc. | Solutions Engineering
+# Created by David Larrea & Matt Wilson | support@kandji.io | Kandji, Inc.
 ###################################################################################################
-# Created - 08/26/2021
-# Updated - 10/23/2021
+# Created - 2021-08-26
+# Updated - 2022-02-23
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
 #
-#   12.0.1
-#   11.6.1
-#   11.6
-#   11.5.2
+#   12.2
+#   11.6.2
 #
 ###################################################################################################
 # Software Information
@@ -27,7 +25,7 @@
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2021 Kandji, Inc.
+# Copyright 2022 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -47,7 +45,7 @@
 ###################################################################################################
 
 # Script version
-VERSION="2.1.1"
+VERSION="2.1.2"
 
 ###################################################################################################
 ###################################### VARIABLES ##################################################
@@ -154,11 +152,11 @@ else
 fi
 
 # Get the falcon PID
-falcon_process_id="None"
+falcon_process_id=""
 loop_counter=0
 
 # Loop until the falcon pid is found or we have checked the status 5 times
-while [[ "$falcon_process_id" == "None" ]] && [[ "$loop_counter" -lt 6 ]]; do
+while [[ "$falcon_process_id" == "" ]] && [[ "$loop_counter" -lt 6 ]]; do
 
     # Get the falcon PID
     falcon_process_id="$(/usr/bin/pgrep com.crowdstrike.falcon.Agent)"
