@@ -3,6 +3,7 @@
 # Created by Noah Anderson + Matt Wilson | se@kandji.io | Kandji, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 02/11/2022
+# Updated on 03/10/2022
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
@@ -120,7 +121,7 @@ EOF
 function privs_agent_load() {
 
     #Get logged in user info
-    console_user=$(/usr/sbin/scutil <<<"show State:/Users/ConsoleUser" | /usr/bin/awk '/Name :/ && ! /loginwindow/ { print $3 }')
+    console_user=$(/usr/bin/stat -f%Su /dev/console)
     uid=$(/usr/bin/id -u "${console_user}")
 
     # Only enable the LaunchAgent if there is a user logged in, otherwise rely on built in LaunchAgent behavior
@@ -207,9 +208,13 @@ function privs_execute_deploy() {
 #           - Improved method for deriving current user
 #           - Improved logging
 #           - Improved security for agent and script
+#       - (1.0.5)
+#           - Rearchitected method of determining/enforcing rights timeout
+#           - Modified method of deriving logged-in user
+#           - Added version validation to audit script
 
 
-version=1.0.4
+version=1.0.5
 
 ###################################################################################################
 ################################ VARIABLES ########################################################
@@ -285,7 +290,7 @@ privileges_cli="/Applications/Privileges.app/Contents/Resources/PrivilegesCLI"
 
 function get_current_user() {
     # Returns the current user
-    /usr/sbin/scutil <<< "show State:/Users/ConsoleUser" | /usr/bin/awk '/Name :/ && ! /loginwindow/ { print $3 }'
+    /usr/bin/stat -f%Su /dev/console
 }
 
 ########################################################
@@ -342,7 +347,7 @@ function current_privileges() {
     #
     # $1: current logged in user
 
-    admin_check=$("${privileges_cli}" --status 2>&1 | awk "/${1}/ && /admin/")
+    admin_check=$("${privileges_cli}" --status 2>&1 | /usr/bin/awk "/${1}/ && /admin/")
 
     if [[ "${admin_check}" ]]; then
         # User is in the admin group
@@ -354,6 +359,63 @@ function current_privileges() {
     /usr/bin/printf "%s\n" "${permissions}"
 }
 
+##############################################
+## Creates hidden file .timeout in /var/tmp
+## with value of current epoch timestamp
+## If .timeout already exists, checks value
+## If diff between recorded value and now is
+## greater than set timeout, revokes rights
+## Globals:
+##   LOGGING
+## Arguments:
+##   Takes one arg, ${1}, timeout in minutes 
+## Outputs:
+##   Writes .timeout_${SHORTNAME} to /var/tmp
+## Returns:
+##   0 if THING was deleted, non-zero on error.
+###############################################
+function timeout_check_revoke() {
+
+    timeout_path="/var/tmp/.timeout_${current_user}"
+    now=$(/bin/date +%s)
+    # Check if .timeout hidden file exists
+    if [[ ! -f "${timeout_path}" ]]; then
+        LOGGING "No on-disk timeout found"
+        LOGGING "Recording when rights were detected for console user ..."
+
+        # If not, create it with current epoch timestamp
+        /bin/echo "${now}" > "${timeout_path}"
+    else
+        # Read in our epoch timestamp
+        previously=$(/bin/cat "${timeout_path}")
+        # Check the delta between then and now in seconds
+        diff_in_seconds=$(/bin/expr "${now}" - "${previously}")
+        # Convert into minutes for our compare
+        diff_in_minutes=$(/bin/expr "${diff_in_seconds}" / 60)
+
+        if [[ "${diff_in_minutes}" -ge "${1}" ]]; then
+            LOGGING "Rights have been granted for ${diff_in_minutes} minutes"
+            LOGGING "This is greater than/equal to set rights timeout of ${1} minutes"
+
+            # Remove the user from the admin group
+            LOGGING "Removing ${current_user} from the admin group ..."
+
+            # Remove the current user's privileges
+            "${privileges_cli}" --remove
+
+            privilege_status=$(current_privileges ${current_user})
+
+            LOGGING "The current user has ${privilege_status} rights"
+            LOGGING "Deleting historical record of when rights were detected ..."
+
+            #Delete our timeout dotfile
+            /bin/rm "${timeout_path}"
+        else
+            minutes_remaining=$(/bin/expr "${1}" - "${diff_in_minutes}")
+            LOGGING "Rights will be revoked in ${minutes_remaining} minute(s)..."
+        fi
+    fi
+}
 ###################################################################################################
 #################### MAIN LOGIC - DO NOT MODIFY ###################################################
 ###################################################################################################
@@ -388,21 +450,14 @@ function main() {
         LOGGING "The current user has ${privilege_status} rights"
 
         if [[ "${privilege_status}" = "admin" ]]; then
-            # Amount of time defined by the MINUTES_TO_WAIT * 60 variable
-            LOGGING "Sleeping for ${MINUTES_TO_WAIT} minute(s) before removing privileges ..."
-            /bin/sleep $(($MINUTES_TO_WAIT * 60))
-
-            # Remove the user from the admin group
-            LOGGING "Removing ${current_user} from the admin group ..."
-
-            # Remove the current user's privileges
-            "${privileges_cli}" --remove
-
-            privilege_status=$(current_privileges ${current_user})
-            LOGGING "The current user has ${privilege_status} rights"
-
+            # Confirm when rights were detected and revoke them if past due
+            timeout_check_revoke "${MINUTES_TO_WAIT}" 
         else
             LOGGING "${current_user} is already a standard user ..."
+            # If user revoked their own rights, clean up our timeout dot file if present
+            if [[ -f "/var/tmp/.timeout_${current_user}" ]]; then
+                /bin/rm "/var/tmp/.timeout_${current_user}"
+            fi
         fi
 
     else

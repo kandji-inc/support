@@ -76,3 +76,7 @@ This code is designed for use as an add-on to the [SAP Privileges](https://githu
    - Improved method for deriving current user
    - Improved logging
    - Improved security for agent and script
+- (1.0.5)
+   - Rearchitected method of determining/enforcing rights timeout
+   - Modified method of deriving logged-in user
+   - Added version validation to audit script

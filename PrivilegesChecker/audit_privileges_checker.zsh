@@ -3,6 +3,7 @@
 # Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 02/11/2022
+# Updated on 03/10/2022
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
@@ -15,11 +16,11 @@
 # Software Information
 ###################################################################################################
 # 
-# Audit script for Privileges Checker add-on. Conducts seven checks to validate the fidelity of the 
+# Audit script for Privileges Checker add-on. Conducts eight checks to validate the fidelity of the 
 # Launch Agent and enforcement script:
 # - Execution script exists (1), has proper permissions (2), and has system immutable flag set (3)
 # - Launch Agent exists (4), has proper permissions (5), and has system immutable flag set (6)
-# - Launch Agent is alive and returns arguments of execution script (7)
+# - Agent is alive and returns args of script (7), audit/remediation script versions match (8)
 # If any of the above fail, return exit 1 to trigger reinstallation of Privileges Checker.
 #
 ###################################################################################################
@@ -48,6 +49,12 @@
 ########################################## DO NOT MODIFY ##########################################
 ###################################################################################################
 
+# zsh has a built-in operator that can actually do float compares; just gotta load it
+autoload is-at-least
+
+# Version for both audit + remediation scripts 
+version=1.0.5
+
 ############################
 ##########FUNCTIONS#########
 ############################
@@ -62,6 +69,22 @@
 function LOGGING {
     /bin/echo "${1}"
     /usr/bin/logger "Privileges Checker Audit: ${1}"
+}
+
+##############################################
+## Validates that ${2} is greater than or equal
+## to ${1}; used for version validation of
+## this audit script and execution code
+## Arguments:
+##   Takes two args "${1}", "${2}", both floats
+## Returns:
+##   0 if version is compliant, 1 if not 
+###############################################
+function vers_check() {
+    # is-at-least is a zsh built-in for float math
+    # returns exit 0 for true, exit 1 for false
+    is-at-least "${1}" "${2}" 
+    /bin/echo $?
 }
 
 ############################
@@ -80,8 +103,13 @@ script_permissions=$(/usr/bin/stat -f %A "${script_path}")
 agent_immutable=$(/bin/ls -lO "${agent_path}" | /usr/bin/awk '{print $5}')
 script_immutable=$(/bin/ls -lO "${script_path}" | /usr/bin/awk '{print $5}')
 
+#Get execution script version
+script_version=$(/bin/cat "${script_path}" 2>/dev/null | /usr/bin/grep "version=" | /usr/bin/cut -d '=' -f2)
+#Compare current version against on-disk version; capture exit code for success/failure
+version_validation=$(vers_check "${version}" "${script_version}")
+
 #Validate console user
-console_user=$(/usr/sbin/scutil <<< "show State:/Users/ConsoleUser" | /usr/bin/awk '/Name :/ && ! /loginwindow/ { print $3 }')
+console_user=$(/usr/bin/stat -f%Su /dev/console)
 #If no user logged in, we can throw away stderr
 uid=$(/usr/bin/id -u "${console_user}" 2>/dev/null)
 
@@ -97,8 +125,8 @@ fi
 #####BODY####
 #############
 
-# These seven checks should be sufficient for an audit + enforce of reinstallation
-if [[ -f "${agent_path}" && -f "${script_path}" && -n "${agent_args}" && "${agent_permissions}" -eq 644 && "${script_permissions}" -eq 444 && "${agent_immutable}" == "schg" && "${script_immutable}" == "schg" ]]; then
+# These eight checks will validate audit + enforcement of script/agent health, as well as validating the latest version is installed
+if [[ -f "${agent_path}" && -f "${script_path}" && -n "${agent_args}" && "${agent_permissions}" -eq 644 && "${script_permissions}" -eq 444 && "${agent_immutable}" == "schg" && "${script_immutable}" == "schg" && "${version_validation}" -eq 0 ]]; then
     LOGGING "All checks pass"
     exit 0
 else
@@ -110,5 +138,6 @@ else
     LOGGING "Script Permissions: ${script_permissions} (expected 444)"
     LOGGING "Script Immutable: ${script_immutable} (expected schg)"
     LOGGING "Agent Arguments: ${agent_args} (expected /path/to/privilegeschecker.zsh)"
+    LOGGING "On-disk version: ${script_version} (expected ${version})"
     exit 1
 fi
