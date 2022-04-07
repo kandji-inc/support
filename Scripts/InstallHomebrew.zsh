@@ -6,6 +6,7 @@
 #
 #   Created on 08/10/2020
 #   Updated on 03/09/2022 - Matt Wilson
+#   Updated on 04/10/2022 - Glen Arrowsmith
 #
 ###################################################################################################
 # Tested macOS Versions
@@ -83,10 +84,13 @@
 #   1.4.1
 #       - Minor refactor and bug squashing
 #
+#   1.4.2
+#       - Fixed bug where tee command was emptying log files
+#
 ###################################################################################################
 
 # Script version
-VERSION="1.4.1"
+VERSION="1.4.2"
 
 ###################################################################################################
 ###################################### VARIABLES ##################################################
@@ -152,7 +156,7 @@ check_brew_install_status() {
         logging "info" "Homebrew already installed at $brew_path ..."
 
         logging "info" "Updating homebrew ..."
-        /usr/bin/su - "$current_user" -c "$brew_path update --force" | /usr/bin/tee "$LOG_PATH"
+        /usr/bin/su - "$current_user" -c "$brew_path update --force" | /usr/bin/tee -a "$LOG_PATH"
 
         logging "info" "Done ..."
         exit 0
@@ -252,7 +256,7 @@ xcode_cli_tools() {
         logging "info" "Installing the latest Xcode CLI tools ..."
 
         # Sending this output to the local homebrew_install.log as well as stdout
-        /usr/sbin/softwareupdate -i "${cmd_line_tools}" --verbose | /usr/bin/tee "/Library/Logs/homebrew_install.log"
+        /usr/sbin/softwareupdate -i "${cmd_line_tools}" --verbose | /usr/bin/tee -a "/Library/Logs/homebrew_install.log"
 
         # cleanup the temp file
         logging "info" "Cleaning up $xclt_tmp ..."
@@ -335,7 +339,7 @@ brew_doctor() {
     # $1: brew_prefix
     # $2: current_user
 
-    /usr/bin/su - "$2" -c "$1/bin/brew doctor" 2>&1 | /usr/bin/tee "$LOG_PATH"
+    /usr/bin/su - "$2" -c "$1/bin/brew doctor" 2>&1 | /usr/bin/tee -a "$LOG_PATH"
 
     if [[ $? -ne 0 ]]; then
         logging "error" "brew doctor has errors. Review logs to see if action needs to be taken ..."
@@ -401,7 +405,7 @@ logging "info" "Downloading homebrew ..."
 
 # Using curl to download the latest release of homebrew tarball and put it in brew_prefix/Homebew
 # If brew updates to master to main, the url will need to be adjusted.
-/usr/bin/curl --fail --silent --show-error --location --url "https://github.com/Homebrew/brew/tarball/master" | /usr/bin/tar xz --strip 1 -C "$brew_prefix/Homebrew" | /usr/bin/tee "$LOG_PATH"
+/usr/bin/curl --fail --silent --show-error --location --url "https://github.com/Homebrew/brew/tarball/master" | /usr/bin/tar xz --strip 1 -C "$brew_prefix/Homebrew" | /usr/bin/tee -a "$LOG_PATH"
 
 # checking to see if brew was downloaded successfully
 if [[ -f "$brew_prefix/Homebrew/bin/brew" ]]; then
@@ -417,10 +421,10 @@ else
 fi
 
 logging "info" "Running brew update --force ..."
-/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew update --force" 2>&1 | /usr/bin/tee "$LOG_PATH"
+/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew update --force" 2>&1 | /usr/bin/tee -a "$LOG_PATH"
 
 logging "info" "Running brew cleanup ..."
-/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew cleanup" 2>&1 | /usr/bin/tee "$LOG_PATH"
+/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew cleanup" 2>&1 | /usr/bin/tee -a "$LOG_PATH"
 
 # Check for missing PATH
 get_path_cmd=$(/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew doctor 2>&1 | /usr/bin/grep 'export PATH=' | /usr/bin/tail -1")
