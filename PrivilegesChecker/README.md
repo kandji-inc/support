@@ -43,6 +43,8 @@ This code is designed for use as an add-on to the [SAP Privileges](https://githu
         - Copy and paste `audit_privileges_checker.zsh` from this repo into the audit script field
         - Copy and paste `install_privileges_checker.zsh` from this repo into the remediation script field 
         - Scope your script, set execution frequency (recommended is **every 15 minutes** or **daily**), and hit save
+        - **NOTE:** If setting `MINUTES_TO_WAIT` to a new value, ensure you update the value in *both* the audit and remediation scripts
+        - **NOTE:** If setting `USERS_TO_EXCLUDE` to a new value, ensure you update the value in *both* the audit and remediation scripts
     - **For audit only**:
         - Add a new library item and select custom script
         - Copy and paste `install_privileges_checker.zsh` from this repo into the audit script field 
@@ -51,6 +53,7 @@ This code is designed for use as an add-on to the [SAP Privileges](https://githu
 - The Launch Agent will immediately activate if a user is logged in, otherwise trigger at next login
     - Launch Agent runs every 30 seconds and will revoke rights after the timeout set via Config Profile or in the local script
     - **WARNING:** Since this immediately activates, it *will* revoke rights for the console user after set timeout has expired
+    - To specify users to exclude from rights revocation, populate shortname values in `USERS_TO_EXCLUDE`
 
 ## TROUBLESHOOTING
 
@@ -80,3 +83,8 @@ This code is designed for use as an add-on to the [SAP Privileges](https://githu
    - Rearchitected method of determining/enforcing rights timeout
    - Modified method of deriving logged-in user
    - Added version validation to audit script
+- (1.0.6)
+   - Added script timeout validation to audit script
+   - Added script profile setting validation to audit script
+   - Added support for excluding users defined by shortname from rights revocation 
+   - Added script user exclusion validation to audit script

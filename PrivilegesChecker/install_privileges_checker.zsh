@@ -4,6 +4,7 @@
 ###################################################################################################
 # Created on 02/11/2022
 # Updated on 03/10/2022
+# Updated on 04/07/2022
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
@@ -51,6 +52,7 @@
 
 # Set to a positive integer (default 20 minutes)
 # A value of 0 disables the timeout and allows the user to permanently toggle privileges
+# NOTE: If updating this value with an audit/remediate workflow, update line 59 in the audit script
 MINUTES_TO_WAIT=20
 
 # Set to either True or False (default True)
@@ -58,7 +60,20 @@ MINUTES_TO_WAIT=20
 # (see link below for an example profile)
 # https://github.com/SAP/macOS-enterprise-privileges/blob/main/application_management/example_profiles/DockToggleTimeout/Example_DockToggleTimeout.mobileconfig
 # Overrides local value set above if valid int, otherwise value set above acts as fallback
+# NOTE: If updating this value with an audit/remediate workflow, update line 65 in the audit script
 USE_PROFILE_TIMEOUT=True
+
+# Populate user(s) to exclude from rights revocation by shortname
+# User shortnames should be enclosed in double quotes (e.g. "admin")
+# To confirm the shortname to specify below, run "whoami" without quotes in Terminal
+# This should be done while logged in as the account you wish to exclude and run without sudo
+# You may add unlimited quote-enclosed shortnames below; delete any unused ""
+# NOTE: If updating this value with an audit/remediate workflow, update line 71 in the audit script
+USERS_TO_EXCLUDE=(
+""
+""
+""
+)
 
 ###################################################################################################
 ########################################## DO NOT MODIFY ##########################################
@@ -212,9 +227,14 @@ function privs_execute_deploy() {
 #           - Rearchitected method of determining/enforcing rights timeout
 #           - Modified method of deriving logged-in user
 #           - Added version validation to audit script
+#       - (1.0.6)
+#           - Added script timeout validation to audit script
+#           - Added script profile setting validation to audit script
+#           - Added support for excluding users defined by shortname from rights revocation 
+#           - Added script user exclusion validation to audit script
 
 
-version=1.0.5
+version=1.0.6
 
 ###################################################################################################
 ################################ VARIABLES ########################################################
@@ -228,6 +248,11 @@ MINUTES_TO_WAIT=${MINUTES_TO_WAIT}
 
 # Set T/F value on enforcing timeout in minutes from DockToggleTimeout key
 USE_PROFILE_TIMEOUT="${USE_PROFILE_TIMEOUT}"
+
+# Populated user(s) to exclude from rights revocation by shortname
+# User shortnames should be enclosed in double quotes (e.g. "admin")
+# Populates as an array
+USERS_TO_EXCLUDE=(${USERS_TO_EXCLUDE})
 
 EOF
 
@@ -433,6 +458,15 @@ function main() {
 
     # Get the current console user and validate UID
     current_user=$(get_current_user)
+
+    #Check exact match if the current user is on our exclusion list
+    for UTE in ${USERS_TO_EXCLUDE[@]}; do
+        if [[ $(/usr/bin/printf "${UTE}" | /usr/bin/grep -wi "${current_user}") ]]; then
+            LOGGING "User ${current_user} is excluded from rights revocation"
+            exit 0
+        fi
+    done
+
     validate_uid
 
     LOGGING "--- Start privilegeschecker log ---"
