@@ -1,27 +1,40 @@
 #!/usr/bin/env python3
 
-"""update_device_record.py
-Update device inventory information with a csv input file and the Kandji API.
-"""
+"""Update device inventory information using a csv input file and the Kandji API."""
 
 ###################################################################################################
-# Created by Matt Wilson | Senior Solutions Engineer | Kandji, Inc | Solutions | se@kandji.io
+# Created by Matt Wilson | Kandji, Inc | support@kandji.io
 ###################################################################################################
 #
-# Created:  06/03/2021
-# Modified: 08/18/2021
+#   Created:  2021-06-03
+#   Modified: 2021-08-18 - Matt Wilson
+#   Modified: 2022-04-13 - Matt Wilson
+#
+###################################################################################################
+# Tested macOS Versions
+###################################################################################################
+#
+#   - 12.3.1
+#   - 11.6.5
+#   - 10.15.7
 #
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# This python3 script leverages the Kandji API along with a CSV input file to update one or more
-# device inventory records.
+#   This python3 script leverages the Kandji API along using a CSV input file to update one or more
+#   device inventory records.
+#
+#   The following items can be updated:
+#
+#       - blueprint assignment
+#       - asset tag
+#       - user assignment
 #
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2021 Kandji, Inc.
+# Copyright 2022 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 # and associated documentation files (the "Software"), to deal in the Software without
@@ -41,7 +54,7 @@ Update device inventory information with a csv input file and the Kandji API.
 #
 ###################################################################################################
 
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 
 
 # Standard library
@@ -93,8 +106,7 @@ HERE = pathlib.Path("__file__").parent
 
 
 def program_arguments():
-    """Return arguments"""
-
+    """Return arguments."""
     parser = argparse.ArgumentParser(
         prog="kandji_update_device_record",
         description=(
@@ -121,7 +133,7 @@ def program_arguments():
 
 
 def load_input_file(input_file):
-    """Load the CSV file for processing"""
+    """Load the CSV file for processing."""
     data = []
     with open(input_file, mode="r", encoding="utf-8-sig") as csv_file:
         reader = csv.DictReader(csv_file)
@@ -131,8 +143,7 @@ def load_input_file(input_file):
 
 
 def remove_duplicates(data, search_key):
-    """Parse the input file received and only return unique entries back as a list based on the
-    search_key provided.
+    """Remove duplicate entries.
 
     Args:
         data: JSON data returned from input file.
@@ -158,93 +169,145 @@ def remove_duplicates(data, search_key):
     return unique_records
 
 
-def get_all_devices():
-    """Retrive all device inventory records from Kandji"""
+def error_handling(resp, err_msg):
+    """Handle the HTTP errors."""
+    if resp == requests.codes["too_many_requests"]:
+        print("You have reached the rate limit ...")
+        print("Try again later ...")
+        sys.exit(f"\t{err_msg}")
 
-    # The API endpont to target
-    endpoint = "devices/?limit=10000"
+    if resp == requests.codes["not_found"]:
+        print("We cannot find the one that you are looking for ...")
+        print("Move along ...")
+        sys.exit(f"\t{err_msg}")
 
-    # Initiate var that will be returned
+    if resp == requests.codes["unauthorized"]:
+        # if HTTPS 401
+        print("Check to make sure that the API token has the required permissions.")
+        sys.exit(f"\t{err_msg}")
+
+
+def kandji_api(method, endpoint, params=None, payload=None):
+    """Make an API request and return data.
+
+    Returns a JSON data object
+    """
     data = None
-
-    try:
-        # Make the api call to Kandji
-        response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=30)
-
-        # Store the HTTP status code
-        response_code = response.status_code
-
-        if response_code == requests.codes["ok"]:
-            # HTTP Code 200 (successfull)
-            data = response.json()
-        else:
-            # An error occurred so we need to report it
-            response.raise_for_status()
-
-    except requests.exceptions.RequestException as error:
-        sys.exit(error)
-
-    return data
-
-
-def generate_device_update_payload(input_record):
-    """Dynamically build the device update payload
-
-    This function looks at the device record information passed from the input file and looks to
-    see which keys are populated. The JSON payload does not include empty keys."""
-
-    payload = {}
-
-    for key, value in input_record.items():
-        # Here we are verifying that the value in the device record is not empty and that it is
-        # not the serial_number. We want to check for empty values because the blueprint_id, user,
-        # and asset_tag keys cannot be empty in the in the json payload sent to Kandji. If these
-        # keys are sent as empty or NULL Kandji will return an error.
-        if value != "" and key not in ["serial_number", "blueprint_name", "username"]:
-            payload.update([(key, value)])
-
-    return json.dumps(payload)
-
-
-def update_device_inventory_record(payload, device_id):
-    """Update information about a device, such as the assigned blueprint, user, and Asset Tag."""
 
     attempt = 0
     response_code = None
 
-    while response_code is not requests.codes["ok"] and attempt < 6:
+    while attempt < 6:
 
         try:
-            response = requests.patch(
-                BASE_URL + f"devices/{device_id}/",
-                headers=HEADERS,
+            # Make the api call to Kandji
+            response = requests.request(
+                method,
+                BASE_URL + endpoint,
+                params=params,
                 data=payload,
+                headers=HEADERS,
                 timeout=30,
             )
 
             # Store the HTTP status code
             response_code = response.status_code
 
-            if response_code is requests.codes["ok"]:
+            # print(response.url)
+
+            if response_code == requests.codes["ok"]:
                 # HTTP Code 200 (successfull)
-                print("Device record updated ...")
 
-            else:
-                # An error occured that we need to report
-                response.raise_for_status()
+                if method == "PATCH":
+                    print("Record updated!")
 
-        except requests.exceptions.RequestException as error:
-            print(f"Error: {error}")
+                data = response.json()
+                break
+
+            if response_code == requests.codes["created"]:
+                # HTTP Code 201 (successfull)
+                data = response.json()
+                break
+
+            if response_code == requests.codes["accepted"]:
+                # HTTP Code 202 (successfull)
+                data = response.json()
+                break
+
+            if response_code == requests.codes["no_content"]:
+                # HTTP Code 204 (successfull)
+                data = response.json()
+                break
+
+            # An error occurred so we need to report it
+            response.raise_for_status()
+
+        except requests.exceptions.RequestException as err:
             attempt += 1
+
+            error_handling(resp=response_code, err_msg=err)
+
             if attempt == 5:
-                print("Failed to update device ...")
+                print(err)
+                print("Made 5 attempts ...")
+                print("Exiting ...")
+
+    return data
+
+
+def create_record_update_payload(input_record):
+    """Dynamically build the device update payload.
+
+    This function looks at the device record information passed from the input file and looks to
+    see which keys are populated. The JSON payload does not include empty keys.
+    """
+    payload = {}
+
+    for key, value in input_record.items():
+
+        # Here we are checking to see if we need to lookup the blueprint id in Kandji based on the
+        # name provided in the input file.
+        if key == "blueprint_name" and value != "":
+
+            print(f"Looking for \"{input_record['blueprint_name']}\" blueprint ...")
+
+            # API call to return blueprint records containing the provided name.
+            blueprint_record = kandji_api(
+                method="GET",
+                endpoint="blueprints",
+                params={"name": f"{input_record['blueprint_name']}"},
+            )
+
+            # Loop over the key value pairs returned in the result
+            for record in blueprint_record["results"]:
+
+                # ensure that the name returned matches the name we are looking for exactly.
+                if input_record["blueprint_name"] == record["name"]:
+
+                    # print("")
+                    # print(blueprint_record)
+
+                    # update the payload with the found blueprint id
+                    payload.update([("blueprint_id", record["id"])])
+
+            # sys.exit()
+
+        # Here we are verifying that the value in the device record is not empty and that it is
+        # not the serial_number. We want to check for empty values because the user, and asset_tag
+        # keys cannot be empty in the in json payload sent to Kandji. If these keys are sent as
+        # empty or NULL Kandji will return an error.
+        if value != "" and key not in ["blueprint_name", "serial_number", "username"]:
+            payload.update([(key, value)])
+
+    return json.dumps(payload)
 
 
 def main():
-    """Run main logic"""
-
+    """Run main logic."""
     # Return the arguments
     arguments = program_arguments()
+
+    print("")
 
     # Validate program arguments
 
@@ -253,50 +316,56 @@ def main():
         # If unable to do so let the user know by presenting the error.
         try:
             input_file_data = load_input_file(arguments.input_file)
-            print(f"Found: {pathlib.Path(arguments.input_file)}")
+            print(f"Found input file: {pathlib.Path(arguments.input_file)}")
 
             # Make sure that any duplicate serial numbers are removed from the list of device
             # records that need to be updated.
             input_file_data = remove_duplicates(input_file_data, "serial_number")
 
-        except FileNotFoundError as error:
+        except FileNotFoundError as err:
             print(f"There was an issue loading {arguments.input_file} ...")
-            print(
-                "Make sure that the file exists at the sprecified path before trying again ..."
-            )
-            sys.exit(error)
+            print("Make sure that the file exists at the sprecified path before trying again ...")
+            sys.exit(err)
 
     #  Main logic starts here
 
     print("\nRunning Kandji Device Record Update ...")
     print(f"Version: {__version__}\n")
-    print(f"Base URL: {BASE_URL}\n")
-
-    # Get all device inventory records
-    print("Getting all device records from Kandji ...")
-    kandji_device_inventory = get_all_devices()
-
-    print(f"Total device records: {len(kandji_device_inventory)}")
+    print(f"Base URL: {BASE_URL}")
 
     for device in input_file_data:
 
+        print("")
         print(f"Looking for {device['serial_number']} ...")
 
-        for record in kandji_device_inventory:
+        # device record returned from kandji
+        device_record = kandji_api(
+            method="GET",
+            endpoint="devices",
+            params={"serial_number": f"{device['serial_number']}"},
+        )
 
-            if device["serial_number"].upper() == record["serial_number"].upper():
-                print(f"Attempting to update record for {device['serial_number']} ...")
+        # print(device_record)
+
+        for attribute in device_record:
+
+            if device["serial_number"].upper() == attribute["serial_number"].upper():
+
+                print("Building request payload ...")
 
                 # Build the payload
-                payload = generate_device_update_payload(input_record=device)
+                payload = create_record_update_payload(input_record=device)
 
-                print(f"Created JSON Payload: {payload} ...")
+                print(f"Request payload: {payload}")
+                print("Attempting to update device record...")
 
-                # Call the Kandji API to update the device inventory records found in the input
-                # file
-                update_device_inventory_record(payload, record["device_id"])
-
-                break
+                # Update the device inventory records found in the input
+                kandji_api(
+                    method="PATCH",
+                    endpoint=f"devices/{attribute['device_id']}",
+                    params=None,
+                    payload=payload,
+                )
 
     print()
 

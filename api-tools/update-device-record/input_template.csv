@@ -1,4 +1,5 @@
-serial_number,blueprint_name,blueprint_id,asset_tag,username,user
-C02YD0DCCI99, (for reference only. Not used in script at this time),577ab7fb-xxxx-xxxx-xxxx-23a14a862d89,345678, (for reference only. Not used in script at this time),3
-C02FL5YXQ6LC, (for reference only. Not used in script at this time),e066b81d-5e49-4f04-a24e-b9b302e16f7e,555555, (for reference only. Not used in script at this time),
-C02YD0DJCI95, (for reference only. Not used in script at this time),,444444, (for reference only. Not used in script at this time),34
+serial_number,blueprint_name,asset_tag,username,user
+C02J7929G1HW,_testing_blueprint,345678, (for reference only. Not used in script at this time),7
+C02FL5YXQ6LC,_testing_apple_silicon,, (for reference only. Not used in script at this time),
+C02J202CG1HW,,444444, (for reference only. Not used in script at this time),
+VM8gRmR1qqab,_testing,555555, (for reference only. Not used in script at this time),9
