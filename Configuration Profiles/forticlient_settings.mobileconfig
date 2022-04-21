@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>FilterDataProviderBundleIdentifier</key>
+			<string>com.fortinet.forticlient.macos</string>
+			<key>FilterDataProviderDesignatedRequirement</key>
+			<string>anchor apple generic and identifier "com.fortinet.forticlient.macos" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK)</string>
+			<key>FilterGrade</key>
+			<string>inspector</string>
+			<key>FilterPacketProviderBundleIdentifier</key>
+			<string>com.fortinet.forticlient.macos</string>
+			<key>FilterPacketProviderDesignatedRequirement</key>
+			<string>anchor apple generic and identifier "com.fortinet.forticlient.macos" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK)</string>
+			<key>FilterPackets</key>
+			<true/>
+			<key>FilterSockets</key>
+			<true/>
+			<key>FilterType</key>
+			<string>Plugin</string>
+			<key>PayloadDisplayName</key>
+			<string>Web Content Filter Payload</string>
+			<key>PayloadIdentifier</key>
+			<string>io.kandji.forticlient.E23F522E-D2FF-49CE-8C9C-F1B2DB821C65</string>
+			<key>PayloadOrganization</key>
+			<string>Kandji.io, Inc.</string>
+			<key>PayloadType</key>
+			<string>com.apple.webcontent-filter</string>
+			<key>PayloadUUID</key>
+			<string>io.kandji.forticlient.E23F522E-D2FF-49CE-8C9C-F1B2DB821C65</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>PluginBundleID</key>
+			<string>com.fortinet.forticlient.macos</string>
+			<key>UserDefinedName</key>
+			<string>com.fortinet.forticlient.macos.webfilter</string>
+		</dict>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>Privacy Settings</string>
+			<key>PayloadDisplayName</key>
+			<string>PPPC Settings</string>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.TCC.configuration-profile-policy.ACD1AED1-1CDD-4F46-9D88-A12E9B205D8A</string>
+			<key>PayloadOrganization</key>
+			<string>STR</string>
+			<key>PayloadType</key>
+			<string>com.apple.TCC.configuration-profile-policy</string>
+			<key>PayloadUUID</key>
+			<string>ACD1AED1-1CDD-4F46-9D88-A12E9B205D8A</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Services</key>
+			<dict>
+				<key>SystemPolicyAllFiles</key>
+				<array>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier fcaptmon and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>/Library/Application Support/Fortinet/FortiClient/bin/fcaptmon</string>
+						<key>IdentifierType</key>
+						<string>path</string>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier fctservctl and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>/Library/Application Support/Fortinet/FortiClient/bin/fctservctl</string>
+						<key>IdentifierType</key>
+						<string>path</string>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<integer>1</integer>
+						<key>CodeRequirement</key>
+						<string>identifier fctservctl2 and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Identifier</key>
+						<string>/Library/Application Support/Fortinet/FortiClient/bin/fctservctl2</string>
+						<key>IdentifierType</key>
+						<string>path</string>
+						<key>StaticCode</key>
+						<integer>0</integer>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier fmon and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>/Library/Application Support/Fortinet/FortiClient/bin/fmon</string>
+						<key>IdentifierType</key>
+						<string>path</string>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>anchor apple generic and identifier "com.fortinet.forticlient.macos.antivirus" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK)</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.fortinet.forticlient.macos.antivirus</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.fortinet.FortiClient" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.fortinet.FortiClient</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.fortinet.FortiClientAgent" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = AH4XFXJ7DK</string>
+						<key>Comment</key>
+						<string></string>
+						<key>Identifier</key>
+						<string>com.fortinet.FortiClientAgent</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>AllowUserOverrides</key>
+			<true/>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>AH4XFXJ7DK</key>
+				<array>
+					<string>com.fortinet.forticlient.macos.vpn.nwextension</string>
+					<string>com.fortinet.forticlient.macos.webfilter</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string></string>
+			<key>PayloadDisplayName</key>
+			<string>System Extensions</string>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.system-extension-policy.049B3D2C-79DB-4C61-8414-B0243FF05C22</string>
+			<key>PayloadOrganization</key>
+			<string>Systems &amp; Technology Research LLC</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>049B3D2C-79DB-4C61-8414-B0243FF05C22</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>NotificationSettings</key>
+			<array>
+				<dict>
+					<key>AlertType</key>
+					<integer>1</integer>
+					<key>BundleIdentifier</key>
+					<string>com.fortinet.FortiClientAgent</string>
+					<key>NotificationsEnabled</key>
+					<true/>
+				</dict>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Notifications Payload</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.notificationsettings.45D19457-08AC-4C14-A1BB-75AF40274615</string>
+			<key>PayloadOrganization</key>
+			<string>Kandji.io, Inc.</string>
+			<key>PayloadType</key>
+			<string>com.apple.notificationsettings</string>
+			<key>PayloadUUID</key>
+			<string>45D19457-08AC-4C14-A1BB-75AF40274615</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>FortiClient Settings</string>
+	<key>PayloadDescription</key>
+	<string>Configures settings for Privacy, System Extension, Notifications, and Web Content Filter</string>
+	<key>PayloadEnabled</key>
+	<true/>
+	<key>PayloadIdentifier</key>
+	<string>962a9590-1fbb-11ec-9621-0242ac130002</string>
+	<key>PayloadRemovalDisallowed</key>
+	<true/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>6C663B68-5064-493A-BE2F-1C7296817D18</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
