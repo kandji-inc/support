@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadDisplayName</key>
+      <string>Enable Private Data Logging for Unified Logging</string>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>PayloadIdentifier</key>
+      <string>2BFB8109-8829-4020-AEB7-BA21761AE50C</string>
+      <key>PayloadType</key>
+      <string>com.apple.system.logging</string>
+      <key>PayloadUUID</key>
+      <string>F4B204F7-AA5C-4904-8F0F-E7149501F6023</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+	  <key>System</key>
+	  <dict>
+	  	<key>Enable-Private-Data</key>
+	  	<true/>
+	  </dict>
+    </dict>
+  </array>
+  <key>PayloadDescription</key>
+  <string>Enable Private Data Logging for Unified Logging</string>
+  <key>PayloadDisplayName</key>
+  <string>Enable Private Data Logging for Unified Logging</string>
+  <key>PayloadIdentifier</key>
+  <string>25B5F357-988A-4BE8-BF2D-684287B1FBA2</string>
+  <key>PayloadScope</key>
+  <string>System</string>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>298372EA-B0B7-4C11-94D7-DA99220A6F07</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+  <key>ConsentText</key>
+  <dict>
+  	<key>default</key>
+  	<string>Warning: Installing this profile will enable private data logging for all of unified logging.</string>
+  </dict>
+</dict>
+</plist>

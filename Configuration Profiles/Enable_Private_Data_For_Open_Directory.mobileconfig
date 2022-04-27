@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PayloadContent</key>
+  <array>
+    <dict>
+      <key>PayloadDisplayName</key>
+      <string>Enable Private Data Logging for OD</string>
+      <key>PayloadEnabled</key>
+      <true/>
+      <key>PayloadIdentifier</key>
+      <string>CC67FBDF-C444-4134-9DB4-71FE18B1C182</string>
+      <key>PayloadType</key>
+      <string>com.apple.system.logging</string>
+      <key>PayloadUUID</key>
+      <string>541C349A-D36B-4CBE-97A2-228448244B93</string>
+      <key>PayloadVersion</key>
+      <integer>1</integer>
+	  <key>Subsystems</key>
+		<dict>
+		    <key>com.apple.opendirectoryd</key>
+		    <dict>
+		        <key>DEFAULT-OPTIONS</key>
+		        <dict>
+		            <key>Enable-Private-Data</key>
+					<true/>
+		        </dict>
+		    </dict>
+		</dict>
+    </dict>
+  </array>
+  <key>PayloadDescription</key>
+  <string>Enable Private Data Logging for OD</string>
+  <key>PayloadDisplayName</key>
+  <string>Enable Private Data Logging for OD</string>
+  <key>PayloadIdentifier</key>
+  <string>6D0EF89F-E091-4EF8-B9E4-496FD44C4A44</string>
+  <key>PayloadScope</key>
+  <string>System</string>
+  <key>PayloadType</key>
+  <string>Configuration</string>
+  <key>PayloadUUID</key>
+  <string>FD4512C0-625B-4104-9E8F-ECB8531D889F</string>
+  <key>PayloadVersion</key>
+  <integer>1</integer>
+  <key>ConsentText</key>
+  <dict>
+  	<key>default</key>
+  	<string>Warning: Installing this profile will enable private data logging for Open Directory in unified logging.</string>
+  </dict>
+</dict>
+</plist>
