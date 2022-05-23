@@ -72,8 +72,7 @@ def prog_args():
         "--device-status",
         action="store_true",
         help=(
-            "Returns the full status (parameters and library items) for a specified "
-            "Device ID."
+            "Returns the full status (parameters and library items) for a specified " "Device ID."
         ),
         required=False,
     )
@@ -136,11 +135,7 @@ def main():
     if arguments.device_os:
         # Print device detailed information based on provided OS version
         for device_id in kandji_device_ids:
-            print(
-                kandjiapi.get_all_devices_os_version(
-                    BASE_URL, HEADERS, arguments.device_os
-                )
-            )
+            print(kandjiapi.get_all_devices_os_version(BASE_URL, HEADERS, arguments.device_os))
 
     if arguments.device_details:
         # Print device detailed information
@@ -154,9 +149,7 @@ def main():
         all_apps = app_names_versions(kandji_device_ids)
 
         # This header variable just makes formatting easier in the print statement
-        output_header = "{:<25s}{:^20s}{:^20s}".format(
-            "App Name", "App Version", "Installs"
-        )
+        output_header = "{:<25s}{:^20s}{:^20s}".format("App Name", "App Version", "Installs")
 
         # Formatting for the print statement
         print("All Installed Apps")

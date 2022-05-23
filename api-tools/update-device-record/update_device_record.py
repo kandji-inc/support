@@ -179,7 +179,6 @@ def error_handling(resp, err_msg):
     if resp == requests.codes["not_found"]:
         print("We cannot find the one that you are looking for ...")
         print("Move along ...")
-        sys.exit(f"\t{err_msg}")
 
     if resp == requests.codes["unauthorized"]:
         # if HTTPS 401

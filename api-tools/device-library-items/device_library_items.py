@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
 
-"""app_install_report.py.
-
-Return a report of all apps, app versions, number of installations, device name, and serial
-numbers where the, app is installed from a specified Kandji instance.
-"""
+"""Update device inventory information with a csv input file and the Kandji API."""
 
 ###################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | Senior Solutions Engineer | Kandji, Inc | Solutions | se@kandji.io
 ###################################################################################################
 #
-# Created:  2021.06.03
-# Modified: 2022.05.12
+###################################################################################################
+# Tested macOS Versions
+###################################################################################################
+#
+#   - 12.3.1
+#   - 11.6.5
+#   - 10.15.7
 #
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# This python3 script leverages the Kandji API to generate a CSV report containing a list of every
-# installed application recorded by the Kandji Web App. The information includes application name,
-# the application version, the device name, and the device serial numbers.
+# This script leverages the Kandji API to generate a CSV report containing information about a
+# given library item defined by the end-user or all library items scoped to devices. See the
+# README page for more information about how to use this script.
+#
+#   - API docs - https://api.kandji.io/#intro
 #
 ###################################################################################################
 # License Information
@@ -44,7 +47,7 @@ numbers where the, app is installed from a specified Kandji instance.
 #
 ###################################################################################################
 
-__version__ = "1.2.0"
+__version__ = "1.0.0"
 
 
 # Standard library
@@ -61,7 +64,7 @@ from datetime import datetime
 # install it.
 try:
     import requests
-except ImportError as import_error:
+except ImportError as input_error:
     sys.exit(
         "Looks like you need to install the requests module. Open a Terminal and run python3 -m "
         "pip install requests."
@@ -69,10 +72,10 @@ except ImportError as import_error:
 
 from requests.adapters import HTTPAdapter
 
+
 ###################################################################################################
 ######################### UPDATE VARIABLES BELOW ##################################################
 ###################################################################################################
-
 
 # Initialize some variables
 # Kandji API base URL
@@ -80,11 +83,11 @@ BASE_URL = "https://example.clients.us-1.kandji.io/api/v1/"
 # Kandji Bearer Token
 TOKEN = "your_api_key_here"
 
-
 ###################################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ###########################################
 ###################################################################################################
 
+SCRIPT_NAME = "Library items Report"
 TODAY = datetime.today().strftime("%Y%m%d")
 
 HEADERS = {
@@ -93,9 +96,6 @@ HEADERS = {
     "Content-Type": "application/json;charset=utf-8",
     "Cache-Control": "no-cache",
 }
-
-
-REPORT_NAME = f"app_install_report_{datetime.today().strftime('%Y%m%d')}.csv"
 
 # Current working directory
 HERE = pathlib.Path("__file__").parent
@@ -113,17 +113,56 @@ def program_arguments():
     )
 
     parser.add_argument(
-        "--name",
+        "--platform",
         type=str,
-        metavar='"Atom"',
-        help="Enter a specific app name. This will limit the search results to only"
-        " the specified app",
+        metavar='"Mac"',
+        help="Enter a specific device platform type. This will limit the search results to only"
+        " the specified platfrom. Examples: Mac, iPhone, iPad, AppleTV. Ether the --library-item"
+        " or --all-lit options must also be specified if the --platform is used.",
+        required=False,
+    )
+
+    parser.add_argument(
+        "--library-item",
+        type=str,
+        metavar='"Google Chrome"',
+        help="Enter the name of a specific Kandji library item. Cannot be used together with the"
+        " --all-lit option",
+        required=False,
+    )
+
+    parser.add_argument(
+        "--all-lit",
+        action="store_true",
+        help="Use this option to return all library items for all devices. Cannot be used "
+        "together with the --library-item option",
         required=False,
     )
 
     parser.version = __version__
     parser.add_argument("--version", action="version", help="Show this tool's version.")
     # parser.add_argument("-v", "--verbose", action="store", metavar="LEVEL")
+
+    # handle some errors
+    args = vars(parser.parse_args())
+    if not any(args.values()):
+        print()
+        parser.error("No command options given. Use the --help flag for more details\n")
+
+    args = parser.parse_args()
+
+    if args.platform:
+        if not (args.library_item or args.all_lit):
+            parser.error(
+                'If the --platform option is specified, either the --libary-item "<item_name>"'
+                " or --all-lit must also be specifiedß."
+            )
+
+    if args.library_item and args.all_lit:
+        print()
+        parser.error("The --library-item and --all-lit options cannot be used at the same time.")
+        print()
+        sys.exit(1)
 
     return parser.parse_args()
 
@@ -193,63 +232,41 @@ def kandji_api(method, endpoint, params=None, payload=None):
 
     except requests.exceptions.RequestException as err:
         error_handling(resp=response.status_code, err_msg=err)
-        data = "Not found"
+        print(err)
+        print(response.json())
+        data = response.json()
 
     return data
 
 
-def generate_report_payload(devices, args):
-    """Create a JSON payload."""
-    # list of apps
-    data = []
+def get_device_inventory(args):
+    """Return device inventory."""
+    # check to see if a platform was sprecified
+    if args.platform:
+        device_inventory = kandji_api(
+            method="GET",
+            endpoint="devices",
+            params={"limit": "100000", "platform": f"{args.platform}"},
+        )
 
-    # Loop over all Mac computers in Kandji
-    for device in devices:
+        if len(device_inventory) < 1:
+            print(f"No {args.platform} devices found...\n")
+            sys.exit()
 
-        device_apps = kandji_api(method="GET", endpoint=f"devices/{device['device_id']}/apps")
+    else:
+        device_inventory = kandji_api(method="GET", endpoint="devices", params={"limit": "100000"})
 
-        # Loop over each app in the Kandji "apps" list and append to data dict
-        for app in device_apps["apps"]:
+    return device_inventory
 
-            if args.name:
 
-                if args.name == app["app_name"]:
-
-                    # Create a dictionary containing the application name, version, and
-                    # associated serial number.
-                    apps_dict = {
-                        "serial_number": device["serial_number"].upper(),
-                        "device_name": device["device_name"],
-                        "os_version": device["os_version"],
-                        "user": device["user"],
-                        "platform": device["platform"],
-                        "app_name": app["app_name"],
-                        "version": app["version"],
-                    }
-
-                    data.append(apps_dict)
-
-            else:
-                # Create a dictionary containing the application name, version, and
-                # associated serial number.
-                apps_dict = {
-                    "serial_number": device["serial_number"].upper(),
-                    "device_name": device["device_name"],
-                    "os_version": device["os_version"],
-                    "user": device["user"],
-                    "platform": device["platform"],
-                    "app_name": app["app_name"],
-                    "version": app["version"],
-                }
-
-                data.append(apps_dict)
-
-    return data
+def device_status_category(data, category):
+    """Return the device library items."""
+    return data[category]
 
 
 def write_report(report_payload, report_name):
     """Write app report."""
-    # write report to csv file
+    # write library item report to csv file
     with open(report_name, mode="w", encoding="utf-8") as report:
 
         out_fields = []
@@ -260,22 +277,31 @@ def write_report(report_payload, report_name):
                 if key not in out_fields:
                     out_fields.append(key)
 
-        writer = csv.DictWriter(report, fieldnames=out_fields)
+        # find the serial_number field so that we can sort the report on that.
+        def thingy(out_field):
+            this = ""
+            if out_field == "serial_number":
+                this = out_field
+            return this
+
+        writer = csv.DictWriter(report, fieldnames=sorted(out_fields, key=thingy, reverse=True))
 
         # Write headers to CSV
         writer.writeheader()
 
         # Loop over the app list sorted by app_name
-        for app in sorted(report_payload, key=lambda k: k["app_name"]):
-            # if a user is assinged
-            if app["user"]:
-                # update user
-                app["user"] = app["user"]["name"]
-                # Write row to csv file
-                writer.writerow(app)
+        for item in report_payload:
 
+            # if a user is assinged
+            if item["user"]:
+
+                # update user
+                item["user"] = item["user"]["name"]
+                # Write row to csv file
+                writer.writerow(item)
             else:
-                writer.writerow(app)
+                # Write row to csv file
+                writer.writerow(item)
 
 
 def main():
@@ -283,6 +309,9 @@ def main():
     # Return the arguments
     arguments = program_arguments()
 
+    #  Main logic starts here
+
+    print(f"\nRunning: {SCRIPT_NAME} ...")
     print(f"Version: {__version__}\n")
     print(f"Base URL: {BASE_URL}\n")
 
@@ -294,35 +323,80 @@ def main():
         print(f'\tThe TOKEN should not be "{TOKEN}"...\n')
         sys.exit()
 
+    # Report name
+    if arguments.library_item:
+        lit_to_lower = arguments.library_item.lower().replace(" ", "_")
+        report_name = f"{lit_to_lower}_lit_report_{TODAY}.csv"
+        search_term = arguments.library_item
+        print(f'Looking for devices with the "{search_term}" library item assigned...')
+
+        if arguments.platform:
+            report_name = f"{arguments.platform.lower()}_{lit_to_lower}_lit_report_{TODAY}.csv"
+
+    # Report name
+    if arguments.all_lit:
+        report_name = f"all_library_items_report_{TODAY}.csv"
+
+        if arguments.platform:
+            report_name = f"{arguments.platform.lower()}_all_library_items_report_{TODAY}.csv"
+
     # Get all device inventory records
     print("Getting all device records from Kandji ...")
 
-    # Get all device inventory records
-    device_inventory = kandji_api(method="GET", endpoint="devices", params={"limit": "100000"})
+    device_inventory = get_device_inventory(args=arguments)
 
     print(f"Total device records: {len(device_inventory)}")
 
-    # Report name
-    if arguments.name:
-        report_name = f'{arguments.name.lower().replace(" ", "_")}_app_install_report_{TODAY}.csv'
-        print(f"Looking for devices with {arguments.name} installed...")
-    else:
-        report_name = f"apps_install_report_{TODAY}.csv"
+    report_payload = []
 
-    # create the report payload
-    report_payload = generate_report_payload(device_inventory, arguments)
+    for device in device_inventory:
+        # We are looking for a library item
+
+        lib_items_data = kandji_api(
+            method="GET", endpoint=f"devices/{device['device_id']}/library-items"
+        )
+        library_items = device_status_category(lib_items_data, "library_items")
+
+        for item in library_items:
+
+            # these are all the fields that will be used in the report
+            item_info = {
+                "serial_number": device["serial_number"].upper(),
+                "device_name": device["device_name"],
+                "os_version": device["os_version"],
+                "user": device["user"],
+                "name": item["name"],
+                "status": item["status"],
+                "type": item["type"],
+                "reported_at": item["reported_at"],
+                "last_audit_run": item["last_audit_run"],
+                "last_audit_log": item["last_audit_log"],
+                "control_reported_at": item["control_reported_at"],
+                "control_log": item["control_log"],
+                "log": item["log"],
+            }
+
+            if arguments.library_item:
+                if item["name"] == search_term:
+                    report_payload.append(item_info)
+
+            else:
+                report_payload.append(item_info)
 
     if len(report_payload) < 1:
-        print(f"No devices found with {arguments.name} installed...")
+        print(f"No devices found with {search_term} in scope...")
+        print(
+            "Double check the name of the Library item and make sure that it exists in "
+            "Kandji..."
+        )
+    else:
+        if arguments.library_item:
+            print(f"Found {len(report_payload)} devices with {search_term} assigned...")
+        print("Generating LIT report...")
+        write_report(report_payload, report_name)
 
-    if arguments.name:
-        print(f"Found {len(report_payload)} devices with {arguments.name} installed...")
-
-    print("Generating Kandji app install report ...")
-    write_report(report_payload, report_name)
-
-    print("Kandji app report complete ...")
-    print(f"Kandji app report at: {HERE.resolve()}/{report_name} ")
+        print("Kandji report complete ...")
+        print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
 
 
 if __name__ == "__main__":

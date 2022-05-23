@@ -6,6 +6,18 @@ This commandline tool allows the user to interact with the Kandji(🐝) via the 
 
 Right now this tool can pull device details against the Devices API endpoint.
 
+### Dependencies
+
+- This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://updates.kandji.io/auto-app-python-3-214020), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
+
+- Python dependencies can be installed individually below, or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
+
+```
+python3 -m pip install requests
+python3 -m pip install pathlib
+python3 -m pip install toml
+```
+
 ### --help output
 
 ```

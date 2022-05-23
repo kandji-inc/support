@@ -50,7 +50,7 @@ An example input file can be found in this repo.
     # Kandji API base URL
     BASE_URL = "https://example.clients.us-1.kandji.io/api/v1/"
     # Kandji Bearer Token
-    TOKEN = "api_token
+    TOKEN = "api_token"
     ########################################################################################
     ```
 
