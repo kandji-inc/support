@@ -199,6 +199,33 @@
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>VPN #1</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.vpn.managed.F4B31AC2-921B-4AC0-A876-01E5BE523250</string>
+			<key>PayloadType</key>
+			<string>com.apple.vpn.managed</string>
+			<key>PayloadUUID</key>
+			<string>F4B31AC2-921B-4AC0-A876-01E5BE523250</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>UserDefinedName</key>
+			<string>FortiClient VPN</string>
+			<key>VPN</key>
+			<dict>
+				<key>AuthenticationMethod</key>
+				<string>Password</string>
+				<key>ProviderBundleIdentifier</key>
+				<string>com.fortinet.forticlient.macos.vpn</string>
+				<key>RemoteAddress</key>
+				<string>localhost</string>
+			</dict>
+			<key>VPNSubType</key>
+			<string>com.fortinet.forticlient.macos.vpn</string>
+			<key>VPNType</key>
+			<string>VPN</string>
+		</dict>
 	</array>
 	<key>PayloadDisplayName</key>
 	<string>FortiClient Settings</string>

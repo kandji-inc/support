@@ -86,7 +86,7 @@
 			<key>PayloadIdentifier</key>
 			<string>248101D5-BC4B-429B-B4F9-398F9F200EE1</string>
 			<key>PayloadOrganization</key>
-			<string>JAMF Software</string>
+			<string>Kandji Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
@@ -161,9 +161,9 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Approves the needed System Extension, Notifications, PPPC and Network Filter for SentinelOne Agent v4.4+</string>
+	<string>Approves the needed System Extension, Notifications, PPPC Settings, and Network Filter for SentinelOne Agent v4.4+</string>
 	<key>PayloadDisplayName</key>
-	<string>Sentinel One Combined Profile</string>
+	<string>SentinelOne Settings</string>
 	<key>PayloadIdentifier</key>
 	<string>io.kandji.SentinelOne.822C6371-3484-41FF-BBC7-F8D1C06D4968</string>
 	<key>PayloadScope</key>
