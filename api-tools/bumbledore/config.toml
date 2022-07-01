@@ -21,7 +21,6 @@ vendor = "🐝"
 base_url = "https://example.clients.us-1.kandji.io/api"
 
 [api_info]
-tenant_code = ""  # If vendor is Jamf or Kandji we will not refernce the tenant_code
 authorization = """Bearer <Kandji_Bearer_Token>"""
 accept = "application/json"
 content_type = "application/json;charset=utf-8"
