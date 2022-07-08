@@ -48,24 +48,6 @@ def build_api_headers(
 ):
     """Returns API header information from TOML config"""
 
-    if mdm_vendor(toml_data) in ("VMware", "vmware"):
-        # Token key authnentication in use
-        headers = {
-            "aw-tenant-code": toml_data["api_info"]["tenant_code"],
-            "Authorization": toml_data["api_info"]["authorization"],
-            "Content-Type": toml_data["api_info"]["content_type"],
-            "Cache-Control": toml_data["api_info"]["cache_control"],
-        }
-
-    if mdm_vendor(toml_data) in ("Jamf", "jamf"):
-        # Token key authnentication in use
-        headers = {
-            "Authorization": toml_data["api_info"]["authorization"],
-            "Accept": toml_data["api_info"]["accept"],
-            "Content-Type": toml_data["api_info"]["content_type"],
-            "Cache-Control": toml_data["api_info"]["cache_control"],
-        }
-
     if mdm_vendor(toml_data) in ("Kandji", "kandji", "Kandji.io", "kandji.io", "🐝"):
         # Token key authnentication in use
         headers = {
