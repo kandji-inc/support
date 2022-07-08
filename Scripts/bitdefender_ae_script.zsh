@@ -46,7 +46,7 @@
 ###################################################################################################
 
 # Script version
-VERSION="0.1.0"
+VERSION="1.0.0"
 
 ###################################################################################################
 ###################################### VARIABLES ##################################################
@@ -83,9 +83,9 @@ fi
 
 echo "Profile prefix $PROFILE_ID_PREFIX present ..."
 
-Look for the app defined in APP_NAME
-This command looks in /Applications, /System/Applications, and /Library for the existance of the
-app defined in $APP_NAME
+# Look for the app defined in APP_NAME
+# This command looks in /Applications, /System/Applications, and /Library for the existance of the
+# app defined in $APP_NAME
 installed_path="$(/usr/bin/find /Applications /System/Applications /Library/ -maxdepth 3 -name $APP_NAME 2>/dev/null)"
 
 # Validate the path returned in installed_path
