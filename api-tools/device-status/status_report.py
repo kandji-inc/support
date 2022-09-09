@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 
-"""Generate a report from the device library items API."""
+"""Generate device reports from the device status API."""
 
 ########################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ########################################################################################
-# Created - 2022-02-08
+#
+# Created:  2021.06.03
+# Modified: 2022.09.01
+#
+########################################################################################
+# Software Information
+########################################################################################
+#
+# This script leverages the Kandji API to generate a CSV report containing the
+# installation status of a specific library item or parameter.
+#
 ########################################################################################
 # License Information
 ########################################################################################
@@ -14,7 +24,7 @@
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
 # without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to \
 # permit persons to whom the Software is furnished to do so, subject to the following
 # conditions:
 #
@@ -29,7 +39,7 @@
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ########################################################################################
 
-__version__ = "1.2.0"
+__version__ = "1.0.1"
 
 
 # Standard library
@@ -44,7 +54,7 @@ try:
 except ImportError as import_error:
     print(import_error)
     sys.exit(
-        "Looks like you need to install the requests module. Open a Terminal and run "
+        "Looks like you need to install the requests module. Open a Terminal and run  "
         "python3 -m pip install requests."
     )
 
@@ -68,8 +78,7 @@ TOKEN = "your_api_key_here"
 # Kandji API base URL
 BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
 
-SCRIPT_NAME = "Library items Report"
-TODAY = datetime.today().strftime("%Y%m%d")
+SCRIPT_NAME = "Status Report"
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -79,7 +88,7 @@ HEADERS = {
 }
 
 # Current working directory
-HERE = pathlib.Path("__file__").parent
+HERE = pathlib.Path("__file__").parent.absolute()
 
 
 def var_validation():
@@ -101,42 +110,29 @@ def var_validation():
 def program_arguments():
     """Return arguments."""
     parser = argparse.ArgumentParser(
-        prog="device_library_items",
+        prog="status_report",
         description=(
-            "Get a report containing information for a given library item or all "
-            "library items for all devices."
+            "Get the status report for a given library item or parameter leveraging "
+            "the Kandji API."
         ),
         allow_abbrev=False,
     )
 
     parser.add_argument(
-        "--platform",
-        type=str,
-        metavar='"Mac"',
-        help="Enter a specific device platform type. This will limit the search "
-        "results to only the specified platform. Examples: Mac, iPhone, iPad, AppleTV. "
-        "Ether the --library-item or --all-lit options must also be specified "
-        "if the --platform is used.",
-        required=False,
-    )
-
-    # add grouped arguments that cannot be called together
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
         "--library-item",
         "--lit",
         type=str,
         metavar='"Google Chrome"',
-        help="Enter the name of a specific Kandji library item. Cannot be used "
-        "together with the --all-lit option",
+        help="Enter the name of the Kandji library item.",
         required=False,
     )
 
-    group.add_argument(
-        "--all-lit",
-        action="store_true",
-        help="Use this option to return all library items for all devices. Cannot be "
-        "used together with the --library-item option",
+    parser.add_argument(
+        "--parameter",
+        "--param",
+        type=str,
+        metavar='"Set Computer Name"',
+        help="Enter the name of the Parameter.",
         required=False,
     )
 
@@ -149,15 +145,6 @@ def program_arguments():
     if not any(args.values()):
         print()
         parser.error("No command options given. Use the --help flag for more details\n")
-
-    args = parser.parse_args()
-
-    if args.platform:
-        if not (args.library_item or args.all_lit):
-            parser.error(
-                "If the --platform option is specified, either the --libary-item "
-                '"<item_name>" or --all-lit must also be specifiedß.'
-            )
 
     return parser.parse_args()
 
@@ -266,16 +253,12 @@ def get_devices(params=None, ordering="serial_number"):
         params.update(
             {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
         )
-        # print(params)
-
         # check to see if a platform was sprecified
         response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
-
         count += len(response)
         offset += limit
         if len(response) == 0:
             break
-
         # breakout the response then append to the data list
         for record in response:
             data.append(record)
@@ -292,15 +275,15 @@ def device_status_category(data, category):
     return data[category]
 
 
-def write_report(report_payload, report_name):
-    """Write app report."""
+def write_report(input_, report_name):
+    """Write report."""
     # write report to csv file
     with open(report_name, mode="w", encoding="utf-8") as report:
 
         out_fields = []
 
         # automatically loop over keys in the payload to pullout header fields
-        for item in report_payload:
+        for item in input_:
             for key in item.keys():
                 if key not in out_fields:
                     out_fields.append(key)
@@ -310,31 +293,19 @@ def write_report(report_payload, report_name):
         # Write headers to CSV
         writer.writeheader()
 
-        # Loop over the app list sorted by app_name
-        for app in report_payload:
-            # if a user is assinged
-            if app["user"]:
-                # update user
-                app["user"] = app["user"]["name"]
-                # Write row to csv file
-                writer.writerow(app)
-
-            else:
-                writer.writerow(app)
+        # Loop over the list sorted by serial_number
+        for item in input_:
+            writer.writerow(item)
 
 
 def main():
-    """Run main logic."""
     # validate vars
     var_validation()
 
     # Return the arguments
     arguments = program_arguments()
 
-    #  Main logic starts here
-
-    print(f"\nRunning: {SCRIPT_NAME} ...")
-    print(f"Version: {__version__}\n")
+    print(f"\nVersion: {__version__}")
     print(f"Base URL: {BASE_URL}\n")
 
     # dict placeholder for params passed to api requests
@@ -342,84 +313,70 @@ def main():
 
     # Report name
     if arguments.library_item:
-        lit_to_lower = arguments.library_item.lower().replace(" ", "_")
-        report_name = f"{lit_to_lower}_lit_report_{TODAY}.csv"
+        report_name = f"{arguments.library_item.lower().replace(' ', '_')}_status_report_{datetime.today().strftime('%Y%m%d')}.csv"
         search_term = arguments.library_item
-        print(f'Looking for devices with the "{search_term}" library item assigned...')
 
-        if arguments.platform:
-            params_dict.update({"platform": f"{arguments.platform}"})
-            report_name = (
-                f"{arguments.platform.lower()}_{lit_to_lower}_lit_report_{TODAY}.csv"
-            )
-
-    # Report name
-    if arguments.all_lit:
-        report_name = f"all_library_items_report_{TODAY}.csv"
-
-        if arguments.platform:
-            params_dict.update({"platform": f"{arguments.platform}"})
-            report_name = (
-                f"{arguments.platform.lower()}_all_library_items_report_{TODAY}.csv"
-            )
+    if arguments.parameter:
+        report_name = f"{arguments.parameter.lower().replace(' ', '_')}_status_report_{datetime.today().strftime('%Y%m%d')}.csv"
+        search_term = arguments.parameter
 
     # Get all device inventory records
     print("Getting device inventory from Kandji...")
     device_inventory = get_devices(params=params_dict)
     print(f"Total records: {len(device_inventory)}\n")
-    print(f"Total device records: {len(device_inventory)}")
+    print(f'Looking for the status of "{search_term}" ...')
 
+    # holds information to be written to he report
     report_payload = []
 
     for device in device_inventory:
-        # We are looking for a library item
-
-        lib_items_data = kandji_api(
-            method="GET", endpoint=f"/v1/devices/{device['device_id']}/library-items"
+        status_data = kandji_api(
+            method="GET", endpoint=f"/v1/devices/{device['device_id']}/status"
         )
-        library_items = device_status_category(lib_items_data, "library_items")
 
-        for item in library_items:
-
-            # these are all the fields that will be used in the report
-            item_info = {
-                "serial_number": device["serial_number"].upper(),
-                "device_name": device["device_name"],
-                "blueprint_name": device["blueprint_name"],
-                "os_version": device["os_version"],
-                "user": device["user"],
-                "name": item["name"],
-                "status": item["status"],
-                "type": item["type"],
-                "reported_at": item["reported_at"],
-                "last_audit_run": item["last_audit_run"],
-                "last_audit_log": item["last_audit_log"],
-                "control_reported_at": item["control_reported_at"],
-                "control_log": item["control_log"],
-                "log": item["log"],
-            }
-
-            # if a specific lit is specified then we only want to build a report
-            # containing that name only.
-            if arguments.library_item:
+        if arguments.library_item:
+            # We are looking for a library item
+            library_items = device_status_category(status_data, "library_items")
+            for item in library_items:
                 if item["name"] == search_term:
+                    item_info = {
+                        "serial_number": device["serial_number"].upper(),
+                        "device_name": device["device_name"],
+                        "blueprint_name": device["blueprint_name"],
+                        "name": item["name"],
+                        "status": item["status"],
+                        "type": item["type"],
+                        "reported_at": item["reported_at"],
+                        "last_audit_log": item["last_audit_log"],
+                        "log": item["log"],
+                    }
                     report_payload.append(item_info)
 
-            else:
-                report_payload.append(item_info)
+        if arguments.parameter:
+            # We are looking for a parameter
+            parameter_items = device_status_category(status_data, "parameters")
+            for item in parameter_items:
+                if item["name"] == search_term:
+                    item_info = {
+                        "serial_number": device["serial_number"].upper(),
+                        "device_name": device["device_name"],
+                        "blueprint_name": device["blueprint_name"],
+                        "status": item["status"],
+                        "name": item["name"],
+                        "category": item["category"],
+                        "subcategory": item["subcategory"],
+                    }
+                    report_payload.append(item_info)
 
     if len(report_payload) < 1:
-        print(f"No devices found with {search_term} in scope...")
-        print(
-            "Double check the name of the Library item and make sure that it exists in "
-            "Kandji..."
-        )
+        print(f"No items with name {search_term} ...")
+        print("No report generated...")
     else:
-        if arguments.library_item:
-            print(f"Found {len(report_payload)} devices with {search_term} assigned...")
-        print("Generating LIT report...")
+        print(f"Found {len(report_payload)} devices with {search_term} assigned ...")
+        print(f"Generating {search_term} status report ...")
         write_report(report_payload, report_name)
 
+        print("Kandji report complete ...")
         print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
 
 

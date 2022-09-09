@@ -1,15 +1,14 @@
-# Devices Report
+# Devices Parameters
 
-**NOTE**: As with any script please be sure to test with a subset of devices.
+**NOTE**: As with any script please be sure to test test test.
 
 ### About
 
-This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant.
+These `python3` scripts leverage the Kandji API to interact with and generate reports from the device parameters endpoint.
 
 ### Kandji API
 
-- See the [Kandji API KB](https://support.kandji.io/api) article to see how to generate an API Token
-- The API permissions required to run the reporting script are as follows.
+- The API permissions required to run the reporting script are as follows. Checkout the Kandji [Knowledge Base](https://support.kandji.io) for more information.
 
     <img src="images/api_permissions_required.png" alt="drawing" width="1024"/>
 
@@ -55,43 +54,22 @@ This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) t
 
     `cd ~/Desktop`
 
-3. Enter the following command in the Terminal window to run the script. This will generate a devices report for all Mac in the Kandji tenant.
+3. Enter the following command in the Terminal window to run the script.
 
-    `python3 devices_report.py --platform Mac`
-
+    `python3 parameters.py`
+    
     **Example output**
-
-    ```
-    Running: Device Report ...
-    Version: 1.0.0
-
-    Base URL: https://example.clients.us-1.kandji.io/api/v1/
-
-    Getting all device records from Kandji ...
-    Total device records: 31
-    Generating device report for the following devices ...
-    Kandji device report complete ...
-    Kandji report at: /Users/example/Desktop/mac_report_20220512.csv
-    ```
-
-4. If the `devices_report.py` script is executed, a file with the name `mac_devices_report_<YYYYMMDD>.csv` will be generated in the current directory, which, in this case would be the `Desktop`.
-
-#### Examples
-
-- To generate a report of all devices, use the following command.
-
-    `python3 devices_report.py`
-
-- To see help information: `python3 devices_report.py --help`
-
-    ```     
-    usage: device_report [-h] [--platform "Mac"] [--version]
     
-    This tool is used to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant.
-    
-    options:
-      -h, --help        show this help message and exit
-      --platform "Mac"  Enter a specific device platform type. This will limit the search results to only the specified platfrom. 
-                        Examples: Mac, iPhone, iPad, AppleTV.
-      --version         Show this tool's version.
     ```
+    Base URL: https://mattwilson.clients.us-1.kandji.io/api
+    
+    Getting device inventory from Kandji...
+    Total records returned: 40
+    
+    Total devices with parameters assigned: 38
+    Generating device report...
+    Kandji report at: /Users/example/Desktop/device_params_report_20220901.csv
+    ```
+
+4. If the `parameters.py ` script is executed, a file with the name `device_params_report_<YYYYMMDD>.csv` will be generated in the current directory, which, in this case would be the `Desktop`.
+

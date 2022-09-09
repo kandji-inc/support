@@ -15,7 +15,6 @@ import sys
 
 import toml
 
-
 TOML_FILE = pathlib.Path(pathlib.Path.cwd()).joinpath("config.toml")
 
 
@@ -47,7 +46,6 @@ def build_api_headers(
     toml_data,
 ):
     """Returns API header information from TOML config"""
-
     if mdm_vendor(toml_data) in ("Kandji", "kandji", "Kandji.io", "kandji.io", "🐝"):
         # Token key authnentication in use
         headers = {

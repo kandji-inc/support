@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 
-"""Generate a report from the device library items API."""
+"""Interact with Apple integrations in Kandji."""
 
 ########################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ########################################################################################
-# Created - 2022-02-08
+# Created - 2022-07-08
+########################################################################################
+# Software Information
+########################################################################################
+#
+# This script is used to work with ADE integrations in a Kandji tenant.
+#
 ########################################################################################
 # License Information
 ########################################################################################
@@ -29,7 +35,7 @@
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ########################################################################################
 
-__version__ = "1.2.0"
+__version__ = "0.0.1"
 
 
 # Standard library
@@ -68,7 +74,7 @@ TOKEN = "your_api_key_here"
 # Kandji API base URL
 BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
 
-SCRIPT_NAME = "Library items Report"
+SCRIPT_NAME = "Apple integrations"
 TODAY = datetime.today().strftime("%Y%m%d")
 
 HEADERS = {
@@ -79,7 +85,7 @@ HEADERS = {
 }
 
 # Current working directory
-HERE = pathlib.Path("__file__").parent
+HERE = pathlib.Path("__file__").parent.absolute()
 
 
 def var_validation():
@@ -101,63 +107,49 @@ def var_validation():
 def program_arguments():
     """Return arguments."""
     parser = argparse.ArgumentParser(
-        prog="device_library_items",
+        prog="apple_integrations.py",
         description=(
-            "Get a report containing information for a given library item or all "
-            "library items for all devices."
+            'Interact with Apple Integrations in a Kandji tenant. Use "--help" to see '
+            "the able options."
         ),
         allow_abbrev=False,
     )
 
-    parser.add_argument(
-        "--platform",
-        type=str,
-        metavar='"Mac"',
-        help="Enter a specific device platform type. This will limit the search "
-        "results to only the specified platform. Examples: Mac, iPhone, iPad, AppleTV. "
-        "Ether the --library-item or --all-lit options must also be specified "
-        "if the --platform is used.",
-        required=False,
-    )
-
     # add grouped arguments that cannot be called together
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
-        "--library-item",
-        "--lit",
-        type=str,
-        metavar='"Google Chrome"',
-        help="Enter the name of a specific Kandji library item. Cannot be used "
-        "together with the --all-lit option",
+    group_actions = parser.add_mutually_exclusive_group()
+
+    group_actions.add_argument(
+        "--public-key",
+        action="store_true",
+        help="Download the public key to use when adding MDM servers to ABM. The "
+        "encoded information will be saved to a file on the Desktop with the .pem "
+        " format. This file must be uploaded to ABM manually.",
         required=False,
     )
 
-    group.add_argument(
-        "--all-lit",
+    group_actions.add_argument(
+        "--ade-tokens",
         action="store_true",
-        help="Use this option to return all library items for all devices. Cannot be "
-        "used together with the --library-item option",
+        help="List information about the ADE integrations in a Kandji tenant.",
+        required=False,
+    )
+
+    parser.add_argument(
+        "--list-devices",
+        type=str,
+        metavar='"1411be7d-5e91-439f-8d93-2f5667c60d42"',
+        help="List the devices associated with a given ADE token ID. You can use the"
+        ' "--ade-tokens" option to get a list of available ADE token IDs.',
         required=False,
     )
 
     parser.version = __version__
     parser.add_argument("--version", action="version", help="Show this tool's version.")
-    # parser.add_argument("-v", "--verbose", action="store", metavar="LEVEL")
 
-    # handle some errors
     args = vars(parser.parse_args())
     if not any(args.values()):
         print()
         parser.error("No command options given. Use the --help flag for more details\n")
-
-    args = parser.parse_args()
-
-    if args.platform:
-        if not (args.library_item or args.all_lit):
-            parser.error(
-                "If the --platform option is specified, either the --libary-item "
-                '"<item_name>" or --all-lit must also be specifiedß.'
-            )
 
     return parser.parse_args()
 
@@ -251,56 +243,101 @@ def kandji_api(method, endpoint, params=None, payload=None):
     return data
 
 
-def get_devices(params=None, ordering="serial_number"):
-    """Return device inventory."""
-    count = 0
-    # limit - set the number of records to return per API call
-    limit = 300
-    # offset - set the starting point within a list of resources
-    offset = 0
-    # inventory
+def download_public_key():
+    """Download ADE public key."""
+    # check to see if a platform was sprecified
+    return kandji_api(method="GET", endpoint="/v1/integrations/apple/ade/public_key/")
+
+
+def list_devices_associated_to_ade_token(ade_token, params=None):
+    """Return list of ADE integrations."""
+    # page - which page to return
+    page = 1
+
+    # ade devices
     data = []
 
     while True:
-        # update params
-        params.update(
-            {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
-        )
-        # print(params)
+        params = {"page": f"{page}"}
 
         # check to see if a platform was sprecified
-        response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
-
-        count += len(response)
-        offset += limit
-        if len(response) == 0:
-            break
+        response = kandji_api(
+            method="GET",
+            endpoint=f"/v1/integrations/apple/ade/{ade_token}/devices",
+            params=params,
+        )
 
         # breakout the response then append to the data list
-        for record in response:
+        for record in response["results"]:
             data.append(record)
 
-    if len(data) < 1:
-        print("No devices found...\n")
-        sys.exit()
+        if response["next"] is None:
+            if len(data) < 1:
+                print("No devices found...\n")
+            break
+
+        page += 1
 
     return data
 
 
-def device_status_category(data, category):
-    """Return the device library items."""
-    return data[category]
+def flatten(input_dict, separator=".", prefix=""):
+    """Flatten JSON"""
+    output_dict = {}
+
+    for key, value in input_dict.items():
+
+        if isinstance(value, dict) and value:
+
+            deeper = flatten(value, separator, prefix + key + separator)
+            output_dict.update({key2: val2 for key2, val2 in deeper.items()})
+
+        elif isinstance(value, list) and value:
+
+            for index, sublist in enumerate(value, start=1):
+
+                if isinstance(sublist, dict) and sublist:
+
+                    deeper = flatten(
+                        sublist,
+                        separator,
+                        prefix + key + separator + str(index) + separator,
+                    )
+
+                    output_dict.update({key2: val2 for key2, val2 in deeper.items()})
+
+                else:
+                    output_dict[prefix + key + separator + str(index)] = value
+
+        else:
+            output_dict[prefix + key] = value
+
+    return output_dict
 
 
-def write_report(report_payload, report_name):
-    """Write app report."""
+def generate_report_payload(input_):
+    """Create a JSON payload."""
+    report_payload = []
+
+    for attr in input_:
+
+        # flattend = flatten_dictionary(dict_=attr)
+        flattend = flatten(attr)
+
+        report_payload.append(flattend)
+
+    return report_payload
+
+
+def write_report(input_, report_name):
+    """Write report."""
     # write report to csv file
     with open(report_name, mode="w", encoding="utf-8") as report:
 
         out_fields = []
 
         # automatically loop over keys in the payload to pullout header fields
-        for item in report_payload:
+        for item in input_:
             for key in item.keys():
                 if key not in out_fields:
                     out_fields.append(key)
@@ -310,17 +347,27 @@ def write_report(report_payload, report_name):
         # Write headers to CSV
         writer.writeheader()
 
-        # Loop over the app list sorted by app_name
-        for app in report_payload:
-            # if a user is assinged
-            if app["user"]:
-                # update user
-                app["user"] = app["user"]["name"]
-                # Write row to csv file
-                writer.writerow(app)
+        # Loop over the list sorted by serial_number
+        for item in input_:
+            writer.writerow(item)
 
-            else:
-                writer.writerow(app)
+
+def report_builder(input_, name_items):
+    """Build report."""
+    report_payload = generate_report_payload(input_=input_)
+
+    # build report name
+    if name_items:
+        report_name = "_".join(name_items)
+        report_name = f"{report_name}_report_{TODAY}.csv"
+    else:
+        report_name = f"apple_integrations_report_{TODAY}.csv"
+
+    print("Generating report ...")
+    write_report(input_=report_payload, report_name=report_name)
+
+    print("Kandji report complete ...")
+    print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
 
 
 def main():
@@ -331,96 +378,75 @@ def main():
     # Return the arguments
     arguments = program_arguments()
 
-    #  Main logic starts here
-
-    print(f"\nRunning: {SCRIPT_NAME} ...")
-    print(f"Version: {__version__}\n")
+    print(f"\nVersion: {__version__}")
     print(f"Base URL: {BASE_URL}\n")
 
-    # dict placeholder for params passed to api requests
-    params_dict = {}
+    # hold items used in report name
+    report_name_items = []
 
-    # Report name
-    if arguments.library_item:
-        lit_to_lower = arguments.library_item.lower().replace(" ", "_")
-        report_name = f"{lit_to_lower}_lit_report_{TODAY}.csv"
-        search_term = arguments.library_item
-        print(f'Looking for devices with the "{search_term}" library item assigned...')
-
-        if arguments.platform:
-            params_dict.update({"platform": f"{arguments.platform}"})
-            report_name = (
-                f"{arguments.platform.lower()}_{lit_to_lower}_lit_report_{TODAY}.csv"
-            )
-
-    # Report name
-    if arguments.all_lit:
-        report_name = f"all_library_items_report_{TODAY}.csv"
-
-        if arguments.platform:
-            params_dict.update({"platform": f"{arguments.platform}"})
-            report_name = (
-                f"{arguments.platform.lower()}_all_library_items_report_{TODAY}.csv"
-            )
-
-    # Get all device inventory records
-    print("Getting device inventory from Kandji...")
-    device_inventory = get_devices(params=params_dict)
-    print(f"Total records: {len(device_inventory)}\n")
-    print(f"Total device records: {len(device_inventory)}")
-
-    report_payload = []
-
-    for device in device_inventory:
-        # We are looking for a library item
-
-        lib_items_data = kandji_api(
-            method="GET", endpoint=f"/v1/devices/{device['device_id']}/library-items"
-        )
-        library_items = device_status_category(lib_items_data, "library_items")
-
-        for item in library_items:
-
-            # these are all the fields that will be used in the report
-            item_info = {
-                "serial_number": device["serial_number"].upper(),
-                "device_name": device["device_name"],
-                "blueprint_name": device["blueprint_name"],
-                "os_version": device["os_version"],
-                "user": device["user"],
-                "name": item["name"],
-                "status": item["status"],
-                "type": item["type"],
-                "reported_at": item["reported_at"],
-                "last_audit_run": item["last_audit_run"],
-                "last_audit_log": item["last_audit_log"],
-                "control_reported_at": item["control_reported_at"],
-                "control_log": item["control_log"],
-                "log": item["log"],
-            }
-
-            # if a specific lit is specified then we only want to build a report
-            # containing that name only.
-            if arguments.library_item:
-                if item["name"] == search_term:
-                    report_payload.append(item_info)
-
-            else:
-                report_payload.append(item_info)
-
-    if len(report_payload) < 1:
-        print(f"No devices found with {search_term} in scope...")
+    if arguments.public_key:
+        # Get all device inventory records
+        print("Getting ADE public key from Kandji...")
         print(
-            "Double check the name of the Library item and make sure that it exists in "
-            "Kandji..."
+            "Copy the key below from '-----BEGIN CERTIFICATE-----' to "
+            "'-----END CERTIFICATE-----' into a text file and save as '.pem' format."
         )
-    else:
-        if arguments.library_item:
-            print(f"Found {len(report_payload)} devices with {search_term} assigned...")
-        print("Generating LIT report...")
-        write_report(report_payload, report_name)
+        print(
+            "Once the file is created, upload it your ABM console when adding a new "
+            "MDM server.\n"
+        )
+        public_key = download_public_key()
+        print(public_key)
 
-        print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
+    if arguments.ade_tokens:
+        # Get all device inventory records
+        print("Getting ade integrations list from Kandji...")
+        ade_integrations = kandji_api(
+            method="GET", endpoint="/v1/integrations/apple/ade"
+        )
+
+        print("Getting token IDs...")
+        count = 1
+        for record in ade_integrations["results"]:
+
+            print("")
+            print(f"Token {count}:")
+            print("  |")
+            print(f"  +-- Token ID: {record['id']}")
+            print(f"  +-- Server name: {record['server_name']}")
+            print(f"  +-- Total devices: {record['device_counts']['total']}")
+            print(f"  +-- Last sync: {record['last_device_sync']}")
+            print(f"  +-- Expiration date: {record['access_token_expiry']}")
+            print(f"  +-- Days left: {record['days_left']}")
+            print(f"  +-- Default blueprint: {record['blueprint']['name']}")
+            print("")
+            count += 1
+
+        # sys.exit()
+        #
+        # report_data = ade_integrations
+        # report_name_items.append("token_list")
+        # report_builder(input_=report_data, name_items=report_name_items)
+
+    if arguments.list_devices:
+        print(f'Getting devices associated with token ID "{arguments.list_devices}"...')
+        report_data = list_devices_associated_to_ade_token(
+            ade_token=arguments.list_devices
+        )
+        print(f"Total records: {len(report_data)}\n")
+
+        print("Model \t\t\t\t Serial Number")
+        print("----------------------------------------------")
+
+        for record in report_data:
+            print(
+                f'{record["model"]} {(31 - len(record["model"]))*"."} '
+                f'{record["serial_number"]}'
+            )
+
+        print("")
+        report_name_items.append(arguments.list_devices)
+        report_builder(input_=report_data, name_items=report_name_items)
 
 
 if __name__ == "__main__":

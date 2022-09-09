@@ -1,0 +1,6 @@
+black
+flake8
+isort
+pathlib>=1.0.1
+requests>=2.27.1
+toml

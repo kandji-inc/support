@@ -1,51 +1,53 @@
 #!/usr/bin/env python3
 
-"""Example script using a single function to make any Kandji API call."""
+"""API pagination example using python."""
 
-########################################################################################
-# Created by Matt Wilson | Kandji, Inc | support@kandji.io
-########################################################################################
+#
+#   DESCRIPTION
+#
+#       This script uses a combination of the limit and offset parameters to
+#       demonstrate the use of pagination to control the number of records returned per
+#       API call and how to call the next batch of device records until all device
+#       records are returned.
+#
+#       param: limit
+#
+#       The limit parameter controls the maximum number of items that may be returned
+#       for a single request. This parameter can be thought of as the page size. If no
+#       limit is specified, the default limit is set to 300 records per request.
+#
+#       param: offset
+#
+#       The offset parameter controls the starting point within the collection of
+#       resource results. For example, if you have a total of 35 device records in your
+#       Kandji instance and you specify limit=10, you can retrieve the entire set of
+#       results in 3 successive requests by varying the offset value: offset=0,
+#       offset=10, and offset=20. Note that the first item in the collection is
+#       retrieved by setting a zero offset.
+#
+#   RESOURCES
+#
+#       In very simple terms, pagination is the act of splitting large amounts of data
+#       into multiple smaller pieces. For example, whenever you go to the questions
+#       page in Stack Overflow, you see something like this at the bottom
+#
+#       - https://realpython.com/python-api/#pagination
+#
 
-# Built in imports
 import sys
 
-# 3rd party imports
-
-# Try to import the module. If the module cannot be imported let the user know so that they can
-# install it.
-try:
-    import requests
-except ImportError as error:
-    sys.exit(
-        "Looks like you need to install the requests module. Open a Terminal and run python3 -m "
-        "pip install requests."
-    )
-
+import requests
 from requests.adapters import HTTPAdapter
 
-########################################################################################
-######################### UPDATE VARIABLES BELOW #######################################
-########################################################################################
-
-
 # Initialize some variables
+
 # Kandji API base URL
 BASE_URL = "https://example.clients.us-1.kandji.io/api/v1/"
+
 # Kandji Bearer Token
 TOKEN = "api_token"
 
-
-# Things to query for
-SERIAL_NUMBER = "put serial number here"
-DEVICE_NAME = "put device name here"
-BLUEPRINT_NAME = "put blueprint name here"
-
-
-########################################################################################
-######################### DO NOT MODIFY BELOW THIS LINE ################################
-########################################################################################
-
-
+# API headers used in the requests
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
     "Accept": "application/json",
@@ -143,53 +145,54 @@ def kandji_api(method, endpoint, params=None, payload=None):
     return data
 
 
+def get_devices(params=None, ordering="serial_number"):
+    """Return device inventory."""
+    count = 0
+    # limit - set the number of records to return per API call
+    limit = 300
+    # offset - set the starting point within a list of resources
+    offset = 0
+    # inventory
+    data = []
+
+    while True:
+        # update params
+        params.update(
+            {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
+        )
+        # print(params)
+
+        # check to see if a platform was sprecified
+        response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
+
+        count += len(response)
+        offset += limit
+        if len(response) == 0:
+            break
+
+        # breakout the response then append to the data list
+        for record in response:
+            data.append(record)
+
+    if len(data) < 1:
+        print("No devices found...\n")
+        sys.exit()
+
+    return data
+
+
 def main():
-    """Run main logic."""
+    """Do the main logic."""
     print("")
-
-    #  Main logic starts here
-
-    print("\nRunning Kandji Device Record Update ...")
     print(f"Base URL: {BASE_URL}")
-
     print("")
 
-    # device record returned from kandji based on defined SERIAL_NUMBER
-    device_record_by_serial = kandji_api(
-        method="GET",
-        endpoint="devices",
-        params={"serial_number": f"{SERIAL_NUMBER}"},
-    )
+    # dict placeholder for params passed to api requests
+    params_dict = {}
 
-    # device record returned from kandji based on defined DEVICE_NAME
-    device_record_by_name = kandji_api(
-        method="GET",
-        endpoint="devices",
-        params={"name": f"{DEVICE_NAME}"},
-    )
-
-    # device record returned from kandji based on defined DEVICE_NAME and SERIAL_NUMBER
-    device_record_by_name_and_serial = kandji_api(
-        method="GET",
-        endpoint="devices",
-        params={"serial_number": f"{SERIAL_NUMBER}", "name": f"{DEVICE_NAME}"},
-    )
-
-    # blueprint record returned from kandji based on defined BLUEPRINT_NAME
-    blueprint_record_by_name = kandji_api(
-        method="GET",
-        endpoint="blueprints",
-        params={"serial_number": f"{BLUEPRINT_NAME}"},
-    )
-
-    print(device_record_by_serial)
-    print(device_record_by_name)
-    print(device_record_by_name_and_serial)
-    print(blueprint_record_by_name)
-
-    print()
-
-    print("Finished ...")
+    # Get the total number of devices
+    device_inventory = get_devices(params=params_dict)
+    print(f"Total number of devices: {len(device_inventory)}")
 
 
 if __name__ == "__main__":
