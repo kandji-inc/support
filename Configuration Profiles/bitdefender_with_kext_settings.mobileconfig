@@ -12,7 +12,53 @@
 					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.bitdefender.networkinstaller</string>
+					<key>CriticalAlertEnabled</key>
+					<true/>
 					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInCarPlay</key>
+					<false/>
+					<key>ShowInLockScreen</key>
+					<true/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+					<key>SoundsEnabled</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
+					<key>BundleIdentifier</key>
+					<string>com.bitdefender.epsecurity.BDLDaemonApp</string>
+					<key>CriticalAlertEnabled</key>
+					<true/>
+					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInCarPlay</key>
+					<false/>
+					<key>ShowInLockScreen</key>
+					<true/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+					<key>SoundsEnabled</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>BadgesEnabled</key>
+					<true/>
+					<key>BundleIdentifier</key>
+					<string>com.bitdefender.EndpointSecurityforMac</string>
+					<key>CriticalAlertEnabled</key>
+					<true/>
+					<key>NotificationsEnabled</key>
+					<true/>
+					<key>ShowInCarPlay</key>
+					<false/>
+					<key>ShowInLockScreen</key>
+					<true/>
+					<key>ShowInNotificationCenter</key>
+					<true/>
+					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 			</array>
@@ -27,7 +73,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.notificationsettings</string>
 			<key>PayloadUUID</key>
-			<string>353D0436-2C42-43BE-A6BD-7683F7DDCF80</string>
+			<string>4E69FE78-CE7E-477B-9335-C9D68111F0C5</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -44,8 +90,6 @@
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>Approved Kernel Extensions</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>C5E8F086-455E-4D5A-8BCB-9F3F7FF1D218</string>
 			<key>PayloadOrganization</key>
@@ -71,8 +115,6 @@
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>System Extensions</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>8B5B11F3-A0D9-4622-8831-AC32814651CD</string>
 			<key>PayloadOrganization</key>
@@ -89,8 +131,6 @@
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>Privacy Preferences Policy Control</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>DBD2AA99-C3DF-420F-98A8-3332651328AE</string>
 			<key>PayloadOrganization</key>
@@ -145,10 +185,6 @@
 			</dict>
 		</dict>
 		<dict>
-			<key>AllowAllAppsAccess</key>
-			<true/>
-			<key>KeyIsExtractable</key>
-			<true/>
 			<key>PayloadCertificateFileName</key>
 			<string>Bitdefender CA SSL.cer</string>
 			<key>PayloadContent</key>
@@ -180,8 +216,6 @@
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>Bitdefender CA SSL</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>89BA401A-8EFD-40F2-BAD1-45B8A87B3708</string>
 			<key>PayloadOrganization</key>
@@ -226,8 +260,6 @@
 	<string>Bitdefender System Extensions, Kernel Extensions, PPPC, Certificate, Notifications, and Network content filter</string>
 	<key>PayloadDisplayName</key>
 	<string>Bitdefender Settings with KEXT</string>
-	<key>PayloadEnabled</key>
-	<true/>
 	<key>PayloadIdentifier</key>
 	<string>com.kandji.profile.custom.E3D409CC-D789-4934-8D48-EECE678F8508</string>
 	<key>PayloadOrganization</key>
@@ -239,7 +271,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>E3D409CC-D789-4934-8D48-EECE678F8508</string>
+	<string>538C245E-FB53-4F6C-8897-C8649001FA7C</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
