@@ -84,7 +84,7 @@ PROFILE_ID_PREFIX="io.kandji.bitdefender.D0DF2C14"
 # script will dynamically search for the app in the Applications folder. So there is no
 # need to define an app path. The app must install in the /Applications, "/System/
 # Applications", or /Library up to 3 sub-directories deep.
-# APP_NAME="Endpoint Security for Mac.app"
+APP_NAME="Endpoint Security for Mac.app"
 
 # This is the name of the LaunchDaemon as it exists in /Library/LaunchDaemons
 LAUNCH_DAEMONS=(
