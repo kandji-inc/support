@@ -12,7 +12,7 @@ serial numbers where the, app is installed from a specified Kandji instance.
 ########################################################################################
 #
 # Created:  2021.06.03
-# Modified: 2022.05.12
+# Modified: 2022.09.09
 #
 ########################################################################################
 # Software Information
@@ -85,7 +85,10 @@ TOKEN = "your_api_key_here"
 
 # Initialize some variables
 # Kandji API base URL
-BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION == "us":
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+else:
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
 
 TODAY = datetime.today().strftime("%Y%m%d")
 
@@ -101,7 +104,7 @@ HERE = pathlib.Path("__file__").parent
 
 
 def var_validation():
-    """Validate varialbes."""
+    """Validate variables."""
     if "accuhive" in BASE_URL:
         print(
             f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
@@ -297,6 +300,7 @@ def generate_report_payload(devices, args):
                         "user": device["user"],
                         "platform": device["platform"],
                         "app_name": app["app_name"],
+                        "bundle_id": app["bundle_id"],
                         "version": app["version"],
                     }
 
@@ -313,6 +317,7 @@ def generate_report_payload(devices, args):
                     "user": device["user"],
                     "platform": device["platform"],
                     "app_name": app["app_name"],
+                    "bundle_id": app["bundle_id"],
                     "version": app["version"],
                 }
 

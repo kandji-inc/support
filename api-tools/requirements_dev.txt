@@ -1,0 +1,8 @@
+black
+flake8
+ggshield
+isort
+pathlib>=1.0.1
+pre-commit
+requests>=2.27.1
+toml

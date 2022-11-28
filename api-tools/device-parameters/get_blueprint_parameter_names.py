@@ -71,7 +71,10 @@ TOKEN = "your_api_key_here"
 
 # Initialize some variables
 # Kandji API base URL
-BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION == "us":
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+else:
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",

@@ -16,6 +16,18 @@ and this project adheres to Year Notation Versioning.
 - `Security` in case of vulnerabilities.
 
 
+## [2022-10-21]
+
+- `Added`
+
+    - [new] Added a pagnination example using zshell with `limit` and `offset`.
+
+- `Changed`
+
+    - Updated logic to determine the base url for the API depending on where the Kandji tenant is located.
+    - Updated README
+
+
 ## [2022-09-01]
 
 - `Added`

@@ -28,7 +28,7 @@ These `python3` scripts leverage the Kandji API to interact with and generate re
 1. Open the script in a text editor such as BBEdit, Atom, or VSCode.
 1. Update the `BASE_URL` variable to match your Kandji web app instance and update `TOKEN` information with your Bearer token.
 
-    - The `SUBDOMAIN `, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
 
         *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
 

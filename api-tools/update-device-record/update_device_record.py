@@ -85,7 +85,10 @@ TOKEN = "your_api_key_here"
 
 # Initialize some variables
 # Kandji API base URL
-BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION == "us":
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+else:
+    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
 
 
 HEADERS = {
@@ -100,7 +103,7 @@ HERE = pathlib.Path("__file__").parent.absolute()
 
 
 def var_validation():
-    """Validate varialbes."""
+    """Validate variables."""
     if "accuhive" in BASE_URL:
         print(
             f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '

@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 
-"""Generate device reports from the device status API."""
+"""Send actions to one or more devices in a Kandji instance."""
 
 ########################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ########################################################################################
-#
-# Created:  2021.06.03
-# Modified: 2022.09.01
-#
+# Created - 2022-08-17
 ########################################################################################
 # Software Information
 ########################################################################################
 #
-# This script leverages the Kandji API to generate a CSV report containing the
-# installation status of a specific library item or parameter.
+# This script can be used to send device actions to one or more devices in a Kandji
+# tenant.
 #
 ########################################################################################
 # License Information
@@ -24,7 +21,7 @@
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
 # without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to \
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to the following
 # conditions:
 #
@@ -39,15 +36,19 @@
 # OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ########################################################################################
 
-__version__ = "1.0.1"
+__version__ = "0.0.1"
 
 
 # Standard library
 import argparse
-import csv
+import json
 import pathlib
+import random
 import sys
 from datetime import datetime
+from time import sleep
+
+# 3rd party imports
 
 try:
     import requests
@@ -81,7 +82,8 @@ if REGION == "us":
 else:
     BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
 
-SCRIPT_NAME = "Status Report"
+SCRIPT_NAME = "Device details report"
+TODAY = datetime.today().strftime("%Y%m%d")
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -113,41 +115,107 @@ def var_validation():
 def program_arguments():
     """Return arguments."""
     parser = argparse.ArgumentParser(
-        prog="status_report",
-        description=(
-            "Get the status report for a given library item or parameter leveraging "
-            "the Kandji API."
-        ),
+        prog="apple_integrations.py",
+        description="Send device actions to one or more devices in a Kandji instance.",
         allow_abbrev=False,
     )
 
-    parser.add_argument(
-        "--library-item",
-        "--lit",
-        type=str,
-        metavar='"Google Chrome"',
-        help="Enter the name of the Kandji library item.",
+    # add grouped arguments that cannot be called together
+    group_actions = parser.add_mutually_exclusive_group()
+
+    group_actions.add_argument(
+        "--blankpush",
+        action="store_true",
+        help="This action sends an MDM command to initiate a blank push. "
+        "A Blank Push utilizes the same service that sends MDM profiles and commands. "
+        "It's meant for verifying a connection to APNs, but it sometimes helps to get "
+        "pending push notifications that are stuck in the queue to complete. ",
         required=False,
     )
 
-    parser.add_argument(
-        "--parameter",
-        "--param",
+    group_actions.add_argument(
+        "--remote-desktop",
         type=str,
-        metavar='"Set Computer Name"',
-        help="Enter the name of the Parameter.",
+        metavar="[on|off]",
+        help="This action with send an MDM command to set macOS remote desktop to on "
+        "or off remoted desktop for macOS.",
+        required=False,
+    )
+
+    group_actions.add_argument(
+        "--restart",
+        action="store_true",
+        help="This action sends an MDM command to remotely restart a device.",
+        required=False,
+    )
+
+    group_actions.add_argument(
+        "--shutdown",
+        action="store_true",
+        help="This action sends an MDM command to shutdown a device.",
+        required=False,
+    )
+
+    group_actions.add_argument(
+        "--update-inventory",
+        action="store_true",
+        help="This action sends a few MDM commands to start a check-in for a device, "
+        "initiating the daily MDM commands and MDM logic. MDM commands sent with this "
+        "action include: AvailableOSUpdates, DeviceInformation, SecurityInfo, "
+        "UserList, InstalledApplicationList, ProfileList, and CertificateList.",
+        required=False,
+    )
+
+    # add grouped arguments that cannot be called together
+    group_search = parser.add_mutually_exclusive_group()
+
+    group_search.add_argument(
+        "--serialnumber",
+        type=str,
+        metavar="XX7FFXXSQ1GH",
+        help="Look up a device by its serial number and send an action to it.",
+        required=False,
+    )
+
+    group_search.add_argument(
+        "--platform",
+        type=str,
+        metavar="Mac",
+        help="Send an action to a specific device family in a Kandji instance. "
+        "Example: Mac, iPhone, iPad.",
+        required=False,
+    )
+
+    group_search.add_argument(
+        "--all-devices",
+        action="store_true",
+        help="Send an action to all devices in a Kandji instance. If this option is "
+        "used, you will see a prompt to comfirm the action and will be required to "
+        "enter a code to continue.",
         required=False,
     )
 
     parser.version = __version__
     parser.add_argument("--version", action="version", help="Show this tool's version.")
-    # parser.add_argument("-v", "--verbose", action="store", metavar="LEVEL")
 
-    # handle some errors
     args = vars(parser.parse_args())
     if not any(args.values()):
         print()
-        parser.error("No command options given. Use the --help flag for more details\n")
+        parser.error(
+            "No command options given. Use the --help flag for more details.\n"
+        )
+
+    args = parser.parse_args()
+
+    if not (
+        args.blankpush
+        or args.remote_desktop
+        or args.restart
+        or args.shutdown
+        or args.update_inventory
+    ):
+        print()
+        parser.error("No action provided. Use the --help flag for more details.\n")
 
     return parser.parse_args()
 
@@ -158,6 +226,14 @@ def error_handling(resp, resp_code, err_msg):
     if resp_code == requests.codes["bad_request"]:
         print(f"\n\t{err_msg}")
         print(f"\tResponse msg: {resp.text}\n")
+        if "Command is not allowed" in resp.text:
+            print(
+                "\tThis could mean that the device is already in the desired state sent"
+                " in the command. \n\n"
+                '\tFor example, if the "DisableRemoteDesktop" command is sent to a\n'
+                "\tdevice that already has Remote Management disabled, there is no\n"
+                "\tneed to send that command to the device."
+            )
     # 401
     elif resp_code == requests.codes["unauthorized"]:
         print("Make sure that you have the required permissions to access this data.")
@@ -175,7 +251,7 @@ def error_handling(resp, resp_code, err_msg):
         print("\nWe cannot find the one that you are looking for...")
         print("Move along...")
         print(f"\tError: {err_msg}")
-        print(f"\tResponse msg: {resp}")
+        print(f"\tResponse msg: {resp.text}")
         print(
             "\tPossible reason: If this is a device it could be because the device is "
             "not longer\n"
@@ -225,7 +301,7 @@ def kandji_api(method, endpoint, params=None, payload=None):
         )
 
         # If a successful status code is returned (200 and 300 range)
-        if response:
+        if response.status_code in [200, 201, 204]:
             try:
                 data = response.json()
             except Exception:
@@ -256,12 +332,16 @@ def get_devices(params=None, ordering="serial_number"):
         params.update(
             {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
         )
+        # print(params)
+
         # check to see if a platform was sprecified
         response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
+
         count += len(response)
         offset += limit
         if len(response) == 0:
             break
+
         # breakout the response then append to the data list
         for record in response:
             data.append(record)
@@ -273,35 +353,82 @@ def get_devices(params=None, ordering="serial_number"):
     return data
 
 
-def device_status_category(data, category):
-    """Return the device library items."""
-    return data[category]
+def send_device_action(devices, action, payload=None):
+    """Return device details."""
+    # list to hold all device detail records
+    data = []
+    # Get device details for each device
+    count = 0
+
+    for device in devices:
+
+        print(f"Attempting to send a \"{action}\" action to {device['serial_number']}")
+
+        response = kandji_api(
+            method="POST",
+            endpoint=f"/v1/devices/{device['device_id']}/action/{action}",
+            payload=payload,
+        )
+
+        # wait a few seconds for the command to complete before checking the status of
+        # the command.
+        sleep(5)
+
+        get_mdm_command_status(device["device_id"])
+
+        data.append(response)
+        count += 1
+
+    return data
 
 
-def write_report(input_, report_name):
-    """Write report."""
-    # write report to csv file
-    with open(report_name, mode="w", encoding="utf-8") as report:
+def get_mdm_command_status(device_id):
+    """Return MDM status code."""
+    mdm_status = {
+        1: "Command is Pending",
+        2: "Command is running",
+        3: "Command completed",
+        4: "Command failed",
+        5: 'Command received "Not Now" response',
+    }
 
-        out_fields = []
+    # updateinventory sends multiple MDM commands
+    update_inv_action = [
+        "AvailableOSUpdates",
+        "DeviceInformation",
+        "SecurityInfo",
+        "UserList",
+        "InstalledApplicationList",
+        "ProfileList",
+        "CertificateList",
+    ]
 
-        # automatically loop over keys in the payload to pullout header fields
-        for item in input_:
-            for key in item.keys():
-                if key not in out_fields:
-                    out_fields.append(key)
+    last_command_sent = kandji_api("GET", f"/v1/devices/{device_id}/commands")[
+        "commands"
+    ]["results"][-1]
 
-        writer = csv.DictWriter(report, fieldnames=out_fields)
+    print("")
+    print("Commmand information")
+    print("----------------------")
+    print(f"Command name: {last_command_sent['command_type']}")
+    print(
+        "Command status: "
+        f"{mdm_status[last_command_sent['status']]}({last_command_sent['status']})"
+    )
+    print(f"Number of attempts: {last_command_sent['attempts']}")
+    print(f"Last attempted: {last_command_sent['last_pushed']}")
+    print(f"Date requested: {last_command_sent['date_requested']}")
+    print(f"Date completed: {last_command_sent['date_completed']}")
 
-        # Write headers to CSV
-        writer.writeheader()
-
-        # Loop over the list sorted by serial_number
-        for item in input_:
-            writer.writerow(item)
+    print(last_command_sent)
+    # for command in command_results:
+    #     if command["status"] in mdm_status.keys():
+    #         print(command["command_type"], command["status"])
+    #         print(mdm_status.keys(command["status"]))
 
 
 def main():
+    """Run main logic."""
     # validate vars
     var_validation()
 
@@ -314,73 +441,77 @@ def main():
     # dict placeholder for params passed to api requests
     params_dict = {}
 
-    # Report name
-    if arguments.library_item:
-        report_name = f"{arguments.library_item.lower().replace(' ', '_')}_status_report_{datetime.today().strftime('%Y%m%d')}.csv"
-        search_term = arguments.library_item
+    # evaluate options
+    if arguments.serialnumber:
+        params_dict.update({"serial_number": f"{arguments.serialnumber}"})
+        print(
+            "Looking for device record with the following serial number: "
+            f"{arguments.serialnumber}"
+        )
 
-    if arguments.parameter:
-        report_name = f"{arguments.parameter.lower().replace(' ', '_')}_status_report_{datetime.today().strftime('%Y%m%d')}.csv"
-        search_term = arguments.parameter
+    if arguments.platform:
+        params_dict.update({"platform": f"{arguments.platform}"})
+
+    if arguments.blankpush:
+        action = "blankpush"
+
+    if arguments.remote_desktop:
+        action = "remotedesktop"
+
+        if arguments.remote_desktop == "on":
+            payload = {"EnableRemoteDesktop": True}
+        else:
+            payload = {"EnableRemoteDesktop": False}
+
+        # encode the payload
+        payload = json.dumps(payload)
+
+    if arguments.restart:
+        action = "restart"
+
+    if arguments.shutdown:
+        action = "shutdown"
+
+    if arguments.update_inventory:
+        action = "updateinventory"
+
+    if arguments.all_devices:
+        print(
+            f"The {action} command will go out to ALL devices in the Kandji instance..."
+        )
+        user_answer = input(
+            'This is NOT reversable. Are you sure you want to do this? Type "Yes" to '
+            "continue: "
+        )
+
+        if user_answer == "Yes":
+
+            check_number = random.randint(0, 9999)
+            check_string = f"{check_number:>4}"
+            print(f"\n\tCode: {check_number}")
+            response = input("\tPlease enter the code above: ")
+            print("")
+
+            if response != check_string:
+                print("Failed code check!")
+                sys.exit("Exiting...")
+
+            print("Code verification complete.")
+
+        else:
+            sys.exit("Exiting...")
 
     # Get all device inventory records
     print("Getting device inventory from Kandji...")
     device_inventory = get_devices(params=params_dict)
-    print(f"Total records: {len(device_inventory)}\n")
-    print(f'Looking for the status of "{search_term}" ...')
 
-    # holds information to be written to he report
-    report_payload = []
+    print(f"Total records returned: {len(device_inventory)}\n")
 
-    for device in device_inventory:
-        status_data = kandji_api(
-            method="GET", endpoint=f"/v1/devices/{device['device_id']}/status"
-        )
-
-        if arguments.library_item:
-            # We are looking for a library item
-            library_items = device_status_category(status_data, "library_items")
-            for item in library_items:
-                if item["name"] == search_term:
-                    item_info = {
-                        "serial_number": device["serial_number"].upper(),
-                        "device_name": device["device_name"],
-                        "blueprint_name": device["blueprint_name"],
-                        "name": item["name"],
-                        "status": item["status"],
-                        "type": item["type"],
-                        "reported_at": item["reported_at"],
-                        "last_audit_log": item["last_audit_log"],
-                        "log": item["log"],
-                    }
-                    report_payload.append(item_info)
-
-        if arguments.parameter:
-            # We are looking for a parameter
-            parameter_items = device_status_category(status_data, "parameters")
-            for item in parameter_items:
-                if item["name"] == search_term:
-                    item_info = {
-                        "serial_number": device["serial_number"].upper(),
-                        "device_name": device["device_name"],
-                        "blueprint_name": device["blueprint_name"],
-                        "status": item["status"],
-                        "name": item["name"],
-                        "category": item["category"],
-                        "subcategory": item["subcategory"],
-                    }
-                    report_payload.append(item_info)
-
-    if len(report_payload) < 1:
-        print(f"No items with name {search_term} ...")
-        print("No report generated...")
-    else:
-        print(f"Found {len(report_payload)} devices with {search_term} assigned ...")
-        print(f"Generating {search_term} status report ...")
-        write_report(report_payload, report_name)
-
-        print("Kandji report complete ...")
-        print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
+    # send the action to the device(s)
+    try:
+        send_device_action(devices=device_inventory, action=action, payload=payload)
+    except Exception:
+        send_device_action(devices=device_inventory, action=action)
 
 
 if __name__ == "__main__":
