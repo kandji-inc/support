@@ -39,16 +39,16 @@ This Shell script creates custom shortcuts on user's desktops for http(s), smb, 
 ### Examples
 
 - Custom Icon:
-<br><img src="/scripts/createInternetShortcut/images/CustomIcon-code.png" width="600" align="middle"></img><img src="/scripts/createInternetShortcut/images/CustomIcon-icon.png" width="150" align="middle"></img>
+<br><img src="/Scripts/createInternetShortcut/images/CustomIcon-code.png" width="600" align="middle"></img><img src="/Scripts/createInternetShortcut/images/CustomIcon-icon.png" width="150" align="middle"></img>
 
 - HTTP and HTTPS Default Icon:
-<br><img src="/scripts/createInternetShortcut/images/DefaultHTTPS-code.png" width="600" align="middle"></img><img src="/scripts/createInternetShortcut/images/DefaultHTTPS-icon.png" width="150" align="middle"></img>
+<br><img src="/Scripts/createInternetShortcut/images/DefaultHTTPS-code.png" width="600" align="middle"></img><img src="/Scripts/createInternetShortcut/images/DefaultHTTPS-icon.png" width="150" align="middle"></img>
 
 - SMB and FTP Default Icon:
-<br><img src="/scripts/createInternetShortcut/images/DefaultSMB-code.png" width="600" align="middle"></img><img src="/scripts/createInternetShortcut/images/DefaultSMB-icon.png" width="150" align="middle"></img>
+<br><img src="/Scripts/createInternetShortcut/images/DefaultSMB-code.png" width="600" align="middle"></img><img src="/Scripts/createInternetShortcut/images/DefaultSMB-icon.png" width="150" align="middle"></img>
 
 - VNC Default Icon:
-<br><img src="/scripts/createInternetShortcut/images/DefaultVNC-code.png" width="600" align="middle"></img><img src="/scripts/createInternetShortcut/images/DefaultVNC-icon.png" width="150" align="middle"></img>
+<br><img src="/Scripts/createInternetShortcut/images/DefaultVNC-code.png" width="600" align="middle"></img><img src="/Scripts/createInternetShortcut/images/DefaultVNC-icon.png" width="150" align="middle"></img>
 
 
 
