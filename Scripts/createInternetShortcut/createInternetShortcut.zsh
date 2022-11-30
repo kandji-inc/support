@@ -5,26 +5,26 @@
 ########################################################################################
 #
 #   Created - 09/13/2022
+#   Updated - 11/19/2022
 #
 ########################################################################################
 # Tested macOS Versions
 ########################################################################################
 #
-#   - 13.0.0 beta 7
-#   - 12.5.1
+#   - 13.0.1
+#   - 12.6.1
 #
 ########################################################################################
 # Software Information
 ########################################################################################
 #
 #   This script will create a shortcut on the active user's desktop based on the values
-#   set in the Variables section. The script supports http, https, smb, ftp, and vnc
-#   URLs.  If the ICON variable is left blank, the script will use a generic icon for
-#   each 
+#   set in the variables section. The script supports http, https, smb, ftp, and vnc
+#   URIs.  If the ICON variable is left blank, the script will use a generic icon.
 #
-#   To avoid user prompts, please create a Privacy Profile allowing the Kandji Agent
+#   To avoid user prompts, please create a Privacy Profile granting the Kandji Agent
 #   access to Finder Apple Events.
-#   
+#
 ########################################################################################
 # License Information
 ########################################################################################
@@ -49,20 +49,21 @@
 ########################################################################################
 
 # Script version
-VERSION="1.0.0"
+# shellcheck disable=SC2034
+VERSION="1.0.2"
 
 ########################################################################################
 ###################################### VARIABLES #######################################
 ########################################################################################
 
-# The address that you want the shortcut to open
+# The address that you want the shortcut to open.
 HOSTNAME="https://kandji.io"
 
-# The name that will display to users
+# The name that will display to users.
 DISPLAYNAME="My Favorite MDM"
 
-# Full path to the icon to be used for the shortcut
-# A blank variable will use the macOS default webloc icon
+# Full path to the icon to be used for the shortcut.  A blank variable will use a
+# default icon, depending on the link type.
 # example: ICON="/Library/Kandji/Kandji Agent.app/Contents/Resources/AppIcon.icns"
 ICON=
 
@@ -70,15 +71,13 @@ ICON=
 ############################ MAIN LOGIC - DO NOT MODIFY BELOW ##########################
 ########################################################################################
 
-# Do not modify the below, there be dragons. Modify at your own risk.
-
 # Validate that the user supplied the required variables
 if [ -z "$HOSTNAME" ]; then
-    echo "HOSTNAME variable is empty, please set and try again."
+    /bin/echo "HOSTNAME variable is empty, please set and try again."
     exit 1
 fi
 if [ -z "$DISPLAYNAME" ]; then
-    echo "DISPLAYNAME variable is empty, please set and try again."
+    /bin/echo "DISPLAYNAME variable is empty, please set and try again."
     exit 1
 fi
 
@@ -101,26 +100,26 @@ if [[ $HOSTNAME == vnc* ]]; then
 fi
 
 # Gather current user's UID and home directory path
-CURRENT_USER=$(ls -l /dev/console | awk '{print $3}')
-CURRENT_USER_UID=$(id -u $CURRENT_USER)
-HOMEDIR=$(dscl . -read /Users/$CURRENT_USER NFSHomeDirectory | cut -d' ' -f2)
+CURRENT_USER=$(/bin/ls -l /dev/console | awk '{print $3}')
+CURRENT_USER_UID=$(/usr/bin/id -u "$CURRENT_USER")
+HOMEDIR=$(/usr/bin/dscl . -read /Users/"$CURRENT_USER" NFSHomeDirectory | /usr/bin/cut -d' ' -f2)
 
 # Determine if the shortcut already exists and if it does, abort.
 if [ -e "$HOMEDIR/Desktop/$DISPLAYNAME.$FILEEXT" ]; then
-    echo "Shortcut Already Exists at $HOMEDIR/Desktop/$DISPLAYNAME.$FILEEXT...exiting"    
+    /bin/echo "Shortcut Already Exists at $HOMEDIR/Desktop/$DISPLAYNAME.$FILEEXT...exiting"
     exit 0
 fi
 
 # Set SHORTCUTICON with user input, or if empty, with default icon
-if [ ! -z "$ICON" ]; then
+if [ -n "$ICON" ]; then
     SHORTCUTICON=$ICON
 else
-    echo "ICON variable not defined, using default icon..."
+    /bin/echo "ICON variable not defined, using default icon..."
     SHORTCUTICON=$DEFAULTICON
 fi
 
 # Create the shortcut
-launchctl asuser $CURRENT_USER_UID osascript << EOF 
+/bin/launchctl asuser "$CURRENT_USER_UID" osascript <<EOF
     tell application "Finder"
 	    make new internet location file at desktop to "$HOSTNAME" with properties {name:"$DISPLAYNAME"}
     end tell
