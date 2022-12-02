@@ -26,15 +26,15 @@
 #   Original credit to Tony Williams (Honestpuck)
 #   https://github.com/Honestpuck/homebrew.sh/blob/master/homebrew-3.3.sh
 #
-#   This script silently installs homebrew as the most common local user.
-#   This script can be set to "every 15 minutes" or "daily" to ensure homebrew remains
+#   This script silently installs Homebrew as the most common local user.
+#   This script can be set to "every 15 minutes" or "daily" to ensure Homebrew remains
 #   installed.
 #
-#   NOTE: if a user has pre existing CLI sessions open, the brew command may not be
+#   NOTE: if a user has pre-existing CLI sessions open, the brew command may not be
 #   recognized. The user will need to relaunch their sessions (ex - exec zsh -l) or
-#   start a new sessions so that brew is seen in their PATH.
+#   start a new session so that brew is seen in their PATH.
 #
-#   For the latest on brew Apple Silicon compatibility see: https://github.com/Homebrew/brew/issues/7857
+#   For the latest on brew Apple Silicon compatibility, see: https://github.com/Homebrew/brew/issues/7857
 #
 ########################################################################################
 # License Information
@@ -72,22 +72,22 @@
 #           - Change how brew doctor is interpreted and let admin know to check logs
 #             for more info. Apple Silicon has a warning showing that brew is not
 #             installed at /usr/local and might have unexpected behavior some app
-#             installs that have not updated for Apple Silicon.
+#             installs that have not been updated for Apple Silicon.
 #       - Added separate permissions and ownership logic for brew installed on Apple
 #         Silicon
 #       - Added local logging to /Library/Logs/homebrew_install.log
-#       - Added check for xcode cli tools and will install them if not present
+#       - Added check for Xcode CLI tools and will install them if not present
 #       - Added support for homebrew install as a standard user.
 #
 #   1.3.1
-#       - Added logic to determine most common user if a logged in user is not found.
+#       - Added logic to determine most common user if a logged-in user is not found.
 #       - Added additional logic to validate OS versions for Xcode CLI tools
 #         compatibility
 #
 #   1.4.0
 #       - Refactored brew install process so that the curl command is only downloading
 #         the latest brew tarball file to the correct location
-#       - Added function that creates the brew enviroment
+#       - Added function that creates the brew environment
 #       - General code refactor
 #       - Added additional logging output
 #
@@ -96,21 +96,24 @@
 #
 #   1.4.2
 #       - Added -a flag to tee binary to ensure that the local log file is appended to
-#         and not over written. (credit - Glen Arrowsmith)
+#         and not overwritten. (credit - Glen Arrowsmith)
 #       - Added additional logging
 #       - updated latest tested OS versions
 #
 #   1.4.3
 #       - Updated logging to note where brew is not able to be called from a CLI
-#         sessions that is already in progress. Workaround was to close all CLI
-#         sessions then launch a new session.
+# session that is already in progress. Workaround was to close all CLI
+#         sessions and then launch a new session.
 #       - Added logic to update the user's PATH in either .zshrc or .bashrc with path
 #         to the brew binary.
+#
+#   1.4.4
+#       - Grammar fixes and updates :P
 #
 ########################################################################################
 
 # Script version
-VERSION="1.4.2"
+VERSION="1.4.4"
 
 ########################################################################################
 ###################################### VARIABLES #######################################
@@ -130,8 +133,7 @@ logging() {
     #
     # Takes in a log level and log string and logs to /Library/Logs/$script_name if a
     # LOG_PATH constant variable is not found. Will set the log level to INFO if the
-    # first built-in $1 is
-    # passed as an empty string.
+    # first built-in $1 is passed as an empty string.
     #
     # Args:
     #   $1: Log level. Examples "info", "warning", "debug", "error"
@@ -140,9 +142,9 @@ logging() {
     # Examples:
     #   logging "" "Your info log statement here ..."
     #   logging "warning" "Your warning log statement here ..."
-    log_level=$(printf "$1" | /usr/bin/tr '[:lower:]' '[:upper:]')
+    log_level=$(printf "%s" "$1" | /usr/bin/tr '[:lower:]' '[:upper:]')
     log_statement="$2"
-    script_name="$(/usr/bin/basename $0)"
+    script_name="$(/usr/bin/basename "$0")"
     prefix=$(/bin/date +"[%b %d, %Y %Z %T $log_level]:")
 
     # see if a LOG_PATH has been set
@@ -150,12 +152,12 @@ logging() {
         LOG_PATH="/Library/Logs/${script_name}"
     fi
 
-    if [[ -z $log_level   ]]; then
+    if [[ -z $log_level ]]; then
         # If the first builtin is an empty string set it to log level INFO
         log_level="INFO"
     fi
 
-    if [[ -z $log_statement   ]]; then
+    if [[ -z $log_statement ]]; then
         # The statement was piped to the log function from another command.
         log_statement=""
     fi
@@ -169,12 +171,12 @@ logging() {
 }
 
 check_brew_install_status() {
-    # Check brew insall status.
+    # Check brew install status.
     brew_path="$(/usr/bin/find /usr/local/bin /opt -maxdepth 3 -name brew 2>/dev/null)"
 
-    if [[ -n $brew_path   ]]; then
-        # If the brew binary is found just run brew update and exit
-        logging "info" "Homebrew already installed at $brew_path ..."
+    if [[ -n $brew_path ]]; then
+        # If the brew binary is found, just run brew update and exit
+        logging "info" "Homebrew already installed at $brew_path..."
 
         logging "info" "Updating homebrew ..."
         /usr/bin/su - "$current_user" -c "$brew_path update --force" |
@@ -184,13 +186,14 @@ check_brew_install_status() {
         exit 0
 
     else
-        logging "info" "Homebrew is not installed ..."
+        logging "info" "Homebrew is not installed..."
     fi
 }
 
 rosetta2_check() {
     # Check for and install Rosetta2 if needed.
     # $1: processor_brand
+
     # Determine the processor brand
     if [[ "$1" == *"Apple"* ]]; then
         logging "info" "Apple Processor is present..."
@@ -213,16 +216,10 @@ rosetta2_check() {
             # Installs Rosetta
             /usr/sbin/softwareupdate --install-rosetta --agree-to-license |
                 /usr/bin/tee -a "${LOG_PATH}"
-
-            # Checks the outcome of the Rosetta install
-            if [[ $? -ne 0 ]]; then
-                logging "error" "Rosetta2 install failed..."
-                exit 1
-            fi
         fi
 
     else
-        logging "info" "Apple Processor is not present... Rosetta2 not needed"
+        logging "info" "Apple Processor is not present...Rosetta2 is not needed"
     fi
 }
 
@@ -231,8 +228,9 @@ xcode_cli_tools() {
     # Run command to check for an Xcode cli tools path
     /usr/bin/xcrun --version >/dev/null 2>&1
 
-    # check to see if there is a valid CLI tools path
-    if [[ $? -eq 0 ]]; then
+    # check to see if there is a valide CLI tools path
+    # shellcheck disable=SC2181
+    if [[ "$?" -eq 0 ]]; then
         logging "info" "Valid Xcode path found. No need to install Xcode CLI tools ..."
 
     else
@@ -241,7 +239,7 @@ xcode_cli_tools() {
         # find out when the OS was built
         build_year=$(/usr/bin/sw_vers -buildVersion | cut -c 1,2)
 
-        # Trick softwareupdate into giving us everything it knows about xcode cli tools
+        # Trick softwareupdate into giving us everything it knows about Xcode CLI tools
         xclt_tmp="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
 
         # create the file above
@@ -262,7 +260,6 @@ xcode_cli_tools() {
                 /usr/bin/awk '/\*\ Command Line Tools/ { $1=$1;print }' |
                 /usr/bin/grep -i "macOS" |
                 /ussr/bin/sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | /usr/bin/cut -c 2-)
-
         fi
 
         if [[ "${cmd_line_tools}" == "" ]]; then
@@ -275,12 +272,12 @@ xcode_cli_tools() {
 
         if (($(/usr/bin/grep -c . <<<"${cmd_line_tools}") > 1)); then
             cmd_line_tools_output="${cmd_line_tools}"
-            cmd_line_tools=$(printf "${cmd_line_tools_output}" | /usr/bin/tail -1)
+            cmd_line_tools=$(printf "%s" "${cmd_line_tools_output}" | /usr/bin/tail -1)
 
             logging "info" "Latest Xcode CLI tools found: $cmd_line_tools"
         fi
 
-        # run softwareupdate to install xcode cli tools
+        # run softwareupdate to install Xcode CLI tools
         logging "info" "Installing the latest Xcode CLI tools ..."
 
         # Sending this output to the local homebrew_install.log as well as stdout
@@ -316,9 +313,7 @@ set_brew_prefix() {
 
 create_brew_environment() {
     # Create the brew environment.
-    #
-    # Create of the directories needed by brew, set the ownership, and set permissions.
-    #
+    # Create the directories needed by brew, set the ownership, and set permissions.
     # $1: brew_prefix
     # $2: current_user
     logging "info" "Creating directories required by brew ..."
@@ -337,26 +332,22 @@ create_brew_environment() {
 
 reset_source() {
     # Reset the shell source so that brew doctor will find brew in the user's PATH
-    if [[ "/Users/$current_user/.zshrc" ]]; then
+    if [[ -e "/Users/$current_user/.zshrc" ]]; then
         /usr/bin/su - "$current_user" -c exec zsh -l |
             /usr/bin/tee -a "${LOG_PATH}"
-
-    elif [[ "/Users/$current_user/.bashrc" ]]; then
+    elif [[ -e "/Users/$current_user/.bashrc" ]]; then
         /usr/bin/su - "$current_user" -c exec bash -l |
             /usr/bin/tee -a "${LOG_PATH}"
-
     else
         logging "warning" "Unable to reset shell session..."
         logging "warning" "The user may need to open a new CLI session to call brew from PATH. Otherwise, brew can be called using the direct path."
-
     fi
-
 }
 
 brew_doctor() {
     # Check Homebrew install status
     #
-    # if on Apple Silicon you may see the following output from brew doctor
+    # if on Apple Silicon, you may see the following output from brew doctor
     #
     # Please note that these warnings are just used to help the Homebrew maintainers
     # with debugging if you file an issue. If everything you use Homebrew for is
@@ -375,8 +366,8 @@ brew_doctor() {
     # $2: current_user
 
     /usr/bin/su - "$2" -c "$1/bin/brew doctor" 2>&1 | /usr/bin/tee -a "${LOG_PATH}"
-
-    if [[ $? -ne 0 ]]; then
+    # shellcheck disable=SC2181
+    if [[ "$?" -ne 0 ]]; then
         logging "error" "brew doctor has errors. Review logs to see if action needs to be taken ..."
     else
         logging "info" "Homebrew installation complete! Your system is ready to brew."
@@ -390,6 +381,7 @@ brew_doctor() {
 # Do not modify the below, there be dragons. Modify at your own risk.
 
 logging "info" "--- Start homebrew install log ---"
+logging "info" "Script verion: $VERSION"
 /bin/echo "Log file at /Library/Logs/homebrew_install.log"
 
 # Get the processor brand information
@@ -400,13 +392,13 @@ current_user=$(/usr/sbin/scutil <<<"show State:/Users/ConsoleUser" |
     /usr/bin/awk '/Name :/ && ! /loginwindow/ && ! /root/ && ! /_mbsetupuser/ { print $3 }' |
     /usr/bin/awk -F '@' '{print $1}')
 
-# Make sure that we can find the most recent logged in user
+# Make sure that we can find the most recent logged-in user
 if [[ $current_user == "" ]]; then
     logging "info" "Current user not logged in ..."
     logging "info" "Attempting to determine the most common user..."
 
-    # Because someone other than the current user was returned we are going to look at
-    # who uses the this Mac the most and then set current user to that user.
+    # Because someone other than the current user was returned, we are going to look at
+    # who uses this Mac the most, then set the current user to that user.
     current_user=$(/usr/sbin/ac -p | /usr/bin/sort -nk 2 |
         /usr/bin/grep -E -v "total|admin|root|mbsetup|adobe" | /usr/bin/tail -1 |
         /usr/bin/xargs | /usr/bin/cut -d " " -f1)
@@ -424,7 +416,7 @@ else
 
 fi
 
-logging "info" "Checking to see if Homebew is already install on this Mac ..."
+logging "info" "Checking to see if Homebrew is already installed on this Mac ..."
 check_brew_install_status
 
 logging "info" "Checking to see if Rosetta2 is needed ..."
@@ -434,7 +426,7 @@ logging "info" "Checking to see if Xcode cli tools are needed ..."
 xcode_cli_tools
 
 logging "info" "Determining Homebrew path prefix ..."
-brew_prefix=$(set_brew_prefix $processor_brand)
+brew_prefix=$(set_brew_prefix "$processor_brand")
 
 logging "info" "Creating the Homebrew directory at $brew_prefix/Homebrew ..."
 /bin/mkdir -p "$brew_prefix/Homebrew"
@@ -442,7 +434,7 @@ logging "info" "Creating the Homebrew directory at $brew_prefix/Homebrew ..."
 logging "info" "Downloading homebrew ..."
 
 # Using curl to download the latest release of homebrew tarball and put it in
-# brew_prefix/Homebew If brew updates to master to main, the url will need to be
+# brew_prefix/Homebrew If brew updates to master to main, the url will need to be
 # adjusted.
 /usr/bin/curl --fail --silent --show-error --location \
     --url "https://github.com/Homebrew/brew/tarball/master" |
@@ -472,15 +464,15 @@ logging "info" "Running brew cleanup ..."
 # Check for missing PATH
 get_path_cmd=$(/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew doctor 2>&1 | /usr/bin/grep 'export PATH=' | /usr/bin/tail -1")
 
-# Add Homebrew's "bin" to target user PATH
+# Add homebrew's "bin" to target user PATH
 if [[ -n ${get_path_cmd} ]]; then
     logging "info" "Running ${get_path_cmd} to add brew to PATH..."
-    /usr/bin/su - "$current_user" -c ${get_path_cmd}
+    /usr/bin/su - "$current_user" -c "${get_path_cmd}"
 else
     logging "warning" "Unable to add brew to path..."
 fi
 
-logging "info" "Resetting the user's shell source file so that brew doctor can find it..."
+logging "info" "Resetting the user\'s shell source file so that brew doctor can find it..."
 logging "info" "The user may need to open a new CLI session to call brew from their PATH."
 reset_source
 
