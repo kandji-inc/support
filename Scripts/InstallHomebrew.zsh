@@ -1,26 +1,27 @@
 #!/usr/bin/env zsh
 
-########################################################################################
+################################################################################################
 # Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
-########################################################################################
+################################################################################################
 #
 #   Created on 08/10/2020
 #   Updated on 03/09/2022 - Matt Wilson
 #   Updated on 04/10/2022 - Matt Wilson, credit Glen Arrowsmith
 #   Updated on 11/04/2022 - Matt Wilson
+#   Updated on 01/06/2023 - Matt Wilson
 #
-########################################################################################
+################################################################################################
 # Tested macOS Versions
-########################################################################################
+################################################################################################
 #
-#   - 13.0
+#   - 13.1
 #   - 12.6
 #   - 11.7.1
 #   - 10.15.7
 #
-########################################################################################
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 #   Inspiration for portions of this script taken from homebrew-3.3.sh.
 #   Original credit to Tony Williams (Honestpuck)
@@ -36,30 +37,31 @@
 #
 #   For the latest on brew Apple Silicon compatibility, see: https://github.com/Homebrew/brew/issues/7857
 #
-########################################################################################
+###############################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 # CHANGELOG
-########################################################################################
+################################################################################################
 #
 #   1.2.0
 #       - Added check for Apple Silicon homebrew binary location
@@ -110,10 +112,15 @@
 #   1.4.4
 #       - Grammar fixes and updates :P
 #
-########################################################################################
+#   1.5.0
+#       - Moved logic for xcode install check up in the script to account for scenarios
+#         on Apple Silicon where cli tools require reinstalation when upgrading from
+#         one macOS version to the next.
+#
+################################################################################################
 
 # Script version
-VERSION="1.4.4"
+VERSION="1.5.0"
 
 ########################################################################################
 ###################################### VARIABLES #######################################
@@ -416,14 +423,14 @@ else
 
 fi
 
-logging "info" "Checking to see if Homebrew is already installed on this Mac ..."
-check_brew_install_status
+logging "info" "Checking to see if Xcode cli tools are needed ..."
+xcode_cli_tools
 
 logging "info" "Checking to see if Rosetta2 is needed ..."
 rosetta2_check "$processor_brand"
 
-logging "info" "Checking to see if Xcode cli tools are needed ..."
-xcode_cli_tools
+logging "info" "Checking to see if Homebrew is already installed on this Mac ..."
+check_brew_install_status
 
 logging "info" "Determining Homebrew path prefix ..."
 brew_prefix=$(set_brew_prefix "$processor_brand")
