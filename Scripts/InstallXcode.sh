@@ -79,7 +79,7 @@ downloadFile() {
 }
 
 getDownloadSize() {
-	/usr/bin/curl -sI "$finalURL" | /usr/bin/grep -i Content-Length | /usr/bin/awk '{print $2}' | /usr/bin/tr -d '\r'
+	/usr/bin/curl -sI "$finalURL" | /usr/bin/grep -i ^Content-Length | /usr/bin/awk '{print $2}' | /usr/bin/tr -d '\r'
 }
 
 dlPercent() {
