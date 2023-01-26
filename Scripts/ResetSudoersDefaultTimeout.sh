@@ -1,16 +1,23 @@
-#!/bin/bash
+#!/bin/zsh
+
 ################################################################################################
-# Created by Nicholas McDonald | se@kandji.io | Kandji, Inc. | Solutions Engineering
+# Created by Nicholas McDonald | support@kandji.io | Kandji, Inc. 
 ################################################################################################
+#
 # Created on 12/08/2020
+# Updated on 01/18/2023
+#
 ################################################################################################
 # Software Information
 ################################################################################################
+#
 # This script resets the sudoers timestamp_timeout value to 5
+#
 ################################################################################################
 # License Information
 ################################################################################################
-# Copyright 2020 Kandji, Inc. 
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -45,7 +52,7 @@ fi
 /bin/cp /etc/sudoers /tmp/sudoers-tmp
 
 #Uses sed to find and replace the default timestamp line
-/usr/bin/sed -i -backup 's/Defaults timestamp\_timeout\=0/Defaults timestamp\_timeout\=5/g' /tmp/sudoers-tmp
+/usr/bin/sed -i -backup 's/Defaults	timestamp\_timeout\=0/Defaults	timestamp\_timeout\=5/g' /tmp/sudoers-tmp
 
 #Uses visudo to validate the syntax of the new file prior to copying
 /usr/sbin/visudo -cf /tmp/sudoers-tmp
