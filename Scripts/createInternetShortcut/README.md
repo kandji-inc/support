@@ -8,6 +8,14 @@ This Shell script creates custom shortcuts on user's desktops for http(s), smb, 
 ### Dependencies
 
 - Privacy Profile (PPPC) granting the Kandji Agent access to Finder Apple Events.
+  - **Identifer Type:** Bundle ID
+  - **Identifier:** io.kandji.KandjiAgent
+  - **Code Requirement:** anchor apple generic and identifier "io.kandji.KandjiAgent" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = P3FGV63VK7)
+  - **App or Service:** AppleEvents
+    - **Access:** Allow
+    - **Receiver Identifier Type:** Bundle ID
+    - **Receiver Identifier:** com.apple.finder
+    - **Receiver Code Requirement:** identifier "com.apple.finder" and anchor apple
 
 
 ### Script Modification

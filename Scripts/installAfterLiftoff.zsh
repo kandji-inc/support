@@ -1,21 +1,23 @@
 #!/bin/zsh
 
-########################################################################################
+################################################################################################
 # Created by Brian Goldstein | support@kandji.io | Kandji, Inc.
+################################################################################################
 #
 #   Created - 05/07/2022
-#   Updated - 09/15/2022
+#   Updated - 1/18/2023
 #
-########################################################################################
+################################################################################################
 # Tested macOS Versions
-########################################################################################
+################################################################################################
 #
-#   13.0 beta 7
-#   12.5.1
+#   13.1
+#   12.6.1
 #
-########################################################################################
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
+#
 # This script creates a launchdaemon that will trigger the execution of a library item
 # as soon as Liftoff is closed.  This can be useful for some security platforms that
 # aggresively disrupt the network connectivity during install or require user
@@ -37,44 +39,43 @@
 # If the execution of the library item does not need to happen immediately after
 # Liftoff closes, it is advisable to keep it simple and put the above snippet in your
 # audit and enforce script and avoid using this custom script.
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-########################################################################################
-
+#
+################################################################################################
 # Script version
-VERSION="1.0.0"
+VERSION="1.0.1"
 
-########################################################################################
-###################################### VARIABLES #######################################
-########################################################################################
+################################################################################################
+########################################## VARIABLES ###########################################
+################################################################################################
 # Adjust this to match the Library Item name in the Kandji Web App. ie "Zscaler
 # Connector"
 
 LIBRARY_ITEM="Zscaler Connector"
 
-########################################################################################
-############################ MAIN LOGIC - DO NOT MODIFY BELOW ##########################
-########################################################################################
+################################################################################################
+################################ MAIN LOGIC - DO NOT MODIFY BELOW ##############################
+################################################################################################
 
 # Do not modify below, there be dragons. Modify at your own risk.
 daemonName="io.kandji.installAfterLiftoff"
@@ -93,7 +94,7 @@ until ! pgrep "Liftoff" >/dev/null
 	done
 
 # Execute Library Item
-/usr/local/bin/kandji library --item "$LIBRARY_ITEM"
+/usr/local/bin/kandji library --item "$LIBRARY_ITEM" -F
 
 # Clean Up After Yourself
 rm "/tmp/$daemonName.plist"
