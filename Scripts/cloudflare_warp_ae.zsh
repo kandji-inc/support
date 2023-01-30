@@ -1,20 +1,36 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
-###################################################################################################
-# Created by Matt Wilson | se@kandji.io | Kandji, Inc. | Solutions Engineering
-###################################################################################################
-# Created - 07/30/2021
-# Updated - 10/22/2021
-###################################################################################################
+################################################################################################
+# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+################################################################################################
+# Created on 2021-07-30
+# Updated on 2022-06-09
+# Updated on 2022-12.02
+# Updated on 2023-01-25 - Matt Wilson
+################################################################################################
+# Tested macOS Versions
+################################################################################################
+#
+#   13.2
+#   12.6.1
+#   11.6.5
+#
+################################################################################################
 # Software Information
-###################################################################################################
-# This script is designed to check if an application is present. If the app is present, the
-# script will check to see if a minimum version is being enforced. If a minimum app version is not
-# being enforced, the script will only check to see if the app is installed or not.
-###################################################################################################
+################################################################################################
+#
+#   This Audit & Enfrce script checks for the presence of an app to see if it is
+#   installed on a Mac. Optionally, a MINIMUM_ENFORCED_VERSION can be set, which tells
+#   this script to compare an
+#   installed app version to the minimum enforced app version set in the script the
+#   isntalled version of the provided APP_NAME. If the app cannot be found an installed
+#   version of "None" is returned.
+#
+################################################################################################
 # License Information
-###################################################################################################
-# Copyright 2021 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -31,168 +47,117 @@
 # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-###################################################################################################
-
-# Script version
-VERSION="1.1.0"
+#
+################################################################################################
 
 # zsh has a built-in operator that can actually do float compares; just gotta load it
 autoload is-at-least
 
-###################################################################################################
-###################################### VARIABLES ##################################################
-###################################################################################################
-# If you would like to enforce a minimum version, be sure to update the MINIMUM_ENFORCED_VERSION
-# variable with the version number that the audit script should enforce. (Example version number
-# 1.5.207.0). If MINIMUM_ENFORCED_VERSION is left blank, the audit script will not check for a
-# version and will only check for the presence of the Cloudflare WARP app at the defined APP_PATH.
-# MINIMUM_ENFORCED_VERSION="5.7.6 (1321)"
-MINIMUM_ENFORCED_VERSION="1.6.27.0"
+########################################################################################
+###################################### VARIABLES #######################################
+########################################################################################
 
-###################################################################################################
-
-# Make sure that the application matches the name of the app that will be installed.
-# This script will dynamically search for the application in the Applications folder. So
-# there is no need to define an application path. The app must either install in the
-# Applications folder or up to 3 sub-directories deep.
-#   For example /System/Applications/Utilities/Terminal.app
-# APP_NAME="zoom.us.app"
+# App info
 APP_NAME="Cloudflare WARP.app"
 
-# Change the PROFILE_PAYLOAD_ID_PREFIX variable to the profile prefix you want to wait on before
-# running the installer. If the profile is not found, this audit and enforce script will exit 00
-# and do nothing until the next kandji agent check-in.
-PROFILE_PAYLOAD_ID_PREFIX="io.kandji.cloudflare.C59FD676"
+# If you would like to enforce a minimum version, be sure to update the
+# MINIMUM_ENFORCED_VERSION variable with the version number that the audit script
+# should enforce. (Example version number 1.5.207.0). If MINIMUM_ENFORCED_VERSION is
+# left blank, the audit script will not check for a version and will only check for the
+# presence of the app. MINIMUM_ENFORCED_VERSION="5.7.6 (1321)"
+MINIMUM_ENFORCED_VERSION=""
 
-###################################################################################################
-###################################### FUNCTIONS ##################################################
-###################################################################################################
+# Change the PROFILE_ID_PREFIX variable to the profile prefix you want to wait on before
+# running the installer. The profile prefix below is associated with the settings
+# profile Kandji provided configuration profile.
+PROFILE_ID_PREFIX="io.kandji.cloudflare.EC275B21-ECA0"
 
-app_search() {
-    # Search for an app. If found return the path to the app otherwise return "None"
-    #
-    #   The application must exist on the local Mac and the name of the app must match the
-    #   application that is passed to the function. If any of these conditions are not met the
-    #   function will return of "None"
-    #
-    # $1 - Is the name of the application.
-    local app_name="$1"
-    local app_path=""
+# Service management profile prefix
+# NOTE: this profile only contains managed backgroud settings for macOS 13+
+# Change the SERVICE_MANAGEMENT_PREFIX variable to the profile prefix you want to wait
+# on before running the installer.
+SERVICE_MANAGEMENT_PREFIX="io.kandji.cloudflare.service-management"
 
-    # Uses the find binary to look for the app inside of the /Applications and /System/
-    # Applications directories up to 2 levels deep.
-    app_path="$(/usr/bin/find /Applications /System/Applications -maxdepth 2 -name $app_name)"
+########################################################################################
+##################################### FUNCTIONS ########################################
+########################################################################################
 
-    # Check to see if the app is installed.
-    if [[ ! -e "$app_path" ]] || [[ "$app_name" != "$(/usr/bin/basename $app_path)" ]]; then
-        # If the previous command returns true and the returned object exists and the app name
-        # that we are looking for is exactly equal to the app name found by the find command.
-        app_path="None"
-    fi
-
-    # Return the value of app_path
-    echo "$app_path"
+profile_search() {
+    # Look for a profile
+    # $1 - payload payload uuid
+    /usr/bin/profiles show | grep "$1" | sed 's/.*\ //'
 }
 
-return_installed_app_version() {
-    # Return the currently installed application version
-    local path="$1"
-    local inst_vers=""
-
-    inst_vers=$(/usr/bin/defaults read "$path/Contents/Info.plist" CFBundleShortVersionString)
-
-    if [[ "$?" -ne 0 ]]; then
-        #statements
-        inst_vers="None"
-    fi
-
-    echo "$inst_vers"
-}
-
-sanitize_app_version_number() {
-    # Make sure the app version number is in a form that can be used for comparison
-    #
-    # version_number: $1 is the first parameter passed to the function. It represents an
-    #                 Application's version number. The version number can be obtained
-    #                 programatically or manually passed to this function.
-    local version_number="$1"
-    local santized_version
-
-    # rem ( with: s/[`(]//g'
-    # rem ) with: s/[`)]//g'
-    santized_version="$(echo $version_number | /usr/bin/sed -e 's/[[:space:]]//g' -e 's/[`(]/./g' -e 's/[`)]//g' -e 's/[`-]/./g')"
-
-    echo "$santized_version"
-}
-
-vers_check() {
-    # is-at-least is a zsh built-in for float math
-    # returns exit 0 for true, exit 1 for false, so we can use || OR separators here
-    is-at-least "$1" "$2" && echo "greater than or equal to" || echo "less than"
-}
-
-###################################################################################################
-###################################### MAIN LOGIC #################################################
-###################################################################################################
-
-# All of the main logic be here ... modify at your own risk.
+########################################################################################
+###################################### MAIN LOGIC ######################################
+########################################################################################
 
 # The profiles variable will be set to an array of profiles that match the prefix in
-# the PROFILE_PAYLOAD_ID_PREFIX variable
-profiles=$(/usr/bin/profiles show | grep "$PROFILE_PAYLOAD_ID_PREFIX" | sed 's/.*\ //')
+# the PROFILE_ID_PREFIX variable
+profiles=$(profile_search "$PROFILE_ID_PREFIX")
 
-# If the PROFILE_PAYLOAD_ID_PREFIX is not found, exit 0 to wait for the next agent run.
+# If matching profiles are found exit 1 so the installer will run, else exit 0 to wait
 if [[ ${#profiles[@]} -eq 0 ]]; then
-    echo "no profiles with ID $PROFILE_PAYLOAD_ID_PREFIX were found ..."
-    echo "Waiting until the profile is installed before proceeding ..."
-    echo "Will check again at the next Kandji agent check-in ..."
+    /bin/echo "No profiles with ID $PROFILE_ID_PREFIX were found ..."
+    /bin/echo "Will check again at the next Kandji agent check in before moving on ..."
     exit 0
-else
-    echo "$APP_NAME Settings profile($PROFILE_PAYLOAD_ID_PREFIX) is installed ..."
 fi
 
-# Look for the app
-app_install_path="$(app_search $APP_NAME)"
+# macOS Version
+osvers_major="$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F '.' '{print $1}')"
 
-# Check to make sure that the app is installed on the system before doing anything else.
-if [[ "$app_install_path" == "None" ]]; then
-    echo "$APP_NAME not installed ..."
-    echo "Starting installation process ..."
+# macOS Ventura(13.0) or newer - this is for the managed background settings profile.
+if [[ "${osvers_major}" -ge 13 ]]; then
+    # The profiles variable will be set to an array of profiles that match the prefix in
+    # the SERVICE_MANAGEMENT_PREFIX variable
+    profiles=$(profile_search "$SERVICE_MANAGEMENT_PREFIX")
+
+    # If matching profiles are found exit 1 so the installer will run, else exit 0 to
+    # wait
+    if [[ ${#profiles[@]} -eq 0 ]]; then
+        /bin/echo "No profiles with ID $SERVICE_MANAGEMENT_PREFIX were found ..."
+        /bin/echo "Will check again at the next Kandji agent check in before moving on ..."
+        exit 0
+    fi
+
+    /bin/echo "Profile prefix $SERVICE_MANAGEMENT_PREFIX present ..."
+fi
+
+# This command looks in /Applications, /System/Applications, and /Library for the
+# existance of the app defined in $APP_NAME
+installed_path="$(/usr/bin/find /Applications /System/Applications /Library/ -maxdepth 3 -name "$APP_NAME" 2>/dev/null)"
+
+# Validate the path returned in installed_path
+if [[ ! -e "$installed_path" ]] || [[ "$APP_NAME" != "$(/usr/bin/basename "$installed_path")" ]]; then
+    /bin/echo "$APP_NAME not installed. Starting installation process ..."
     exit 1
 else
-    echo "$APP_NAME is installed at $app_install_path"
+    /bin/echo "$APP_NAME installed at $installed_path"
 fi
 
 # Check to see if the script is configured to enforce a minimum version
-if [[ -z "$MINIMUM_ENFORCED_VERSION" ]]; then
-    echo "This A&E script is not configured to check for a Minimum Enforced Version ..."
-    echo "Nothing to do ..."
-    exit 0
-fi
-
-# Get the installed version
-installed_version="$(return_installed_app_version $app_install_path)"
-
-# Make sure that the installed app version can be found before moving on.
-if [[ "$installed_version" == "None" ]]; then
-    echo "App version could not be determined for $APP_NAME"
-    echo "Starting installation process ..."
-    exit 1
-fi
-
-# Make the version number have the same dot format (x.x.x.x.n) for comparisons sake.
-installed_app_vers_sanitized="$(sanitize_app_version_number $installed_version)"
-min_enforced_app_vers_sanitized="$(sanitize_app_version_number $MINIMUM_ENFORCED_VERSION)"
-
-# Compare minimum enforced version to installed version
-version_check="$(vers_check $min_enforced_app_vers_sanitized $installed_app_vers_sanitized)"
-
-if [[ "$version_check" == *"less"* ]]; then
-    echo "$APP_NAME version \"$installed_version\" is installed and is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."
-    echo "Upgrading $APP_NAME ..."
-    exit 1
+if [[ -z $MINIMUM_ENFORCED_VERSION ]]; then
+    /bin/echo "This A&E script is not configured to check for a Minimum Enforced Version ..."
 else
-    echo "$APP_NAME version \"$installed_version\" is installed and is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."
-    echo "Nothing to do ..."
-    exit 0
+    # Get the installed app version
+    installed_version=$(/usr/bin/defaults read "$installed_path/Contents/Info.plist" CFBundleShortVersionString 2>/dev/null)
+
+    # make sure we got a version number back
+    if [[ -z "$installed_version" ]]; then
+        /bin/echo "App version could not be determined. Reinstalling $APP_NAME ..."
+        exit 1
+    fi
+
+    # Compare minimum enforced version to installed version using the zsh builtin operator is-at-least
+    version_check="$(is-at-least "$MINIMUM_ENFORCED_VERSION" "$installed_version" && /bin/echo "greater than or equal to" || /bin/echo "less than")"
+
+    if [[ $version_check == *"less"* ]]; then
+        /bin/echo "Installed version \"$installed_version\" is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."
+        /bin/echo "Upgrading $APP_NAME ..."
+        exit 1
+    else
+        /bin/echo "Installed version \"$installed_version\" is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."
+        /bin/echo "Nothing to do ..."
+        exit 0
+    fi
 fi

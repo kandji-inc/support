@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>PayloadContent</key>
+		<array>
+			<dict>
+				<key>PayloadType</key>
+				<string>com.apple.servicemanagement</string>
+				<key>Rules</key>
+				<array>
+					<dict>
+						<key>RuleType</key>
+						<string>TeamIdentifier</string>
+						<key>RuleValue</key>
+						<string>T4243N6PXZ</string>
+						<key>Comment</key>
+						<string>Watchman Monitoring Team ID</string>
+					</dict>
+				</array>
+				<key>PayloadDisplayName</key>
+				<string>Watchman Monitoring - Background items</string>
+				<key>PayloadOrganization</key>
+				<string>Kandji</string>
+				<key>PayloadIdentifier</key>
+				<string>io.kandji.watchman-monitoring.service-management.5EB7AC41-7EC2-40D4-918E-E47E3FBE7B77</string>
+				<key>PayloadUUID</key>
+				<string>5EB7AC41-7EC2-40D4-918E-E47E3FBE7B77</string>
+				<key>PayloadVersion</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>PayloadDisplayName</key>
+		<string>Watchman Monitoring Settings</string>
+		<key>PayloadDescription</key>
+		<string>Configures settings for managed background items.</string>
+		<key>PayloadEnabled</key>
+		<true/>
+		<key>PayloadIdentifier</key>
+		<string>08C9E55E-5AA9-4C1E-8FF0-FF3D311E7CA3</string>
+		<key>PayloadRemovalDisallowed</key>
+		<true/>
+		<key>PayloadScope</key>
+		<string>System</string>
+		<key>PayloadType</key>
+		<string>Configuration</string>
+		<key>PayloadUUID</key>
+		<string>08C9E55E-5AA9-4C1E-8FF0-FF3D311E7CA3</string>
+		<key>PayloadVersion</key>
+		<integer>1</integer>
+	</dict>
+</plist>
+
