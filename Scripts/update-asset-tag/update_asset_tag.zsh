@@ -5,13 +5,15 @@
 ###################################################################################################
 #
 #   Created - 12/09/2021
+#   Updated - 2023-01-12
 #
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
 #
-#   - 12.0.1
-#   - 11.6.1
+#   - 13.1
+#   - 12.6.1
+#   - 11.7.1
 #
 ###################################################################################################
 # Software Information
@@ -25,7 +27,7 @@
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2021 Kandji, Inc.
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -44,21 +46,29 @@
 # DEALINGS IN THE SOFTWARE.
 ###################################################################################################
 
-# Script version
-VERSION="1.0.1"
-
 ###################################################################################################
 ###################################### VARIABLES ##################################################
 ###################################################################################################
 
-# Base url
-BASE_URL="https://example.clients.us-1.kandji.io/api"
+# Kandji tenant subdomain
+SUBDOMAIN="accuhive" # accuhive
 
-# TOKEN
-TOKEN="bearer_token_here"
+# tenant region
+REGION="us" # us, eu
 
-# Content Type
-CONTENT_TYPE="application/json"
+# Kandji Bearer Token
+TOKEN="your_api_key_here"
+
+########################################################################################
+
+# Kandji API base URL
+if [[ "${REGION}" == "us" ]]; then
+    # If the region is us
+    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}-1.kandji.io/api"
+else
+    # if the region is eu
+    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}.kandji.io/api"
+fi
 
 ###################################################################################################
 ###################################### FUNCTIONS ##################################################

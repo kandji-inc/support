@@ -4,6 +4,11 @@
 
 This script is designed to be run from Kandji Self Service.
 
+### API Permissions
+
+- List Devices
+- Update Device
+
 ### Script modification
 
 Update the variables below to meet your needs
@@ -13,12 +18,12 @@ Update the variables below to meet your needs
 ###################################### VARIABLES ##################################################
 ###################################################################################################
 
-# Base url
-BASE_URL="https://example.clients.us-1.kandji.io/api"
+# Kandji tenant subdomain
+SUBDOMAIN="accuhive" # accuhive
 
-# TOKEN
-TOKEN="your_token_here"
+# tenant region
+REGION="us" # us, eu
 
-# Content Type
-CONTENT_TYPE="application/json"
+# Kandji Bearer Token
+TOKEN="your_api_key_here"
 ```
