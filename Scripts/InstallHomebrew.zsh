@@ -31,13 +31,15 @@
 #   This script can be set to "every 15 minutes" or "daily" to ensure Homebrew remains
 #   installed.
 #
-#   NOTE: if a user has pre-existing CLI sessions open, the brew command may not be
-#   recognized. The user will need to relaunch their sessions (ex - exec zsh -l) or
-#   start a new session so that brew is seen in their PATH.
+#   NOTE: This script is designed to added brew to the current user's PATH, but if a user has
+#   pre-existing CLI sessions open, the brew command may not be recognized. The user will need
+#   to relaunch their sessions (ex - zsh -l) or start a new session so that brew is seen in
+#   their PATH.
 #
-#   For the latest on brew Apple Silicon compatibility, see: https://github.com/Homebrew/brew/issues/7857
+#   For the latest on brew Apple Silicon compatibility,
+#   see: https://github.com/Homebrew/brew/issues/7857
 #
-###############################################################################################
+################################################################################################
 # License Information
 ################################################################################################
 #
@@ -117,10 +119,13 @@
 #         on Apple Silicon where cli tools require reinstalation when upgrading from
 #         one macOS version to the next.
 #
+#   1.5.1
+#       - Updated logic when adding and validating that brew is in the current user's PATH.
+#
 ################################################################################################
 
 # Script version
-VERSION="1.5.0"
+VERSION="1.5.1"
 
 ########################################################################################
 ###################################### VARIABLES #######################################
@@ -209,7 +214,7 @@ rosetta2_check() {
         check_rosetta_status=$(/usr/bin/pgrep oahd)
 
         # Rosetta Folder location
-        # Condition to check to see if the Rosetta folder exists. This check was added
+        # Condition check to see if the Rosetta folder exists. This check was added
         # because the Rosetta2 service is already running in macOS versions 11.5 and
         # greater without Rosseta2 actually being installed.
         rosetta_folder="/Library/Apple/usr/share/rosetta"
@@ -337,17 +342,34 @@ create_brew_environment() {
 
 }
 
-reset_source() {
-    # Reset the shell source so that brew doctor will find brew in the user's PATH
-    if [[ -e "/Users/$current_user/.zshrc" ]]; then
-        /usr/bin/su - "$current_user" -c exec zsh -l |
-            /usr/bin/tee -a "${LOG_PATH}"
-    elif [[ -e "/Users/$current_user/.bashrc" ]]; then
-        /usr/bin/su - "$current_user" -c exec bash -l |
-            /usr/bin/tee -a "${LOG_PATH}"
+update_path() {
+    # Add brew to current user PATH
+    # Check for missing PATH
+    get_path_cmd=$(/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew doctor 2>&1 | /usr/bin/grep 'export PATH=' | /usr/bin/tail -1")
+
+    # Checking to see if the output returned from get_path_cmd contains the word homebrew and
+    # also checking to see if brew is actually in the current user's path by runing the which
+    # command.
+    if echo "$get_path_cmd" | grep "homebrew" >/dev/null 2>&1 && ! /usr/bin/which brew >/dev/null 2>&1; then
+
+        # get the shell dot rc file returned from the get_path_cmd command so that we know
+        # which shell the current user is using.
+        shell_rc_file=$(echo "$get_path_cmd" | awk '{print $5}' | awk -F '/' '{print $2}')
+
+        # Check the user's shell rc file to see if homebrew has already been added to the
+        # user's PATH. If we find it in there already then there is no reason to write to that
+        # file again.
+        if ! /usr/bin/grep "$brew_prefix/bin" "/Users/$current_user/$shell_rc_file" >/dev/null 2>&1; then
+            echo "Adding brew to user's PATH..."
+            echo "Using command: $get_path_cmd"
+            /usr/bin/su - "$current_user" -c "${get_path_cmd}"
+
+        else
+            echo "brew path $brew_prefix/bin already in user's $shell_rc_file..."
+        fi
+
     else
-        logging "warning" "Unable to reset shell session..."
-        logging "warning" "The user may need to open a new CLI session to call brew from PATH. Otherwise, brew can be called using the direct path."
+        logging "info" "brew already in user's PATH..."
     fi
 }
 
@@ -468,23 +490,16 @@ logging "info" "Running brew cleanup ..."
 /usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew cleanup" 2>&1 |
     /usr/bin/tee -a "${LOG_PATH}"
 
-# Check for missing PATH
-get_path_cmd=$(/usr/bin/su - "$current_user" -c "$brew_prefix/bin/brew doctor 2>&1 | /usr/bin/grep 'export PATH=' | /usr/bin/tail -1")
-
-# Add homebrew's "bin" to target user PATH
-if [[ -n ${get_path_cmd} ]]; then
-    logging "info" "Running ${get_path_cmd} to add brew to PATH..."
-    /usr/bin/su - "$current_user" -c "${get_path_cmd}"
-else
-    logging "warning" "Unable to add brew to path..."
-fi
-
-logging "info" "Resetting the user\'s shell source file so that brew doctor can find it..."
-logging "info" "The user may need to open a new CLI session to call brew from their PATH."
-reset_source
+# updated the user's PATH var to add brew binary location
+logging "info" "Checking to see if brew is in current user's PATH..."
+update_path
 
 logging "info" "Running brew doctor to validate the install ..."
 brew_doctor "$brew_prefix" "$current_user"
+
+logging "info" "If the user has any existing CLI sessions running brew doctor may not see that brew is in the user's PATH."
+logging "info" "The user may need to restart or open a new CLI session before brew will be recognized in their path."
+logging "info" "Otherwise, brew can be called directly with $brew_prefix/bin/brew"
 
 logging "info" "--- End homebrew install log ---"
 
