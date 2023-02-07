@@ -7,6 +7,7 @@
 # Updated - 2022-02-23
 # Updated - 2022-11-28 - Matt Wilson
 # Updated - 2023-01-25 - Matt Wilson
+# Updated - 2023-02-03 - Matt Wilson
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
@@ -56,7 +57,7 @@
 
 # This is the profile ID that contains all settings.
 # This prefix exists in the KEXT and kextless version of the settings profile
-PAYLOAD_ID_PREFIX="io.kandji.crowdstrike.2C5CBFD0-7CFE"
+PAYLOAD_ID_PREFIX="io.kandji.crowdstrike.2C5CBFD0"
 
 # Service management profile prefix
 # NOTE: this profile only contains managed backgroud settings for macOS 13+
@@ -120,7 +121,7 @@ if [[ ${#profiles_list[@]} -eq 0 ]]; then
     exit 0
 fi
 
-/bin/echo "$APP_NAME Settings profile is installed ..."
+/bin/echo "$APP_NAME Settings profile with prefix ($PAYLOAD_ID_PREFIX) is installed ..."
 
 # macOS Version
 osvers_major="$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F '.' '{print $1}')"
