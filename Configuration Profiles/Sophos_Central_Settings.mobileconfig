@@ -36,21 +36,15 @@
 		</dict>
 		<dict>
 			<key>AllowUserOverrides</key>
-			<true/>
-			<key>AllowedSystemExtensions</key>
-			<dict>
-				<key>2H5GFH3774</key>
-				<array>
-					<string>com.sophos.endpoint.networkextension</string>
-					<string>com.sophos.endpoint.scanextension</string>
-				</array>
-			</dict>
+			<false/>
+			<key>AllowedTeamIdentifiers</key>
+			<array>
+				<string>2H5GFH3774</string>
+			</array>
 			<key>PayloadDescription</key>
 			<string></string>
 			<key>PayloadDisplayName</key>
 			<string>Sophos System Extension Policy settings</string>
-			<key>PayloadEnabled</key>
-			<true/>
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.sophos.system-extension-policy.D550B75A-E7DF-4E03-8516-2F5FFC12CF83</string>
 			<key>PayloadOrganization</key>
@@ -58,7 +52,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>D550B75A-E7DF-4E03-8516-2F5FFC12CF83</string>
+			<string>5E71C2A9-0BE7-445D-93CF-AF57A1E17533</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -105,7 +99,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
-			<string>E27E39AE-6367-425B-951C-D80D1D0CCBFD</string>
+			<string>AC89B7AD-8449-469B-AC21-19E34E2F6B1D</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>Services</key>
@@ -263,6 +257,20 @@
 						<string>com.Sophos.macendpoint.SophosSXLD</string>
 						<key>IdentifierType</key>
 						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier SophosMDR and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>/Library/Sophos Managed Detection and Response/SophosMDR</string>
+						<key>IdentifierType</key>
+						<string>path</string>
 						<key>StaticCode</key>
 						<false/>
 					</dict>
