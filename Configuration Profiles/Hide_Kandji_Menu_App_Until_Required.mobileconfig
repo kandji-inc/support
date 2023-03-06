@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDescription</key>
+			<string>io.kandji.Kandji</string>
+			<key>PayloadDisplayName</key>
+			<string>io.kandji.Kandji</string>
+			<key>PayloadIdentifier</key>
+			<string>io.se.kandji.C02A0195-A9EF-4E23-95A5-675B229F90A0</string>
+			<key>PayloadOrganization</key>
+			<string>Kandji, Inc.</string>
+			<key>PayloadType</key>
+			<string>io.kandji.Kandji</string>
+			<key>PayloadUUID</key>
+			<string>287A85B8-825F-4699-850D-F4118D161543</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>HideUntilRequired</key>
+			<true/>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>io.kandji.Kandji</string>
+	<key>PayloadDisplayName</key>
+	<string>io.kandji.Kandji</string>
+	<key>PayloadIdentifier</key>
+	<string>io.kandji.customprofile.F86E74C5-0441-4D63-8889-C6DB55DD5CD2</string>
+	<key>PayloadOrganization</key>
+	<string>Kandji, Inc.</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>60BEF8E7-DCB0-4CD9-B0F0-54123F5560F3</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
