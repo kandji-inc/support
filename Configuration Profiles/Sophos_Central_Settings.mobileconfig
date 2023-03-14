@@ -36,7 +36,7 @@
 		</dict>
 		<dict>
 			<key>AllowUserOverrides</key>
-			<false/>
+			<true/>
 			<key>AllowedTeamIdentifiers</key>
 			<array>
 				<string>2H5GFH3774</string>
