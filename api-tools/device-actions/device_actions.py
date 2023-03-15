@@ -2,41 +2,43 @@
 
 """Send actions to one or more devices in a Kandji instance."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
-########################################################################################
+################################################################################################
 # Created - 2022-08-17
-########################################################################################
+# Last Modified: 2023.03.03
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 # This script can be used to send device actions to one or more devices in a Kandji
 # tenant.
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CNNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 
 # Standard library
@@ -65,21 +67,27 @@ from requests.adapters import HTTPAdapter
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
+
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
 else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
+
 
 SCRIPT_NAME = "Device details report"
 TODAY = datetime.today().strftime("%Y%m%d")
@@ -97,17 +105,17 @@ HERE = pathlib.Path("__file__").parent.absolute()
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
@@ -119,28 +127,35 @@ def program_arguments():
         allow_abbrev=False,
     )
 
-    # add grouped arguments that cannot be called together
-    group_actions = parser.add_mutually_exclusive_group()
+    group_actions = parser.add_argument_group(title="Device actions")
+    group_actions_mx = group_actions.add_mutually_exclusive_group(required=True)
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--blankpush",
         action="store_true",
-        help="This action sends an MDM command to initiate a blank push. "
-        "A Blank Push utilizes the same service that sends MDM profiles and commands. "
-        "It's meant for verifying a connection to APNs, but it sometimes helps to get "
-        "pending push notifications that are stuck in the queue to complete. ",
+        help="Initiate a blank push. A Blank Push utilizes the same service that sends "
+        "MDM profiles and commands. It's meant for verifying a connection to APNs, but "
+        "it sometimes helps to get pending push notifications that are stuck in the "
+        "queue to complete. ",
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
+        "--lock",
+        action="store_true",
+        help="Initiate a device lock. For macOS, to see the device lock PIN, check the "
+        "device record page in Kandji.",
+        required=False,
+    )
+
+    group_actions_mx.add_argument(
         "--reinstall-agent",
         action="store_true",
-        help="This action with send a command to reinstall the Kandji agent on a macOS "
-        "device.",
+        help="Reinstall the Kandji agent on a macOS device.",
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--remote-desktop",
         type=str,
         metavar="[on|off]",
@@ -152,30 +167,29 @@ def program_arguments():
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--renew-mdm",
         action="store_true",
-        help="This action sends an MDM command to re-install the existing root MDM "
-        "profile for a given device ID. This command will not impact any existing "
-        "configurations, apps, or profiles.",
+        help="Re-install the existing root MDM profile for a given device ID. This "
+        "command will not impact any existing configurations, apps, or profiles.",
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--restart",
         action="store_true",
-        help="This action sends an MDM command to remotely restart a device.",
+        help="Remotely restart a device.",
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--shutdown",
         action="store_true",
-        help="This action sends an MDM command to shutdown a device.",
+        help="Shutdown a device.",
         required=False,
     )
 
-    group_actions.add_argument(
+    group_actions_mx.add_argument(
         "--update-inventory",
         action="store_true",
         help="This action sends a few MDM commands to start a check-in for a device, "
@@ -185,10 +199,10 @@ def program_arguments():
         required=False,
     )
 
-    # add grouped arguments that cannot be called together
-    group_search = parser.add_mutually_exclusive_group()
+    group_search = parser.add_argument_group(title="Search options")
+    group_search_mx = group_search.add_mutually_exclusive_group(required=True)
 
-    group_search.add_argument(
+    group_search_mx.add_argument(
         "--serial-number",
         type=str,
         metavar="XX7FFXXSQ1GH",
@@ -196,16 +210,27 @@ def program_arguments():
         required=False,
     )
 
-    group_search.add_argument(
-        "--platform",
+    group_search_mx.add_argument(
+        "--blueprint",
         type=str,
-        metavar="Mac",
-        help="Send an action to a specific device family in a Kandji instance. "
-        "Example: Mac, iPhone, iPad.",
+        metavar="[blueprint_name]",
+        help="Send an action to devices in a specific blueprint in a Kandji instance. "
+        "If this option is used, you will see a prompt to comfirm the action and will "
+        "be required to enter a code to continue.",
         required=False,
     )
 
-    group_search.add_argument(
+    group_search_mx.add_argument(
+        "--platform",
+        type=str,
+        metavar="[Mac|iPhone|iPad|AppleTV]",
+        help="Send an action to a specific device family in a Kandji instance. If "
+        "this option is used, you will see a prompt to comfirm the action and will be "
+        "required to enter a code to continue.",
+        required=False,
+    )
+
+    group_search_mx.add_argument(
         "--all-devices",
         action="store_true",
         help="Send an action to all devices in a Kandji instance. If this option is "
@@ -224,24 +249,10 @@ def program_arguments():
             "No command options given. Use the --help flag for more details.\n"
         )
 
-    args = parser.parse_args()
-
-    if not (
-        args.blankpush
-        or args.reinstall_agent
-        or args.remote_desktop
-        or args.renew_mdm
-        or args.restart
-        or args.shutdown
-        or args.update_inventory
-    ):
-        print()
-        parser.error("No action provided. Use the --help flag for more details.\n")
-
     return parser.parse_args()
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -286,7 +297,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -320,11 +331,11 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data
@@ -345,9 +356,8 @@ def get_devices(params=None, ordering="serial_number"):
         params.update(
             {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
         )
-        # print(params)
 
-        # check to see if a platform was sprecified
+        # check to see if a platform was specified
         response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
 
         count += len(response)
@@ -364,6 +374,41 @@ def get_devices(params=None, ordering="serial_number"):
         sys.exit()
 
     return data
+
+
+def get_blueprint(bp_name=None):
+    """Get blueprint.
+
+    Return the blueprint ID of the blueprint if found."""
+    blueprint_id = ""
+    blueprint_record = kandji_api(
+        method="GET",
+        endpoint="/v1/blueprints",
+        params={"name": f"{bp_name}"},
+    )
+
+    if blueprint_record["count"] == 0:
+        print(f"WARNING: {bp_name} blueprint not found...")
+        print("WARNING: Check the name of the blueprint and try again.")
+        sys.exit()
+
+    count = 0
+
+    # ensure that the name returned matches the name we are looking for exactly.
+    for blueprint in blueprint_record["results"]:
+        if bp_name == blueprint["name"]:
+            print(f'Found blueprint matching the name "{bp_name}"...')
+            blueprint_id = blueprint.get("id")
+            break
+
+        count += 1
+
+        if count == blueprint_record.get("count"):
+            print(f'Did not find any blueprints matching the name "{bp_name}"...')
+            print("WARNING: Check the name of the blueprint and try again.")
+            sys.exit()
+
+    return blueprint_id
 
 
 def send_device_action(devices, action, payload=None):
@@ -387,33 +432,50 @@ def send_device_action(devices, action, payload=None):
     return data
 
 
+def user_verification():
+    """Verification code."""
+    user_answer = input(
+        'This is NOT reversable. Are you sure you want to do this? Type "Yes" to '
+        "continue: "
+    )
+
+    if user_answer in ["Yes", "yes", "Y", "y"]:
+        check_number = random.randint(0, 9999)
+        check_string = f"{check_number:>4}"
+        print(f"\n\tCode: {check_number}")
+        response = input("\tPlease enter the code above: ")
+        print("")
+
+        if response != check_string:
+            print("Failed code check!")
+            sys.exit("Exiting...")
+
+        print("Code verification complete.")
+
+    else:
+        sys.exit("Exiting...")
+
+
 def main():
     """Run main logic."""
-    # validate vars
-    var_validation()
 
     # Return the arguments
     arguments = program_arguments()
 
-    print(f"\nVersion: {__version__}")
+    # validate vars
+    var_validation()
+
+    print(f"\nScript Version: {__version__}")
     print(f"Base URL: {BASE_URL}\n")
 
     # dict placeholder for params passed to api requests
-    params_dict = {}
-
-    # evaluate options
-    if arguments.serial_number:
-        params_dict.update({"serial_number": f"{arguments.serial_number}"})
-        print(
-            "Looking for device record with the following serial number: "
-            f"{arguments.serial_number}"
-        )
-
-    if arguments.platform:
-        params_dict.update({"platform": f"{arguments.platform}"})
+    device_params = {}
 
     if arguments.blankpush:
         action = "blankpush"
+
+    if arguments.lock:
+        action = "lock"
 
     if arguments.remote_desktop:
         action = "remotedesktop"
@@ -441,34 +503,43 @@ def main():
     if arguments.update_inventory:
         action = "updateinventory"
 
-    if arguments.all_devices:
+    # evaluate options
+    if arguments.serial_number:
+        device_params.update({"serial_number": f"{arguments.serial_number}"})
         print(
-            f"The {action} command will go out to ALL devices in the Kandji instance..."
-        )
-        user_answer = input(
-            'This is NOT reversable. Are you sure you want to do this? Type "Yes" to '
-            "continue: "
+            "Looking for device record with the following serial number: "
+            f"{arguments.serial_number}"
         )
 
-        if user_answer == "Yes":
-            check_number = random.randint(0, 9999)
-            check_string = f"{check_number:>4}"
-            print(f"\n\tCode: {check_number}")
-            response = input("\tPlease enter the code above: ")
-            print("")
+    if arguments.blueprint:
+        blueprint_name = arguments.blueprint
+        device_params.update(
+            {"blueprint_id": f"{get_blueprint(bp_name=blueprint_name)}"}
+        )
+        print(
+            f"The {action} action will go out to ALL devices assigned to the "
+            f"{arguments.blueprint} blueprint."
+        )
 
-            if response != check_string:
-                print("Failed code check!")
-                sys.exit("Exiting...")
+        user_verification()
 
-            print("Code verification complete.")
+    if arguments.platform:
+        device_params.update({"platform": f"{arguments.platform}"})
+        print(
+            f"The {action} action will go out to ALL devices in the "
+            f"{arguments.platform} device family."
+        )
 
-        else:
-            sys.exit("Exiting...")
+        user_verification()
+
+    if arguments.all_devices:
+        print(f"The {action} action will go out to ALL devices in the Kandji instance.")
+
+        user_verification()
 
     # Get all device inventory records
     print("Getting device inventory from Kandji...")
-    device_inventory = get_devices(params=params_dict)
+    device_inventory = get_devices(params=device_params)
     print(f"Total records returned: {len(device_inventory)}\n")
 
     # send the action to the device(s)
