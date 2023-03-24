@@ -26,25 +26,29 @@ This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) t
 
 ### Script Modification
 
-1. Open the script in a text editor such as BBEdit, Atom, or VSCode.
-1. Update the `BASE_URL` variable to match your Kandji web app instance and update `TOKEN` information with your Bearer token.
+1. Open the script in a text editor such as BBEdit or VSCode.
+1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
 
     - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - For US-based tenants the `REGION` can either be `us` or left as an empty string (`""`)
 
         *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
 
         ```python
-        ##############################################################################################
-        ######################### UPDATE VARIABLES BELOW #############################################
-        ##############################################################################################
+        ########################################################################################
+        ######################### UPDATE VARIABLES BELOW #######################################
+        ########################################################################################
 
         SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-        REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab within
-                       # the API URL.
+
+        # us("") and eu - this can be found in the Kandji settings on the Access tab
+        REGION = ""
 
         # Kandji Bearer Token
-        TOKEN = "your_api_key_here"
+        TOKEN = ""
         ```
+
+1. Save and close the script.
 
 1. Save and close the script.
 
@@ -63,14 +67,15 @@ This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) t
 
     ```
     Running: Device Report ...
-    Version: 1.0.0
+    Version: 1.1.0
 
-    Base URL: https://example.clients.us-1.kandji.io/api/v1/
+    Base URL: https://accuhive.api.kandji.io/api
 
-    Getting all device records from Kandji ...
-    Total device records: 31
+    Getting device inventory from Kandji...
+    Total records returned: 54
+
     Generating device report for the following devices ...
-    Kandji device report complete ...
+    Kandji report complete ...
     Kandji report at: /Users/example/Desktop/mac_report_20220512.csv
     ```
 
@@ -84,14 +89,14 @@ This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) t
 
 - To see help information: `python3 devices_report.py --help`
 
-    ```     
-    usage: device_report [-h] [--platform "Mac"] [--version]
-    
-    This tool is used to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant.
-    
+    ```sh
+    usage: devices_report [-h] [--platform [Mac|iPhone|iPad|AppleTV]] [--version]
+
+    This tool is used to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant. If you're looking for more information about your devices, see the device_details script.
+
     options:
-      -h, --help        show this help message and exit
-      --platform "Mac"  Enter a specific device platform type. This will limit the search results to only the specified platfrom. 
-                        Examples: Mac, iPhone, iPad, AppleTV.
-      --version         Show this tool's version.
+    -h, --help            show this help message and exit
+    --platform [Mac|iPhone|iPad|AppleTV]
+                            Enter a specific device platform type. This will limit the search results to only the specified platfrom. Examples: Mac, iPhone, iPad, AppleTV.
+    --version             Show this tool's version.
     ```

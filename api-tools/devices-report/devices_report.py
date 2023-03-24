@@ -2,47 +2,49 @@
 
 """Returns a basic device report from the GET devices API."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
-########################################################################################
+################################################################################################
 # Created on 09/22/2021
-# Updated on 05/12/2022
-########################################################################################
+# Last Modified on 2023-02-08 - Matt Wilson
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 #   This script is used to generate a basic device report based on the GET Devices API
 #   endpoint for all devices in a Kandji tenant.
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 
 # Standard library
 import argparse
 import csv
+import operator
 import pathlib
 import sys
 from datetime import datetime
@@ -65,21 +67,26 @@ from requests.adapters import HTTPAdapter
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
+
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
 else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 TODAY = datetime.today().strftime("%Y%m%d")
 
@@ -100,27 +107,28 @@ HERE = pathlib.Path("__file__").parent
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
 def program_arguments():
     """Return arguments."""
     parser = argparse.ArgumentParser(
-        prog="device_report",
+        prog="devices_report",
         description=(
             "This tool is used to generate a device report based on the GET Devices "
-            "API endpoint for all devices in a Kandji tenant."
+            "API endpoint for all devices in a Kandji tenant. If you're looking for "
+            "more information about your devices, see the device_details script."
         ),
         allow_abbrev=False,
     )
@@ -128,7 +136,7 @@ def program_arguments():
     parser.add_argument(
         "--platform",
         type=str,
-        metavar='"Mac"',
+        metavar="[Mac|iPhone|iPad|AppleTV]",
         help="Enter a specific device platform type. This will limit the search "
         "results to only the specified platfrom. Examples: Mac, iPhone, iPad, AppleTV.",
         required=False,
@@ -141,7 +149,7 @@ def program_arguments():
     return parser.parse_args()
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -162,12 +170,12 @@ def error_handling(resp, resp_code, err_msg):
     # 404
     elif resp_code == requests.codes["not_found"]:
         print("\nWe cannot find the one that you are looking for...")
-        print("Move along...\n")
+        print("Move along...")
         print(f"\tError: {err_msg}")
         print(f"\tResponse msg: {resp}")
         print(
-            "\tPossible reason: If this is a device it could be because the device is "
-            "not longer\n"
+            "\tPossible reason: If this is a device, it could be because the device is "
+            "no longer\n"
             "\t\t\t enrolled in Kandji. This would prevent the MDM command from being\n"
             "\t\t\t sent successfully.\n"
         )
@@ -186,7 +194,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -220,11 +228,11 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data
@@ -245,9 +253,8 @@ def get_devices(params=None, ordering="serial_number"):
         params.update(
             {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
         )
-        # print(params)
 
-        # check to see if a platform was sprecified
+        # check to see if a platform was specified
         response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
 
         count += len(response)
@@ -266,31 +273,90 @@ def get_devices(params=None, ordering="serial_number"):
     return data
 
 
-def generate_report_payload(items):
-    """Return the report payload."""
+def flatten(input_dict, separator="_", prefix=""):
+    """Flatten JSON."""
+    output_dict = {}
+
+    for key, value in input_dict.items():
+
+        # Check to see if the JSON value is a dict type. If it is then we we need to break the
+        # JSON structure out more.
+        if isinstance(value, dict) and value:
+
+            deeper = flatten(value, separator, prefix + key + separator)
+
+            # update the dictionary with the new structure.
+            output_dict.update({key2: val2 for key2, val2 in deeper.items()})
+
+        # If the JSON value is a list then loop over and see if we need to break out any values
+        # contained in the list.
+        elif isinstance(value, list) and value:
+
+            for index, sublist in enumerate(value, start=1):
+
+                # Check to see if the JSON value is a dict type. If it is then we we need to
+                # break the JSON structure out more.
+                if isinstance(sublist, dict) and sublist:
+                    deeper = flatten(
+                        sublist,
+                        separator,
+                        prefix + key + separator + str(index) + separator,
+                    )
+
+                    # update the dictionary with the new structure.
+                    output_dict.update({key2: val2 for key2, val2 in deeper.items()})
+
+                else:
+                    output_dict[prefix + key + separator + str(index)] = value
+
+        else:
+            output_dict[prefix + key] = value
+
+    return output_dict
+
+
+def generate_report_payload(_input, details_param=None):
+    """Create a JSON payload."""
     report_payload = []
-    # Loop over all Mac computers in Kandji
-    for item in items:
-        report_payload.append(item)
+
+    for record in _input:
+
+        flattened = flatten(record)
+
+        if details_param:
+
+            details_param_keys = list(details_param.keys())
+            details_param_values = list(details_param.values())
+
+            for key, value in flattened.items():
+
+                if key == details_param_keys[0] and details_param_values[0] == value:
+
+                    report_payload.append(flattened)
+
+        else:
+            report_payload.append(flattened)
+
     return report_payload
 
 
-def write_report(report_payload, report_name):
+def write_report(_input, report_name, sort_by="serial_number"):
     """Write the report."""
     # write report to csv file
+
     with open(report_name, mode="w", encoding="utf-8") as report:
 
         out_fields = []
 
-        for item in report_payload:
+        for item in _input:
             for key in item.keys():
                 if key not in out_fields:
                     out_fields.append(key)
 
-        # find the serial_number field so that we can sort the report on that.
+        # find the "sort_by" field so that we can sort the report on that.
         def thingy(out_field):
             this = ""
-            if out_field == "serial_number":
+            if sort_by in out_field:
                 this = out_field
             return this
 
@@ -301,21 +367,18 @@ def write_report(report_payload, report_name):
         # Write headers to CSV
         writer.writeheader()
 
-        # Loop over the item list sorted by last_check_in
-        for item in report_payload:
-
+        # Loop over the item list
+        for item in _input:
             # Write row to csv file
             writer.writerow(item)
 
 
 def main():
     """Run main logic."""
-    # validate vars
-    var_validation()
     # Return the arguments
     arguments = program_arguments()
 
-    #  Main logic starts here
+    var_validation()
 
     print(f"\nRunning: {SCRIPT_NAME} ...")
     print(f"Version: {__version__}\n")
@@ -341,7 +404,7 @@ def main():
 
     # Get device details for each device
     for device in device_inventory:
-
+        # add the device dict to the list
         device_info_list.append(device)
 
     # Get the app names and app versions from the app details by passing a list of
@@ -349,10 +412,12 @@ def main():
     report_payload = generate_report_payload(device_info_list)
 
     print("Generating device report for the following devices ...")
+
+    # check to see if we are sorting by a particular column heading
     write_report(report_payload, report_name)
 
     print("Kandji report complete ...")
-    print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
+    print(f"Kandji report at: {HERE.resolve()}/{report_name}")
 
 
 if __name__ == "__main__":
