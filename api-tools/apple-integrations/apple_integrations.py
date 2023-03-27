@@ -2,40 +2,42 @@
 
 """Interact with Apple integrations in Kandji."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
-########################################################################################
+################################################################################################
 # Created - 2022-07-08
-########################################################################################
+# Last modified - 2023.02.07
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 # This script is used to work with ADE integrations in a Kandji tenant.
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CNNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 # Standard library
@@ -61,21 +63,26 @@ from requests.adapters import HTTPAdapter
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
+
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
 else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 SCRIPT_NAME = "Apple integrations"
 TODAY = datetime.today().strftime("%Y%m%d")
@@ -93,17 +100,17 @@ HERE = pathlib.Path("__file__").parent.absolute()
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
@@ -157,7 +164,7 @@ def program_arguments():
     return parser.parse_args()
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -182,8 +189,8 @@ def error_handling(resp, resp_code, err_msg):
         print(f"\tError: {err_msg}")
         print(f"\tResponse msg: {resp}")
         print(
-            "\tPossible reason: If this is a device it could be because the device is "
-            "not longer\n"
+            "\tPossible reason: If this is a device, it could be because the device is "
+            "no longer\n"
             "\t\t\t enrolled in Kandji. This would prevent the MDM command from being\n"
             "\t\t\t sent successfully.\n"
         )
@@ -202,7 +209,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -236,11 +243,11 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data
@@ -248,22 +255,16 @@ def kandji_api(method, endpoint, params=None, payload=None):
 
 def download_public_key():
     """Download ADE public key."""
-    # check to see if a platform was sprecified
     return kandji_api(method="GET", endpoint="/v1/integrations/apple/ade/public_key/")
 
 
 def list_devices_associated_to_ade_token(ade_token, params=None):
     """Return list of ADE integrations."""
-    # page - which page to return
-    page = 1
-
-    # ade devices
+    page_number = 1
     data = []
 
     while True:
-        params = {"page": f"{page}"}
-
-        # check to see if a platform was sprecified
+        params = {"page": f"{page_number}"}
         response = kandji_api(
             method="GET",
             endpoint=f"/v1/integrations/apple/ade/{ade_token}/devices",
@@ -279,34 +280,38 @@ def list_devices_associated_to_ade_token(ade_token, params=None):
                 print("No devices found...\n")
             break
 
-        page += 1
+        page_number += 1
 
     return data
 
 
 def flatten(input_dict, separator=".", prefix=""):
-    """Flatten JSON"""
+    """Flatten JSON."""
     output_dict = {}
 
     for key, value in input_dict.items():
-
+        # Check to see if the JSON value is a dict type. If it is then we we need to break the
+        # JSON structure out more.
         if isinstance(value, dict) and value:
-
             deeper = flatten(value, separator, prefix + key + separator)
+
+            # update the dictionary with the new structure.
             output_dict.update({key2: val2 for key2, val2 in deeper.items()})
 
+        # If the JSON value is a list then loop over and see if we need to break out any values
+        # contained in the list.
         elif isinstance(value, list) and value:
-
             for index, sublist in enumerate(value, start=1):
-
+                # Check to see if the JSON value is a dict type. If it is then we we need to
+                # break the JSON structure out more.
                 if isinstance(sublist, dict) and sublist:
-
                     deeper = flatten(
                         sublist,
                         separator,
                         prefix + key + separator + str(index) + separator,
                     )
 
+                    # update the dictionary with the new structure.
                     output_dict.update({key2: val2 for key2, val2 in deeper.items()})
 
                 else:
@@ -318,29 +323,23 @@ def flatten(input_dict, separator=".", prefix=""):
     return output_dict
 
 
-def generate_report_payload(input_):
+def generate_report_payload(_input):
     """Create a JSON payload."""
     report_payload = []
-
-    for attr in input_:
-
-        # flattend = flatten_dictionary(dict_=attr)
-        flattend = flatten(attr)
-
-        report_payload.append(flattend)
-
+    for record in _input:
+        flattened = flatten(record)
+        report_payload.append(flattened)
     return report_payload
 
 
-def write_report(input_, report_name):
+def write_report(_input, report_name):
     """Write report."""
     # write report to csv file
     with open(report_name, mode="w", encoding="utf-8") as report:
-
         out_fields = []
 
         # automatically loop over keys in the payload to pullout header fields
-        for item in input_:
+        for item in _input:
             for key in item.keys():
                 if key not in out_fields:
                     out_fields.append(key)
@@ -351,23 +350,23 @@ def write_report(input_, report_name):
         writer.writeheader()
 
         # Loop over the list sorted by serial_number
-        for item in input_:
+        for item in _input:
             writer.writerow(item)
 
 
-def report_builder(input_, name_items):
+def report_builder(_input, name_items, default_name):
     """Build report."""
-    report_payload = generate_report_payload(input_=input_)
+    report_payload = generate_report_payload(_input=_input)
 
     # build report name
     if name_items:
         report_name = "_".join(name_items)
         report_name = f"{report_name}_report_{TODAY}.csv"
     else:
-        report_name = f"apple_integrations_report_{TODAY}.csv"
+        report_name = f"{default_name}_{TODAY}.csv"
 
     print("Generating report ...")
-    write_report(input_=report_payload, report_name=report_name)
+    write_report(_input=report_payload, report_name=report_name)
 
     print("Kandji report complete ...")
     print(f"Kandji report at: {HERE.resolve()}/{report_name} ")
@@ -425,12 +424,6 @@ def main():
             print("")
             count += 1
 
-        # sys.exit()
-        #
-        # report_data = ade_integrations
-        # report_name_items.append("token_list")
-        # report_builder(input_=report_data, name_items=report_name_items)
-
     if arguments.list_devices:
         print(f'Getting devices associated with token ID "{arguments.list_devices}"...')
         report_data = list_devices_associated_to_ade_token(
@@ -448,8 +441,13 @@ def main():
             )
 
         print("")
+
         report_name_items.append(arguments.list_devices)
-        report_builder(input_=report_data, name_items=report_name_items)
+        report_builder(
+            _input=report_data,
+            name_items=report_name_items,
+            default_name="apple_integrations_report",
+        )
 
 
 if __name__ == "__main__":

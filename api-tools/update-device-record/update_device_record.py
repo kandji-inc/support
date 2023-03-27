@@ -2,17 +2,16 @@
 
 """Update device inventory information using a csv input file and the Kandji API."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | Kandji, Inc | support@kandji.io
-########################################################################################
+################################################################################################
 #
 #   Created:  2021-06-03
-#   Modified: 2021-08-18 - Matt Wilson
-#   Modified: 2022-04-13 - Matt Wilson
+#   Modified: 2023-02-08 - Matt Wilson
 #
-########################################################################################
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 #   This python3 script leverages the Kandji API along using a CSV input file to update
 #   one or more device inventory records.
@@ -23,30 +22,31 @@
 #       - asset tag
 #       - user assignment
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to \
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CNNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 
 
 # Standard library
@@ -74,22 +74,26 @@ from requests.adapters import HTTPAdapter
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
-else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
 
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
+else:
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -104,17 +108,17 @@ HERE = pathlib.Path("__file__").parent.absolute()
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
@@ -130,7 +134,7 @@ def program_arguments():
     )
 
     parser.add_argument(
-        "--input-file",
+        "--template",
         type=str,
         metavar='"/path/to/input_template.csv"',
         help="Enter the path to the spreadsheet(csv file) or drag the file into this"
@@ -182,7 +186,7 @@ def remove_duplicates(data, search_key):
     return unique_records
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -227,7 +231,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -261,20 +265,17 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-            if method == "PATCH":
-                print("Record updated")
-
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data
 
 
-def create_record_update_payload(input_record):
+def create_record_update_payload(_input):
     """Dynamically build the device update payload.
 
     This function looks at the device record information passed from the input file and
@@ -283,20 +284,20 @@ def create_record_update_payload(input_record):
     """
     payload = {}
 
-    for key, value in input_record.items():
+    for key, value in _input.items():
         # Here we are checking to see if we need to lookup the blueprint id in Kandji
         # based on the name provided in the input file.
         if key == "blueprint_name" and value != "":
-            print(f"Looking for \"{input_record['blueprint_name']}\" blueprint ...")
+            print(f"Looking for \"{_input['blueprint_name']}\" blueprint ...")
             # API call to return blueprint records containing the provided name.
             blueprint_record = kandji_api(
                 method="GET",
                 endpoint="/v1/blueprints",
-                params={"name": f"{input_record['blueprint_name']}"},
+                params={"name": f"{_input['blueprint_name']}"},
             )
 
             if blueprint_record["count"] == 0:
-                print(f"WARNING: {input_record['blueprint_name']} not found...")
+                print(f"WARNING: {_input['blueprint_name']} not found...")
                 print("WARNING: Check the name and try again...")
                 break
 
@@ -304,7 +305,7 @@ def create_record_update_payload(input_record):
             for record in blueprint_record["results"]:
                 # ensure that the name returned matches the name we are looking for
                 # exactly.
-                if input_record["blueprint_name"] == record["name"]:
+                if _input["blueprint_name"] == record["name"]:
                     # update the payload with the found blueprint id
                     payload.update([("blueprint_id", record["id"])])
 
@@ -320,40 +321,37 @@ def create_record_update_payload(input_record):
 
 def main():
     """Run main logic."""
-    # validate vars
-    var_validation()
-
-    # Return the arguments
     arguments = program_arguments()
+    var_validation()
 
     print(f"\nVersion: {__version__}")
     print(f"Base URL: {BASE_URL}\n")
 
     # Validate program arguments
-    if arguments.input_file:
+    if arguments.template:
         # Try to load the contents of the csv file.
         # If unable to do so let the user know by presenting the error.
         try:
-            input_file_data = load_input_file(arguments.input_file)
-            print(f"Found input file: {pathlib.Path(arguments.input_file)}")
+            template_data = load_input_file(arguments.template)
+            print(f"Found input file: {pathlib.Path(arguments.template)}")
             # Make sure that any duplicate serial numbers are removed from the list of
             # device records that need to be updated.
             print("Checking the input file for duplicate serial_number entries...")
-            input_file_data = remove_duplicates(input_file_data, "serial_number")
+            template_data = remove_duplicates(template_data, "serial_number")
             print(
                 f"Total unique serial_numbers in the input file: "
-                f"{len(input_file_data)}"
+                f"{len(template_data)}"
             )
 
         except FileNotFoundError as err:
-            print(f"There was an issue loading {arguments.input_file}...")
+            print(f"There was an issue loading {arguments.template}...")
             print(
                 "Make sure that the file exists at the sprecified path before trying "
                 "again..."
             )
             sys.exit(err)
 
-    for device in input_file_data:
+    for device in template_data:
         print("")
         print(f"Looking for {device['serial_number']} ...")
         # device record returned from kandji

@@ -89,7 +89,6 @@ else:
     sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 
-SCRIPT_NAME = "Device details report"
 TODAY = datetime.today().strftime("%Y%m%d")
 
 HEADERS = {

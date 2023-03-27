@@ -25,24 +25,26 @@ python3 -m pip install pathlib
 
 ### Script Modification
 
-1. Open the script in a text editor such as BBEdit, Atom, or VSCode.
-1. Update the `BASE_URL` variable to match your Kandji web app instance and update `TOKEN` information with your Bearer token.
+1. Open the script in a text editor such as BBEdit or VSCode.
+1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
 
     - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - For US-based tenants the `REGION` can either be `us` or left as an empty string (`""`)
 
         *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
 
         ```python
-        ##############################################################################################
-        ######################### UPDATE VARIABLES BELOW #############################################
-        ##############################################################################################
+        ########################################################################################
+        ######################### UPDATE VARIABLES BELOW #######################################
+        ########################################################################################
 
         SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-        REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab within
-                       # the API URL.
+
+        # us("") and eu - this can be found in the Kandji settings on the Access tab
+        REGION = ""
 
         # Kandji Bearer Token
-        TOKEN = "your_api_key_here"
+        TOKEN = ""
         ```
 
 1. Save and close the script.
@@ -61,19 +63,19 @@ python3 -m pip install pathlib
     **Example Script Output**
 
     ```
-    python3 status_report.py --lit "Homebrew"
+    python3 status_report.py --library-item "Homebrew"
 
-    Version: 1.0.1
-    Base URL: https://mattwilson.clients.us-1.kandji.io/api
-    
+    Version: 1.0.2
+    Base URL: https://accuhive.api.kandji.io/api
+
     Getting device inventory from Kandji...
-    Total records: 40
-    
-    Looking for the status of "Homebrew" ...
-    Found 35 devices with Homebrew assigned ...
-    Generating Homebrew status report ...
+    Total records: 54
+
+    Looking for the status of "homebrew" ...
+    Found 46 devices with homebrew assigned ...
+    Generating homebrew status report ...
     Kandji report complete ...
-    Kandji report at: /Users/example/Desktop/homebrew_status_report_20220901.csv 
+    Kandji report at: /Users/example/Desktop/device-status/homebrew_status_report_20230308.csv 
     ```
 
 1. Once complete a report will be generated and placed in the directory where the script was executed.
@@ -81,7 +83,6 @@ python3 -m pip install pathlib
     The name of the report is in the format `<item_name>_status_report_<todays_date>.csv`
 
     Example: `homebrew_status_report_20220901.csv`
-
 
 ### Extra
 
@@ -96,9 +97,9 @@ Get the status report for a given library item or parameter leveraging the Kandj
 
 options:
   -h, --help            show this help message and exit
-  --library-item "Google Chrome", --lit "Google Chrome"
+  --library-item "Google Chrome"
                         Enter the name of the Kandji library item.
-  --parameter "Set Computer Name", --param "Set Computer Name"
+  --parameter "Set Computer Name"
                         Enter the name of the Parameter.
   --version             Show this tool's version.
 ```

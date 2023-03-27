@@ -2,44 +2,45 @@
 
 """Generate device reports from the device status API."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
-########################################################################################
+################################################################################################
 #
 # Created:  2021.06.03
-# Modified: 2022.09.01
+# Modified: 2023-02-08
 #
-########################################################################################
+################################################################################################
 # Software Information
-########################################################################################
+################################################################################################
 #
 # This script leverages the Kandji API to generate a CSV report containing the
 # installation status of a specific library item or parameter.
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to \
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CNNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 
 # Standard library
@@ -65,23 +66,28 @@ from requests.adapters import HTTPAdapter
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
-else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
 
-SCRIPT_NAME = "Status Report"
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
+else:
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
+
+TODAY = datetime.today().strftime("%Y%m%d")
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -96,17 +102,17 @@ HERE = pathlib.Path("__file__").parent.absolute()
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
@@ -123,7 +129,6 @@ def program_arguments():
 
     parser.add_argument(
         "--library-item",
-        "--lit",
         type=str,
         metavar='"Google Chrome"',
         help="Enter the name of the Kandji library item.",
@@ -132,7 +137,6 @@ def program_arguments():
 
     parser.add_argument(
         "--parameter",
-        "--param",
         type=str,
         metavar='"Set Computer Name"',
         help="Enter the name of the Parameter.",
@@ -152,7 +156,7 @@ def program_arguments():
     return parser.parse_args()
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -177,8 +181,8 @@ def error_handling(resp, resp_code, err_msg):
         print(f"\tError: {err_msg}")
         print(f"\tResponse msg: {resp}")
         print(
-            "\tPossible reason: If this is a device it could be because the device is "
-            "not longer\n"
+            "\tPossible reason: If this is a device, it could be because the device is "
+            "no longer\n"
             "\t\t\t enrolled in Kandji. This would prevent the MDM command from being\n"
             "\t\t\t sent successfully.\n"
         )
@@ -197,7 +201,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -231,11 +235,11 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data
@@ -243,7 +247,6 @@ def kandji_api(method, endpoint, params=None, payload=None):
 
 def get_devices(params=None, ordering="serial_number"):
     """Return device inventory."""
-    count = 0
     # limit - set the number of records to return per API call
     limit = 300
     # offset - set the starting point within a list of resources
@@ -256,12 +259,14 @@ def get_devices(params=None, ordering="serial_number"):
         params.update(
             {"ordering": f"{ordering}", "limit": f"{limit}", "offset": f"{offset}"}
         )
-        # check to see if a platform was sprecified
+
+        # check to see if a platform was specified
         response = kandji_api(method="GET", endpoint="/v1/devices", params=params)
-        count += len(response)
+
         offset += limit
         if len(response) == 0:
             break
+
         # breakout the response then append to the data list
         for record in response:
             data.append(record)
@@ -278,26 +283,80 @@ def device_status_category(data, category):
     return data[category]
 
 
-def write_report(input_, report_name):
-    """Write report."""
-    # write report to csv file
+def generate_report_payload(_input, args, search_term):
+    """Generate report payload."""
+    report_payload = []
+
+    for device in _input:
+        status_data = kandji_api(
+            method="GET", endpoint=f"/v1/devices/{device['device_id']}/status"
+        )
+
+        if args.library_item:
+            # We are looking for a library item
+            library_items = device_status_category(status_data, "library_items")
+            for item in library_items:
+                if item["name"] == search_term:
+                    item_info = {
+                        "serial_number": device["serial_number"].upper(),
+                        "device_name": device["device_name"],
+                        "blueprint_name": device["blueprint_name"],
+                        "name": item["name"],
+                        "status": item["status"],
+                        "type": item["type"],
+                        "reported_at": item["reported_at"],
+                        "last_audit_log": item["last_audit_log"],
+                        "log": item["log"],
+                    }
+                    report_payload.append(item_info)
+
+        if args.parameter:
+            # We are looking for a parameter
+            parameter_items = device_status_category(status_data, "parameters")
+            for item in parameter_items:
+                if item["name"] == search_term:
+                    item_info = {
+                        "serial_number": device["serial_number"].upper(),
+                        "device_name": device["device_name"],
+                        "blueprint_name": device["blueprint_name"],
+                        "status": item["status"],
+                        "name": item["name"],
+                        "category": item["category"],
+                        "subcategory": item["subcategory"],
+                    }
+                    report_payload.append(item_info)
+
+    return report_payload
+
+
+def write_report(_input, report_name, sort_by="serial_number"):
+    """Write the report."""
     with open(report_name, mode="w", encoding="utf-8") as report:
 
         out_fields = []
 
-        # automatically loop over keys in the payload to pullout header fields
-        for item in input_:
+        for item in _input:
             for key in item.keys():
                 if key not in out_fields:
                     out_fields.append(key)
 
-        writer = csv.DictWriter(report, fieldnames=out_fields)
+        # find the "sort_by" field so that we can sort the report on that.
+        def thingy(out_field):
+            this = ""
+            if sort_by in out_field:
+                this = sort_by
+            return this
+
+        writer = csv.DictWriter(
+            report, fieldnames=sorted(out_fields, key=thingy, reverse=True)
+        )
 
         # Write headers to CSV
         writer.writeheader()
 
-        # Loop over the list sorted by serial_number
-        for item in input_:
+        # Loop over the item list
+        for item in _input:
+            # Write row to csv file
             writer.writerow(item)
 
 
@@ -329,47 +388,9 @@ def main():
     print(f"Total records: {len(device_inventory)}\n")
     print(f'Looking for the status of "{search_term}" ...')
 
-    # holds information to be written to he report
-    report_payload = []
-
-    for device in device_inventory:
-        status_data = kandji_api(
-            method="GET", endpoint=f"/v1/devices/{device['device_id']}/status"
-        )
-
-        if arguments.library_item:
-            # We are looking for a library item
-            library_items = device_status_category(status_data, "library_items")
-            for item in library_items:
-                if item["name"] == search_term:
-                    item_info = {
-                        "serial_number": device["serial_number"].upper(),
-                        "device_name": device["device_name"],
-                        "blueprint_name": device["blueprint_name"],
-                        "name": item["name"],
-                        "status": item["status"],
-                        "type": item["type"],
-                        "reported_at": item["reported_at"],
-                        "last_audit_log": item["last_audit_log"],
-                        "log": item["log"],
-                    }
-                    report_payload.append(item_info)
-
-        if arguments.parameter:
-            # We are looking for a parameter
-            parameter_items = device_status_category(status_data, "parameters")
-            for item in parameter_items:
-                if item["name"] == search_term:
-                    item_info = {
-                        "serial_number": device["serial_number"].upper(),
-                        "device_name": device["device_name"],
-                        "blueprint_name": device["blueprint_name"],
-                        "status": item["status"],
-                        "name": item["name"],
-                        "category": item["category"],
-                        "subcategory": item["subcategory"],
-                    }
-                    report_payload.append(item_info)
+    report_payload = generate_report_payload(
+        _input=device_inventory, args=arguments, search_term=search_term
+    )
 
     if len(report_payload) < 1:
         print(f"No items with name {search_term} ...")

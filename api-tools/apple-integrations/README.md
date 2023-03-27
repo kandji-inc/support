@@ -27,25 +27,27 @@ python3 -m pip install pathlib
 
 ### Script Modification
 
-1. Open the script in a text editor such as BBEdit, Atom, or VSCode.
+1. Open the script in a text editor such as BBEdit or VSCode.
 1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
 
-- The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - For US-based tenants the `REGION` can either be `us` or left as an empty string (`""`)
 
-    *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
+        *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
 
-    ```python
-    ##############################################################################################
-    ######################### UPDATE VARIABLES BELOW #############################################
-    ##############################################################################################
+        ```python
+        ########################################################################################
+        ######################### UPDATE VARIABLES BELOW #######################################
+        ########################################################################################
 
-    SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-    REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab within
-                   # the API URL.
+        SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
-    # Kandji Bearer Token
-    TOKEN = "your_api_key_here"
-    ```
+        # us("") and eu - this can be found in the Kandji settings on the Access tab
+        REGION = ""
+
+        # Kandji Bearer Token
+        TOKEN = ""
+        ```
 
 1. Save and close the script.
 
@@ -67,7 +69,8 @@ python3 -m pip install pathlib
         
         options:
           -h, --help            show this help message and exit
-          --public-key          Download the public key to use when adding MDM servers to ABM. The encoded information will be saved to 
+          --public-key          Download the public key to use when adding MDM servers to ABM. 
+                                The encoded information will be saved to 
                                 a file on the Desktop with the .pem format. This file must be uploaded to ABM manually.
           --ade-tokens          List information about the ADE integrations in a Kandji tenant.
           --list-devices "1411be7d-xxxx-2f5667c60d42"
@@ -84,7 +87,7 @@ python3 -m pip install pathlib
     python3 apple_integrations.py --ade-tokens
 
     Version: 0.0.1
-    Base URL: https://mattwilson.clients.us-1.kandji.io/api
+    Base URL: https://accuhive.clients.us-1.kandji.io/api
     
     Getting ade integrations list from Kandji...
     Getting token IDs...
@@ -117,7 +120,7 @@ python3 -m pip install pathlib
     python3 apple_integrations.py --list-devices 1411be7d-xxxx-2f5667c60d42
 
     Version: 0.0.1
-    Base URL: https://mattwilson.clients.us-1.kandji.io/api
+    Base URL: https://accuhive.clients.us-1.kandji.io/api
     
     Getting devices associated with token ID "1411be7d-xxxx-2f5667c60d42"...
     Total records: 3

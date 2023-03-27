@@ -13,30 +13,31 @@
 #
 #   This script will generate a list of parameter IDs found in a blueprint.
 #
-########################################################################################
+################################################################################################
 # License Information
-########################################################################################
-# Copyright 2022 Kandji, Inc.
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
-# without restriction, including without limitation the rights to use, copy, modify,
-# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to the following
-# conditions:
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies
-# or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-# PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-# CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CNNECTION WITH THE SOFTWARE
-# OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-########################################################################################
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 # Standard library
@@ -51,26 +52,33 @@ except ImportError as import_error:
         "python3 -m pip install requests."
     )
 
+from requests.adapters import HTTPAdapter
+
 ########################################################################################
 ######################### UPDATE VARIABLES BELOW #######################################
 ########################################################################################
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
-REGION = "us"  # us and eu - this can be found in the Kandji settings on the Access tab
+
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
 
 # Kandji Bearer Token
-TOKEN = "your_api_key_here"
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
 
-# Initialize some variables
 # Kandji API base URL
-if REGION == "us":
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}-1.kandji.io/api"
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
+
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
 else:
-    BASE_URL = f"https://{SUBDOMAIN}.clients.{REGION}.kandji.io/api"
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 HEADERS = {
     "Authorization": f"Bearer {TOKEN}",
@@ -82,59 +90,132 @@ HEADERS = {
 
 def var_validation():
     """Validate variables."""
-    if "accuhive" in BASE_URL:
+    if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\n\tThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
+            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
             "your Kandji tenant subdomain..."
         )
-        print("\tPlease see the example in the README for this repo.\n")
+        print("Please see the example in the README for this repo.\n")
         sys.exit()
 
-    if "api_key" in TOKEN:
-        print(f'\n\tThe TOKEN should not be "{TOKEN}"...')
-        print("\tPlease update this to your API Token.\n")
+    if TOKEN in ["api_key", ""]:
+        print(f'\nThe TOKEN should not be "{TOKEN}"...')
+        print("Please update this to your API Token.\n")
         sys.exit()
 
 
-def get_all_blueprints():
-    """Return a list of enrolled devices."""
-    # The API endpont to target
-    endpoint = "/v1/blueprints"
-    # Initiate var that will be returned
-    data = None
-    attempt = 0
-    response_code = None
+def http_errors(resp, resp_code, err_msg):
+    """Handle HTTP errors."""
+    # 400
+    if resp_code == requests.codes["bad_request"]:
+        print(f"\n\t{err_msg}")
+        print(f"\tResponse msg: {resp.text}\n")
+    # 401
+    elif resp_code == requests.codes["unauthorized"]:
+        print("Make sure that you have the required permissions to access this data.")
+        print(
+            "Depending on the API platform this could mean that access has just been "
+            "blocked."
+        )
+        sys.exit(f"\t{err_msg}")
+    # 403
+    elif resp_code == requests.codes["forbidden"]:
+        print("The api key may be invalid or missing.")
+        sys.exit(f"\t{err_msg}")
+    # 404
+    elif resp_code == requests.codes["not_found"]:
+        print("\nWe cannot find the one that you are looking for...")
+        print("Move along...")
+        print(f"\tError: {err_msg}")
+        print(f"\tResponse msg: {resp}")
+        print(
+            "\tPossible reason: If this is a device, it could be because the device is "
+            "no longer\n"
+            "\t\t\t enrolled in Kandji. This would prevent the MDM command from being\n"
+            "\t\t\t sent successfully.\n"
+        )
+    # 429
+    elif resp_code == requests.codes["too_many_requests"]:
+        print("You have reached the rate limit ...")
+        print("Try again later ...")
+        sys.exit(f"\t{err_msg}")
+    # 500
+    elif resp_code == requests.codes["internal_server_error"]:
+        print("The service is having a problem...")
+        sys.exit(err_msg)
+    # 503
+    elif resp_code == requests.codes["service_unavailable"]:
+        print("Unable to reach the service. Try again later...")
+    else:
+        print("Something really bad must have happened...")
+        print(err_msg)
+        sys.exit()
 
-    while response_code is not requests.codes["ok"] and attempt < 6:
 
-        try:
-            # Make the api call to Kandji
-            response = requests.get(BASE_URL + endpoint, headers=HEADERS, timeout=30)
-            # Store the HTTP status code
-            response_code = response.status_code
+def kandji_api(method, endpoint, params=None, payload=None):
+    """Make an API request and return data.
 
-            if response_code == requests.codes["ok"]:
-                # HTTP Code 200 (successfull)
+    method   - an HTTP Method (GET, POST, PATCH, DELETE).
+    endpoint - the API URL endpoint to target.
+    params   - optional parameters can be passed as a dict.
+    payload  - optional payload is passed as a dict and used with PATCH and POST
+               methods.
+    Returns a JSON data object.
+    """
+    attom_adapter = HTTPAdapter(max_retries=3)
+    session = requests.Session()
+    session.mount(BASE_URL, attom_adapter)
+
+    try:
+        response = session.request(
+            method,
+            BASE_URL + endpoint,
+            data=payload,
+            headers=HEADERS,
+            params=params,
+            timeout=30,
+        )
+
+        # If a successful status code is returned (200 and 300 range)
+        if response:
+            try:
                 data = response.json()
-                break
+            except Exception:
+                data = response.text
 
-            # An error occurred so we need to report it
-            response.raise_for_status()
+        # if the request is successful exceptions will not be raised
+        response.raise_for_status()
 
-        except requests.exceptions.RequestException as error:
-            attempt += 1
-            if requests.codes["unauthorized"]:
-                # if HTTPS 401
-                print(
-                    "Check to make sure that the API token has the proper permissions "
-                    "to access the devices endpoint ..."
-                )
-                sys.exit(f"\t{error}")
+    except requests.exceptions.RequestException as err:
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
+        data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
-            if attempt == 5:
-                print(error)
-                print("Made 5 attempts ...")
-                print("Exiting ...")
+    return data
+
+
+def get_blueprints(params=None):
+    """Return all blueprints."""
+    page_number = 1
+    data = []
+
+    while True:
+        params = {"page": f"{page_number}"}
+        response = kandji_api(
+            method="GET",
+            endpoint=f"/v1/blueprints",
+            params=params,
+        )
+
+        # breakout the response then append to the data list
+        for record in response["results"]:
+            data.append(record)
+
+        if response["next"] is None:
+            if len(data) < 1:
+                print("No devices found...\n")
+            break
+
+        page_number += 1
 
     return data
 
@@ -149,13 +230,12 @@ def main():
     print("")
 
     # Get all blueprints
-    blueprint_data = get_all_blueprints()
-    blueprint_list = blueprint_data["results"]
+    blueprint_inventory = get_blueprints()
 
-    print(f"Total blueprints: {len(blueprint_list)}")
+    print(f"Total blueprints: {len(blueprint_inventory)}")
 
     # loop over the bluprints returned in the results
-    for blueprint in blueprint_list:
+    for blueprint in blueprint_inventory:
         # check to see if the params list is populated before going further
         if blueprint["params"]:
 
