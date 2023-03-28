@@ -58,7 +58,7 @@ python3 -m pip install pathlib
 
 1. Enter the following to run the script.
 
-    `python3 status_report.py --item-name "Firefox"` or `python3 status_report.py --parameter-name "Set Computer Name"`
+    `python3 status_report.py --library-item "Firefox"` or `python3 status_report.py --parameter "Set Computer Name"`
 
     **Example Script Output**
 
