@@ -1,14 +1,14 @@
 # Set Wallpaper
 
-This script is designed to set a specific image across all connected desktops.
-You can run it as a custom script on it's own, or add it as a post-install script to a custom app library item containing your wallpaper images.
+This script is designed to set a specified image across all connected desktops.
+You can run it as a custom script on it's own, or add it as a post-install script to a Custom App Library Item containing your wallpaper images.
 
-Note: If you want to set your Desktop image and lock it in place in order to prevent users from making changes, then you should set it using a configuration profile.
-You can use a tool like [iMazing Profile Editor](https://imazing.com/profile-editor).
+>**Note:** If you want to set your Desktop image and *lock it in place* in order to prevent users from making changes, then you should set it using a configuration profile.
+You can create that profile with a tool like [iMazing Profile Editor](https://imazing.com/profile-editor).
 
 **Best Practices**
-1. Zip up your wallpaper images and deploy them to a folder that will be accessible by all users. (/Users/Shared as an example)
-2. Add this script as a postinstall to your custom app library containing your wallpaper images.
+1. Zip up your wallpaper images and deploy them to a folder that is accessible by all users. (`/Users/Shared/` as an example)
+2. Add this script as a post-install to your Custom App Library Item containing your zipped wallpaper images. (see [example](#custom-app-library-item---wallpaper-example) below)
 
 ### Requirements
 In order for this script to set the wallpaper, the Kandji agent needs access to Finder events.
@@ -23,7 +23,7 @@ In order for this script to set the wallpaper, the Kandji agent needs access to 
     - **Receiver Identifier:** com.apple.finder
     - **Receiver Code Requirement:** identifier "com.apple.finder" and anchor apple
     
-![Kandji PPC Profile](images/kandji_finderaccess.png)
+![Kandji PPPC Profile](images/kandji_pppc.png)
 
-### Custom App Wallpaper Example
+### Custom App Library Item - Wallpaper Example
 ![Custom App Wallpaper](images/kandji_customapp-wallpaper.png)
