@@ -4,17 +4,14 @@
 # Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
 ################################################################################################
 #
-#   Created on 08/10/2020
-#   Updated on 03/09/2022 - Matt Wilson
-#   Updated on 04/10/2022 - Matt Wilson, credit Glen Arrowsmith
-#   Updated on 11/04/2022 - Matt Wilson
-#   Updated on 01/06/2023 - Matt Wilson
+#   Created on 2020-08-10
+#   Last Updated on 2023-03-28 - Matt Wilson
 #
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   - 13.1
+#   - 13.3
 #   - 12.6
 #   - 11.7.1
 #   - 10.15.7
@@ -122,10 +119,18 @@
 #   1.5.1
 #       - Updated logic when adding and validating that brew is in the current user's PATH.
 #
+#   1.5.2
+#       - Updated Xcode CLI tools install logic to also check for any avaialble updates via
+#         software update, and install those if the latest available version is newer that the
+#         installed version.
+#
 ################################################################################################
 
+# Used when comparing installed CLI tools versus latest available via softwareupate
+autoload is-at-least
+
 # Script version
-VERSION="1.5.1"
+VERSION="1.5.2"
 
 ########################################################################################
 ###################################### VARIABLES #######################################
@@ -235,72 +240,119 @@ rosetta2_check() {
     fi
 }
 
-xcode_cli_tools() {
-    # Check for and install Xcode CLI tools
-    # Run command to check for an Xcode cli tools path
-    /usr/bin/xcrun --version >/dev/null 2>&1
+get_available_cli_tool_installs() {
+    # Return the latest available CLI tools.
 
-    # check to see if there is a valide CLI tools path
-    # shellcheck disable=SC2181
-    if [[ "$?" -eq 0 ]]; then
-        logging "info" "Valid Xcode path found. No need to install Xcode CLI tools ..."
+    # Get the OS build year
+    build_year=$(/usr/bin/sw_vers -buildVersion | cut -c 1,2)
+
+    if [[ "$build_year" -ge 19 ]]; then
+        # for Catalina or newer
+        cmd_line_tools=$(/usr/sbin/softwareupdate --list |
+            /usr/bin/awk '/\*\ Label: Command Line Tools/ { $1=$1;print }' |
+            /usr/bin/sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' |
+            /usr/bin/cut -c 9- | /usr/bin/grep -vi beta | /usr/bin/sort -n)
 
     else
-        logging "info" "Valid Xcode CLI tools path was not found ..."
+        # For Mojave or older
+        cmd_line_tools=$(/usr/sbin/softwareupdate --list |
+            /usr/bin/awk '/\*\ Command Line Tools/ { $1=$1;print }' |
+            /usr/bin/grep -i "macOS" |
+            /usr/bin/sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | /usr/bin/cut -c 2-)
+    fi
 
-        # find out when the OS was built
-        build_year=$(/usr/bin/sw_vers -buildVersion | cut -c 1,2)
+    # return rsponse from softwareupdate reguarding CLI tools.
+    /bin/echo "$cmd_line_tools"
+}
 
-        # Trick softwareupdate into giving us everything it knows about Xcode CLI tools
-        xclt_tmp="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+xcode_cli_tools() {
+    # Check for and install Xcode CLI tools
 
-        # create the file above
-        logging "info" "Creating $xclt_tmp ..."
-        /usr/bin/touch "${xclt_tmp}"
+    # Trick softwareupdate into giving us everything it knows about Xcode CLI tools by
+    # touching the following file to /tmp
+    xclt_tmp="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+    /usr/bin/touch "$xclt_tmp"
 
-        if [[ ${build_year} -ge 19 ]]; then
-            # for Catalina or newer
-            logging "info" "Getting the latest Xcode CLI tools available ..."
-            cmd_line_tools=$(/usr/sbin/softwareupdate -l |
-                awk '/\*\ Label: Command Line Tools/ { $1=$1;print }' |
-                sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 9-)
+    # Run xcrun command to check for a valid Xcode CLI tools path
+    /usr/bin/xcrun --version >/dev/null 2>&1
+
+    # shellcheck disable=SC2181
+    if [[ "$?" -eq 0 ]]; then
+        logging "" "Valid Xcode CLI tools path found."
+
+        # current bundleid for CLI tools
+        bundle_id="com.apple.pkg.CLTools_Executables"
+
+        if /usr/sbin/pkgutil --pkgs="$bundle_id" >/dev/null; then
+            # If the CLI tools pkg bundle is found, get the version
+
+            installed_version=$(/usr/sbin/pkgutil --pkg-info="$bundle_id" |
+                /usr/bin/awk '/version:/ {print $2}' |
+                /usr/bin/awk -F "." '{print $1"."$2}')
+
+            logging "" "Installed CLI tools version is \"$installed_version\""
 
         else
-            # For Mojave or older
-            logging "info" "Getting the latest Xcode CLI tools available ..."
-            cmd_line_tools=$(/usr/sbin/softwareupdate -l |
-                /usr/bin/awk '/\*\ Command Line Tools/ { $1=$1;print }' |
-                /usr/bin/grep -i "macOS" |
-                /ussr/bin/sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | /usr/bin/cut -c 2-)
+            logging "" "Unable to determine installed CLI tools version from \"$bundle_id\"."
         fi
 
-        if [[ "${cmd_line_tools}" == "" ]]; then
-            logging "warning" "Unable to determine available XCode CLI tool updates ..."
-            logging "warning" "This may require manual installation ..."
+        logging "" "Checking to see if there are any available CLI tool updates..."
 
-        else
-            logging "info" "XCode CLI tool updates found: ${cmd_line_tools}"
-        fi
+        # Get the latest available CLI tools
+        cmd_line_tools=("$(get_available_cli_tool_installs)")
+
+    else
+        logging "" "Valid Xcode CLI tools path was not found ..."
+        logging "" "Getting the latest Xcode CLI tools available for install..."
+
+        # Get the latest available CLI tools
+        cmd_line_tools=("$(get_available_cli_tool_installs)")
+
+    fi
+
+    # if something is returned from the cli tools check
+    # shellcheck disable=SC2128
+    if [[ -n $cmd_line_tools ]]; then
+        logging "" "Available Xcode CLI tools found: "
+        logging "" "$cmd_line_tools"
 
         if (($(/usr/bin/grep -c . <<<"${cmd_line_tools}") > 1)); then
             cmd_line_tools_output="${cmd_line_tools}"
-            cmd_line_tools=$(printf "%s" "${cmd_line_tools_output}" | /usr/bin/tail -1)
+            cmd_line_tools=$(/bin/echo "${cmd_line_tools_output}" | /usr/bin/tail -1)
 
-            logging "info" "Latest Xcode CLI tools found: $cmd_line_tools"
+            # get version number of the latest CLI tools installer.
+            lastest_available_version=$(/bin/echo "${cmd_line_tools_output}" | /usr/bin/tail -1 | /usr/bin/awk -F "-" '{print $2}')
         fi
 
-        # run softwareupdate to install Xcode CLI tools
-        logging "info" "Installing the latest Xcode CLI tools ..."
+        if [[ -n $installed_version ]]; then
+            # If an installed CLI tools version is returned
 
-        # Sending this output to the local homebrew_install.log as well as stdout
-        /usr/sbin/softwareupdate -i "${cmd_line_tools}" --verbose |
-            /usr/bin/tee -a "${LOG_PATH}"
+            # compare latest version to installed version using is-at-least
+            version_check="$(is-at-least "$lastest_available_version" "$installed_version" &&
+                /bin/echo "greater than or equal to" || /bin/echo "less than")"
 
-        # cleanup the temp file
-        logging "info" "Cleaning up $xclt_tmp ..."
-        /bin/rm "${xclt_tmp}"
+            if [[ $version_check == *"less"* ]]; then
+                # if the installed version is less than available
+                logging "" "Updating $cmd_line_tools..."
+                /usr/sbin/softwareupdate --install "${cmd_line_tools}" --verbose
 
+            else
+                # if the installed version is greater than or equal to latest available
+                logging "" "Installed version \"$installed_version\" is $version_check the latest available version \"$lastest_available_version\". No upgrade needed."
+            fi
+
+        else
+            logging "" "Installing $cmd_line_tools..."
+            /usr/sbin/softwareupdate --install "${cmd_line_tools}" --verbose
+        fi
+
+    else
+        logging "warning" "Hmmmmmm...unabled to return any available CLI tools..."
+        logging "warning" "May need to validate the softwareupdate command used."
     fi
+
+    logging "Cleaning up $xclt_tmp ..."
+    /bin/rm "${xclt_tmp}"
 }
 
 set_brew_prefix() {
