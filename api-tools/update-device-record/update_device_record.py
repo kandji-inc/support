@@ -7,7 +7,7 @@
 ################################################################################################
 #
 #   Created:  2021-06-03
-#   Modified: 2023-02-08 - Matt Wilson
+#   Modified: 2023-04-06 - Matt Wilson
 #
 ################################################################################################
 # Software Information
@@ -46,7 +46,7 @@
 #
 ################################################################################################
 
-__version__ = "1.3.1"
+__version__ = "1.3.2"
 
 
 # Standard library
@@ -101,9 +101,6 @@ HEADERS = {
     "Content-Type": "application/json;charset=utf-8",
     "Cache-Control": "no-cache",
 }
-
-# Current working directory
-HERE = pathlib.Path("__file__").parent.absolute()
 
 
 def var_validation():
@@ -346,8 +343,8 @@ def main():
         except FileNotFoundError as err:
             print(f"There was an issue loading {arguments.template}...")
             print(
-                "Make sure that the file exists at the sprecified path before trying "
-                "again..."
+                "Make sure that the file name is accurate and that it exists at the"
+                "sprecified path before trying again..."
             )
             sys.exit(err)
 
@@ -369,7 +366,7 @@ def main():
             if device["serial_number"].upper() == attribute["serial_number"].upper():
                 print("Building request payload ...")
                 # Build the payload
-                payload = create_record_update_payload(input_record=device)
+                payload = create_record_update_payload(_input=device)
                 if len(payload) < 3:
                     print("WARNING: Will not attempt to update record...")
                     break
