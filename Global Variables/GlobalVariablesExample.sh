@@ -1,18 +1,22 @@
 #!/bin/zsh
 ################################################################################################
-# Created by Nicholas McDonald | Principal Consulting Engineer
-#
-# Kandji, Inc | Solutions | se@kandji.io
+# Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
 ################################################################################################
-# Created on 03/29/2021
+#
+# Created - 03/29/2021
+# Updated - 03/28/2023 - Brian Goldstein
+#
 ################################################################################################
 # Software Information
 ################################################################################################
+#
 # Example script reading in Kandji global variables from the global variables custom profile
+#
 ################################################################################################
 # License Information
 ################################################################################################
-# Copyright 2021 Kandji, Inc.
+#
+# Copyright 2023 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -32,6 +36,7 @@
 #
 ################################################################################################
 
+DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
@@ -44,6 +49,8 @@ SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' /Library/Manag
 
 echo "
 Global Variables Summary
+
+Department: $DEPARTMENT
 
 Email: $EMAIL
 

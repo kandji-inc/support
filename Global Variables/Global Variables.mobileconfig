@@ -35,6 +35,8 @@
 			<string>$FULL_NAME</string>
 			<key>EMAIL_PREFIX</key>
 			<string>$EMAIL_PREFIX</string>
+			<key>DEPARTMENT</key>
+			<string>$DEPARTMENT</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
