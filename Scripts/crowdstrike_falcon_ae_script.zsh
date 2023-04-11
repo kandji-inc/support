@@ -4,15 +4,12 @@
 # Created by David Larrea & Matt Wilson | support@kandji.io | Kandji, Inc.
 ################################################################################################
 # Created - 2021-08-26
-# Updated - 2022-02-23
-# Updated - 2022-11-28 - Matt Wilson
-# Updated - 2023-01-25 - Matt Wilson
-# Updated - 2023-02-03 - Matt Wilson
+# Last modified - 2023-03-31 - Matt Wilson
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   13.2
+#   13.3
 #   12.6.1
 #   11.7.1
 #
@@ -144,11 +141,13 @@ if [[ "${osvers_major}" -ge 13 ]]; then
 fi
 
 # This command looks in /Applications, /System/Applications, and /Library for the
-# existance of the app defined in $APP_NAME
-installed_path="$(/usr/bin/find /Applications /System/Applications /Library/ -maxdepth 3 -name $APP_NAME 2>/dev/null)"
+# existence of the app defined in $APP_NAME. It will also exclude anything in
+# StagedExtensions as this is where KEXT are staged
+installed_path="$(/usr/bin/find /Applications /System/Applications /Library \
+    -not -path '*StagedExtensions*' -maxdepth 3 -name $APP_NAME 2>/dev/null)"
 
 # Validate the path returned in installed_path
-if [[ ! -e $installed_path ]] || [[ $APP_NAME != "$(/usr/bin/basename "$installed_path")" ]]; then
+if [[ ! -e "$installed_path" ]] || [[ "$APP_NAME" != "$(/usr/bin/basename "$installed_path")" ]] && [[ -n "$(/usr/bin/dirname "$installed_path")" ]]; then
     /bin/echo "$APP_NAME not installed. Starting installation process ..."
     exit 1
 
