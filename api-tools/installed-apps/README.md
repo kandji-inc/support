@@ -102,4 +102,4 @@ This `python3` script leverages the Kandji API to generate a `CSV` report contai
 
 - To return all devices with "Kandji Self Service" installed, use.
 
-    `python3 installed_apps.py --name "Kandji Self Service`
+    `python3 installed_apps.py --name "Kandji Self Service"`
