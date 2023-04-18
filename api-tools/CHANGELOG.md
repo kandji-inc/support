@@ -14,6 +14,12 @@ and this project adheres to Year Notation Versioning.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [2023-04-17]
+
+### Added
+
+- Added API script to query for device secrets in a Kandji tenant.
+
 ## [2023-04-06]
 
 ## Changed
