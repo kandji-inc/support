@@ -11,15 +11,16 @@ import subprocess
 
 def convert_bytes(bytes_in):
     """Convert bytes to another size unit"""
+    units = ['B', 'KB', 'MB', 'GB', 'TB']
     i = 0
     double_bytes = bytes_in
 
-    while bytes_in >= 1024:
+    while bytes_in >= 1024 and i < len(units) - 1:
         double_bytes = bytes_in / 1024.0
         i = i + 1
         bytes_in = bytes_in / 1024
 
-    return str(round(double_bytes, 2))
+    return f"{round(double_bytes, 2)} {units[i]}"
 
 
 def system_profiler(data_type):
@@ -39,14 +40,21 @@ def system_profiler(data_type):
         f"SP{data_type}DataType",
     ]
 
-    # Use subprocess to shellout and pull system_profiler info
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
-        out, err = proc.communicate()
+    try:
+        # Use subprocess to shellout and pull system_profiler info
+        out = subprocess.check_output(cmd, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        print(f"Error running system_profiler command: {e}")
+        return None
 
-    # Serialize the data
-    data = json.loads(out)
+    try:
+        # Serialize the data
+        data = json.loads(out)
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON data: {e}")
+        return None
 
-    return data[f"SP{data_type}DataType"]
+    return data.get(f"SP{data_type}DataType", [])
 
 
 def main():
@@ -55,25 +63,35 @@ def main():
     # Get the storage data information
     storage_data = system_profiler(data_type="Storage")
 
+    if not storage_data:
+        print("Error retrieving storage data. Exiting.")
+        return
+
     for attribute in storage_data:
         # Loop over each storage device returned
 
         if (
-            attribute["mount_point"] == "/System/Volumes/Data"
-            and attribute["physical_drive"]["is_internal_disk"] == "yes"
+            attribute.get("mount_point") == "/System/Volumes/Data"
+            and attribute.get("physical_drive", {}).get("is_internal_disk") == "yes"
         ):
 
             # find the amount of free space remaining to determine if storage is
             # getting full.
-            free_space = convert_bytes(attribute["free_space_in_bytes"])
-            total_space = convert_bytes(attribute["size_in_bytes"])
-            total_space_used = round(float(total_space) - float(free_space), 2)
+            free_space = convert_bytes(attribute.get("free_space_in_bytes", 0))
+            total_space = convert_bytes(attribute.get("size_in_bytes", 0))
+            total_space_used = round(
+                float(attribute.get("size_in_bytes", 0) - attribute.get("free_space_in_bytes", 0)) / (1024**3), 2)
 
-            print(f"Name of disk: {attribute['_name']}")
-            print(f"Mount point: {attribute['mount_point']}")
-            print(f"Total used space: {total_space_used} GB")
-            print(f"Total free space: {free_space} GB")
-            print(f"Total disk size: {total_space} GB")
+            if total_space_used >= 1099511627776:
+                total_space_used_size = "TB"
+            else:
+                total_space_used_size = "GB"
+
+            print(f"Name of disk: {attribute.get('_name', '')}")
+            print(f"Mount point: {attribute.get('mount_point', '')}")
+            print(f"Total used space: -{total_space_used} {total_space_used_size}")
+            print(f"Total free space: {free_space}")
+            print(f"Total disk size: {total_space}")
 
 
 if __name__ == "__main__":
