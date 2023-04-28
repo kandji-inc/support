@@ -5,7 +5,7 @@
 ###################################################################################################
 #
 #   Created - 12/09/2021
-#   Updated - 2023-01-12
+#   Updated - 2023-04-28
 #
 ###################################################################################################
 # Tested macOS Versions
@@ -62,12 +62,13 @@ TOKEN="your_api_key_here"
 ########################################################################################
 
 # Kandji API base URL
-if [[ "${REGION}" == "us" ]]; then
-    # If the region is us
-    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}-1.kandji.io/api"
+if [[ -z $REGION || $REGION == "us" ]]; then
+  BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
+elif [[ $REGION == "eu" ]]; then
+  BASE_URL="https://${SUBDOMAIN}.api.${REGION}.kandji.io/api"
 else
-    # if the region is eu
-    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}.kandji.io/api"
+  echo "Unsupported region: $REGION. Please update and try again."
+  exit 1
 fi
 
 ###################################################################################################
@@ -120,11 +121,12 @@ fi
 # debug: Print the serial_number var
 # echo "$serial_number"
 
+echo "$BASE_URL/v1/devices?serial_number=$serial_number"
 # search for device by serial number
 device_record=$(/usr/bin/curl --silent --request GET \
-    --url "$BASE_URL/v1/devices/?serial_number=$serial_number" \
+    --url "$BASE_URL/v1/devices?serial_number=$serial_number" \
     --header "Authorization: Bearer $TOKEN" \
-    --header "Content-Type: $CONTENT_TYPE")
+    --header "Content-Type: application/json")
 
 if [[ -z "$device_record" ]]; then
     echo "Had an issue pulling devices from Kandji ..."
@@ -156,7 +158,7 @@ asset_tag=$(echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
 update_asset_tag_response=$(/usr/bin/curl --silent --request PATCH \
     --url "$BASE_URL/v1/devices/$device_id"/ \
     --header "Authorization: Bearer $TOKEN" \
-    --header "Content-Type: $CONTENT_TYPE" \
+    --header "Content-Type: application/json" \
     --data "{
     \"asset_tag\": \"$asset_tag\"
 }")
