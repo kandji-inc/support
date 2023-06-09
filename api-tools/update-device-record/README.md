@@ -75,7 +75,7 @@ An example input file can be found in this repo.
 
 5. Enter the following to run the script.
 
-    `python3 update_device_record.py --input-file "/path/to/input_template.csv"`
+    `python3 update_device_record.py --template "/path/to/input_template.csv"`
     
     **Example output**
     

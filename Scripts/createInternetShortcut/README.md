@@ -21,7 +21,7 @@ This Shell script creates custom shortcuts on user's desktops for http(s), smb, 
 ### Script Modification
 
 1. Open the script in a text editor such as BBEdit or VSCode.
-1. Update the `HOSTNAME` variable with the correct URI, `DISPLAYNAME` with the display name of the shortcut, and `ICON` with the full path of your desired icon if you do not want to use the default icons.
+2. Update the `HOSTNAME` variable with the correct URI, `DISPLAYNAME` with the display name of the shortcut, and `ICON` with the full path of your desired icon if you do not want to use the default icons.
 
 ```Shell
         ########################################################################################
@@ -39,9 +39,9 @@ This Shell script creates custom shortcuts on user's desktops for http(s), smb, 
         # example: ICON="/Library/Kandji/Kandji Agent.app/Contents/Resources/AppIcon.icns"
         ICON=
 ```
-1. Save and close the script.
-1. In Kandji, create a new Custom Script.
-1. Past your modified createInternetShortcut.zsh script in the body of the script.
+3. Save and close the script.
+4. In Kandji, create a new Custom Script.
+5. Paste your modified createInternetShortcut.zsh script in the body of the script.
 
 
 ### Examples
