@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>EnableMediaRouter</key>
+			<false/>
+			<key>ExtensionInstallForcelist</key>
+			<array>
+				<string>inomeogfingihgjfjlpeplalcfajhgai</string>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Google Chrome</string>
+			<key>PayloadIdentifier</key>
+			<string>com.google.Chrome.0A67D4E9-CD7C-427D-A189-6CD7D19334D6</string>
+			<key>PayloadType</key>
+			<string>com.google.Chrome</string>
+			<key>PayloadUUID</key>
+			<string>3F84D9D3-CC6E-4978-8BF3-A8E65BB83596</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Install extension for Google Chrome to enable Google Remote Desktop.</string>
+	<key>PayloadDisplayName</key>
+	<string>Chrome Remote Desktop</string>
+	<key>PayloadIdentifier</key>
+	<string>io.kandji.GoogleRemote.38709580-AE03-4C40-AC13-50AAB2402250</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>3BEE973F-330B-49B8-8BD7-D5EFFF7C9923</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
