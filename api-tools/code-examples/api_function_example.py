@@ -2,9 +2,31 @@
 
 """Example script using a single function to make any Kandji API call."""
 
-########################################################################################
+################################################################################################
 # Created by Matt Wilson | Kandji, Inc | support@kandji.io
-########################################################################################
+################################################################################################
+# License Information
+################################################################################################
+#
+# Copyright 2023 Kandji, Inc.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
 # Built in imports
 import sys
@@ -27,23 +49,27 @@ from requests.adapters import HTTPAdapter
 ######################### UPDATE VARIABLES BELOW #######################################
 ########################################################################################
 
+SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
-# Initialize some variables
-# Kandji API base URL
-BASE_URL = "https://example.clients.us-1.kandji.io/api/v1/"
+# us("") and eu - this can be found in the Kandji settings on the Access tab
+REGION = ""
+
 # Kandji Bearer Token
-TOKEN = "api_token"
-
-
-# Things to query for
-SERIAL_NUMBER = "put serial number here"
-DEVICE_NAME = "put device name here"
-BLUEPRINT_NAME = "put blueprint name here"
-
+TOKEN = ""
 
 ########################################################################################
 ######################### DO NOT MODIFY BELOW THIS LINE ################################
 ########################################################################################
+
+# Kandji API base URL
+if REGION in ["", "us"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.kandji.io/api"
+
+elif REGION in ["eu"]:
+    BASE_URL = f"https://{SUBDOMAIN}.api.{REGION}.kandji.io/api"
+
+else:
+    sys.exit(f'\nUnsupported region "{REGION}". Please update and try again\n')
 
 
 HEADERS = {
@@ -54,7 +80,7 @@ HEADERS = {
 }
 
 
-def error_handling(resp, resp_code, err_msg):
+def http_errors(resp, resp_code, err_msg):
     """Handle HTTP errors."""
     # 400
     if resp_code == requests.codes["bad_request"]:
@@ -99,7 +125,7 @@ def error_handling(resp, resp_code, err_msg):
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        # sys.exit()
+        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -133,11 +159,11 @@ def kandji_api(method, endpoint, params=None, payload=None):
             except Exception:
                 data = response.text
 
-        # if the request is successful exeptions will not be raised
+        # if the request is successful exceptions will not be raised
         response.raise_for_status()
 
     except requests.exceptions.RequestException as err:
-        error_handling(resp=response, resp_code=response.status_code, err_msg=err)
+        http_errors(resp=response, resp_code=response.status_code, err_msg=err)
         data = {"error": f"{response.status_code}", "api resp": f"{err}"}
 
     return data

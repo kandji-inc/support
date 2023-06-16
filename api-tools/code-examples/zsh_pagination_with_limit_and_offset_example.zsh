@@ -1,5 +1,19 @@
 #!/usr/bin/env zsh
 
+################################################################################################
+# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+################################################################################################
+# Created on 2022-11-28
+# Updated on 2023-06-16
+################################################################################################
+# Tested macOS Versions
+################################################################################################
+#
+#   13.4
+#
+################################################################################################
+# Software Information
+################################################################################################
 #
 #   API pagination example using limit and offset in zshell.
 #
@@ -31,38 +45,74 @@
 #       into multiple smaller pieces. For example, whenever you go to the questions
 #       page in Stack Overflow, you see something like this at the bottom
 #
-
+################################################################################################
+# License Information
+################################################################################################
 #
-# Requirements: JQ - can be insalled via homebrew
+# Copyright 2023 Kandji, Inc.
 #
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this
+# software and associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy, modify, merge,
+# publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+# to whom the Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+################################################################################################
 
 ########################################################################################
 ###################################### VARIABLES #######################################
 ########################################################################################
 
 # Kandji tenant subdomain
-SUBDOMAIN="accuhive"  # accuhive
+SUBDOMAIN="accuhive" # accuhive
 
 # tenant region
-REGION="eu"  # us, eu
+REGION="" # us, eu
 
 # Kandji Bearer Token
-TOKEN="your_api_key_here"
-
-########################################################################################
-
-# Kandji API base URL
-if [[ "${REGION}" == "us" ]]; then
-    # If the region is us
-    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}-1.kandji.io/api"
-else
-    # if the region is eu
-    BASE_URL="https://${SUBDOMAIN}.clients.${REGION}.kandji.io/api"
-fi
+TOKEN=""
 
 ########################################################################################
 ###################################### FUNCTIONS #######################################
 ########################################################################################
+
+function install_jq() {
+    # Download and install jq
+
+    # univeral install hosted by Kandji
+    universal_jq_release="https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.6-UNIVERSAL.pkg.tar.gz"
+
+    # jq temp download location
+    jq_tmp="/private/tmp/jq.tar.gz"
+
+    # installed binary
+    installed_jq="/Library/KandjiSE/jq"
+
+    jq_bin="/usr/local/bin/jq"
+
+    /usr/bin/curl -L "${universal_jq_release}" -o "${jq_tmp}"
+
+    # Expand our tarball into tmp
+    /usr/bin/tar -xf "${jq_tmp}" -C /private/tmp
+
+    # Locate our extracted JQ package and install it
+    /usr/bin/find -L /private/tmp -iname "jq*pkg" -exec sudo /usr/sbin/installer \
+        -pkg {} -target / \;
+
+    sudo /bin/mkdir -p "/usr/local/bin"
+    sudo /bin/mv "${installed_jq}" "${jq_bin}"
+    sudo /bin/chmod a+x "${jq_bin}"
+}
 
 function get_devices() {
     # Return device inventory
@@ -108,10 +158,12 @@ function get_devices() {
 
         # base64 ecode the response and append to the data array
         for record in $(echo $response | ${jq_path} -r '.[] | @base64'); do
+            # shellcheck disable=SC2206
             data+=(${record})
         done
     done
 
+    # shellcheck disable=SC2128
     /bin/echo ${data}
 }
 
@@ -119,15 +171,31 @@ function get_devices() {
 ###################################### MAIN LOGIC ######################################
 ########################################################################################
 
+# Kandji API base URL
+if [[ -z $REGION || $REGION == "us" ]]; then
+    BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
+elif [[ $REGION == "eu" ]]; then
+    BASE_URL="https://${SUBDOMAIN}.api.${REGION}.kandji.io/api"
+else
+    echo "Unsupported region: $REGION. Please update and try again."
+    exit 1
+fi
+
 # look for jq
 jq_path="$(/usr/bin/find /usr/local/bin /bin /opt/homebrew -maxdepth 3 \
     -name jq 2>/dev/null)"
 
-if [[ -z $jq_path   ]]; then
-    /bin/echo "WARNING: Dependency not found..."
-    /bin/echo "WARNING: Did not find an installed version of jq..."
-    /bin/echo "WARNING: The easiest way to get jq is via homebew(brew.sh) with \"brew install jq\""
-    exit 1
+if [[ -z $jq_path ]]; then
+    /bin/echo "Did not find jq in PATH. Attempting to install..."
+    install_jq
+
+    # set jq path
+    jq_path="$(/usr/bin/find /usr/local/bin /bin /opt/homebrew -maxdepth 3 \
+        -name jq 2>/dev/null)"
+    /bin/echo "jq installed at $jq_path."
+
+else
+    /bin/echo "jq path found at $jq_path"
 fi
 
 /bin/echo ""
@@ -151,7 +219,7 @@ echo "Getting device ids..."
 echo ""
 
 # store device uuids in an array called device_ids
-local -a device_ids
+declare -a device_ids
 device_ids=()
 
 # loop over device inventory to pull out device_id
