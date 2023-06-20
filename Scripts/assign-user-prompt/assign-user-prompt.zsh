@@ -5,6 +5,7 @@
 ###################################################################################################
 #
 #   Created - 5.22.23
+#   Updated - 6.19.23
 #
 ###################################################################################################
 # Tested macOS Versions
@@ -73,7 +74,7 @@ if [[ -z $region || $region == "us" ]]; then
 elif [[ $region == "eu" ]]; then
   base_url="https://${subdomain}.api.${region}.kandji.io/api"
 else
-  echo "Unsupported region: $region. Please update and try again."
+  /bin/echo "Unsupported region: $region. Please update and try again."
   exit 1
 fi
 
@@ -82,18 +83,18 @@ CONTENT_TYPE="application/json"
 
 # Check if jq is installed and install it if not
 check_jq() {
-  if ! command -v jq &> /dev/null; then
-    echo "jq is not installed. Installing jq..."
+  if ! /usr/bin/command -v jq &> /dev/null; then
+    /bin/echo "jq is not installed. Installing jq..."
     install_jq
   else
-    echo "jq is already installed."
-    jq_binary=$(which jq)
+    /bin/echo "jq is already installed."
+    jq_binary=$(/usr/bin/which jq)
   fi
 }
 
 install_jq() {
   if [[ ! -d "/Library/KandjiSE" ]]; then
-    mkdir "/Library/KandjiSE"
+    /bin/mkdir "/Library/KandjiSE"
   fi  
   	cd /Library/KandjiSE/
   	/usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.6-UNIVERSAL.pkg.tar.gz"
@@ -112,43 +113,43 @@ check_jq
 user_response=$(/usr/bin/osascript -e 'display dialog "Please enter your email address" default answer "you@yourcompany.com" buttons {"Cancel", "Submit"} default button "Submit"')
 
 # Parse email address entered by the end user
-user_email=$(echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
+user_email=$(/bin/echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
 
-echo The user entered "$user_email"
+/bin/echo The user entered "$user_email"
 
 
 ############### MAIN LOGIC - GET USER ID ############################################################
 
 
 # Make the SCIM api call (change the count value if you have more users)
-response=$(curl --location --url "$base_url/v1/scim/Users?count=10000" \
+response=$(/usr/bin/curl --location --url "$base_url/v1/scim/Users?count=10000" \
 --header 'Authorization: Bearer '$scim_token'')
 
 # Check if curl command was successful
 if [ $? -ne 0 ]; then
-  echo "Error: Failed to make the SCIM API call."
+  /bin/echo "Error: Failed to make the SCIM API call."
   exit 1
 fi
 
 # Parse the SCIM JSON response for the user ID (and generate user_id variable)
-user_id=$(echo "$response" | $jq_binary --arg email "$user_email" '.Resources[] | select(.emails[].value == $email) | .id')
+user_id=$(/bin/echo "$response" | $jq_binary --arg email "$user_email" '.Resources[] | select(.emails[].value == $email) | .id')
 
 # Check if parsing was successful
 if [ $? -ne 0 ]; then
-  echo "Error: Failed to parse the SCIM API response using jq."
+  /bin/echo "Error: Failed to parse the SCIM API response using jq."
   /usr/bin/osascript -e 'display dialog "Unable to search the directory. We will alert your administrator." buttons ("OK")'
   exit 1
 fi
 
 # Check if user ID is empty
 if [ -z "$user_id" ]; then
-  echo "Error: User ID not found for the given email."
+  /bin/echo "Error: User ID not found for the given email."
   /usr/bin/osascript -e 'display dialog "Your email was not found in the directory, but we will alert your administrator." buttons ("OK")'
   exit 1
 fi
 
 # State the User ID for the given email
-echo "The Kandji User ID for $user_email is $user_id"
+/bin/echo "The Kandji User ID for $user_email is $user_id"
 
 
 ############### MAIN LOGIC - GET DEVICE ID ############################################################
@@ -159,7 +160,7 @@ serial_number=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 |
     /usr/bin/awk -F\" '/IOPlatformSerialNumber/{print $(NF-1)}')
 
 if [[ -z "$serial_number" ]]; then
-    echo "Had an issue pulling device serial number ..."
+    /bin/echo "Had an issue pulling device serial number ..."
     /usr/bin/osascript -e 'display dialog "There was an issue with your serial number, but we will alert your administrator." buttons ("OK")'
     exit 1
 fi
@@ -168,16 +169,16 @@ fi
 device_record=$(/usr/bin/curl --silent --request GET --url "$base_url/v1/devices/?serial_number=$serial_number" --header "Authorization: Bearer $token")
 
 if [[ -z "$device_record" ]]; then
-    echo "Had an issue pulling devices from Kandji ..."
+    /bin/echo "Had an issue pulling devices from Kandji ..."
     /usr/bin/osascript -e 'display dialog "Your device was not found in the system, but we will alert your administrator." buttons ("OK")'
     exit 1
 fi
 
 # Parse device_record and extract device ID using jq
-device_id=$(echo "$device_record" | $jq_binary -r '.[0].device_id')
+device_id=$(/bin/echo "$device_record" | $jq_binary -r '.[0].device_id')
 
 # Print the device ID
-echo "Device ID: $device_id"
+/bin/echo "Device ID: $device_id"
 
 
 ############### MAIN LOGIC - PASS USER ID AND DEVICE ID TO KANDJI #############################################
@@ -190,13 +191,13 @@ update_device_response=$(/usr/bin/curl --silent --request PATCH --url "$base_url
 
 
 if [[ "$update_device_response" == "400" ]]; then
-    echo "Bad request code $update_device_response ..."
+    /bin/echo "Bad request code $update_device_response ..."
       /usr/bin/osascript -e 'display dialog "Unable to assign your device at this time, but we will alert your administrator." buttons ("OK")'
     exit 1
 fi
 
 # Print response and alert the end user
-echo "The device has been updated with a new assigned user."
+/bin/echo "The device has been updated with a new assigned user."
 /usr/bin/osascript -e 'display dialog "Thanks! Your device has been assigned." buttons ("OK")'
 
 exit 0
