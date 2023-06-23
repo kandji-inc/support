@@ -1,17 +1,18 @@
 # Set Wallpaper
 
-This script is designed to set a specified image across all connected desktops.
-You can run it as a custom script on it's own, or add it as a post-install script to a Custom App Library Item containing your wallpaper images.
+This script is designed to set a specified image across all connected desktops without requiring the installation of third-party tools or binaries.
 
->**Note:** If you want to set your Desktop image and *lock it in place* in order to prevent users from making changes, then you should set it using a configuration profile.
+You can run it as a custom script or add it as a post-install script to a Custom App Library Item containing your desktop images.
+
+>**Note:** If you want to set your Desktop image and *lock it in place* to prevent users from making changes, then you should set it [using a configuration profile](https://support.kandji.io/support/solutions/articles/72000560465-set-a-custom-desktop-picture).
 You can create that profile with a tool like [iMazing Profile Editor](https://imazing.com/profile-editor).
 
 **Best Practices**
-1. Zip up your wallpaper images and deploy them to a folder that is accessible by all users. (`/Users/Shared/` as an example)
-2. Add this script as a post-install to your Custom App Library Item containing your zipped wallpaper images. (see [example](#custom-app-library-item---wallpaper-example) below)
+1. Zip up your desktop images and deploy them to a folder that is accessible by all users. (`/Users/Shared/` as an example)
+2. Add this script as a post-install to your Custom App Library Item containing your zipped desktop images. (see [example](#custom-app-library-item---wallpaper-example) below)
 
 ### Requirements
-In order for this script to set the wallpaper, the Kandji agent needs access to Finder events.
+In order for this script to set the desktop image, the Kandji agent needs access to Finder events.
 
 - Privacy Profile (PPPC) granting the Kandji Agent access to Finder Apple Events.
   - **Identifer Type:** Bundle ID
@@ -25,5 +26,5 @@ In order for this script to set the wallpaper, the Kandji agent needs access to 
     
 ![Kandji PPPC Profile](images/kandji_pppc.png)
 
-### Custom App Library Item - Wallpaper Example
+### Custom App Library Item - Desktop Image Example
 ![Custom App Wallpaper](images/kandji_customapp-wallpaper.png)
