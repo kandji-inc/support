@@ -8,57 +8,21 @@
 			<key>NotificationSettings</key>
 			<array>
 				<dict>
-					<key>BadgesEnabled</key>
-					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.bitdefender.networkinstaller</string>
-					<key>CriticalAlertEnabled</key>
-					<true/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInCarPlay</key>
-					<false/>
-					<key>ShowInLockScreen</key>
-					<true/>
-					<key>ShowInNotificationCenter</key>
-					<true/>
-					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 				<dict>
-					<key>BadgesEnabled</key>
-					<false/>
 					<key>BundleIdentifier</key>
 					<string>com.bitdefender.epsecurity.BDLDaemonApp</string>
-					<key>CriticalAlertEnabled</key>
-					<true/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInCarPlay</key>
-					<false/>
-					<key>ShowInLockScreen</key>
-					<true/>
-					<key>ShowInNotificationCenter</key>
-					<true/>
-					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 				<dict>
-					<key>BadgesEnabled</key>
-					<true/>
 					<key>BundleIdentifier</key>
 					<string>com.bitdefender.EndpointSecurityforMac</string>
-					<key>CriticalAlertEnabled</key>
-					<true/>
 					<key>NotificationsEnabled</key>
-					<true/>
-					<key>ShowInCarPlay</key>
-					<false/>
-					<key>ShowInLockScreen</key>
-					<true/>
-					<key>ShowInNotificationCenter</key>
-					<true/>
-					<key>SoundsEnabled</key>
 					<true/>
 				</dict>
 			</array>
@@ -73,17 +37,44 @@
 			<key>PayloadType</key>
 			<string>com.apple.notificationsettings</string>
 			<key>PayloadUUID</key>
-			<string>DAF3AE76-A56B-4B5C-8694-28D2FA954BC3</string>
+			<string>4E69FE78-CE7E-477B-9335-C9D68111F0C5</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
+			<key>AllowNonAdminUserApprovals</key>
+			<false/>
 			<key>AllowUserOverrides</key>
 			<true/>
 			<key>AllowedTeamIdentifiers</key>
 			<array>
 				<string>GUNFMW623Y</string>
 			</array>
+			<key>PayloadDescription</key>
+			<string></string>
+			<key>PayloadDisplayName</key>
+			<string>Approved Kernel Extensions</string>
+			<key>PayloadIdentifier</key>
+			<string>C5E8F086-455E-4D5A-8BCB-9F3F7FF1D218</string>
+			<key>PayloadOrganization</key>
+			<string>Kandji, Inc.</string>
+			<key>PayloadType</key>
+			<string>com.apple.syspolicy.kernel-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>C5E8F086-455E-4D5A-8BCB-9F3F7FF1D218</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>AllowUserOverrides</key>
+			<true/>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>GUNFMW623Y</key>
+				<array>
+					<string>com.bitdefender.cst.net.dci.dci-network-extension</string>
+				</array>
+			</dict>
 			<key>PayloadDescription</key>
 			<string></string>
 			<key>PayloadDisplayName</key>
@@ -95,7 +86,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>F0CC9D5B-6997-4A22-95E7-54E6415C30A2</string>
+			<string>8B5B11F3-A0D9-4622-8831-AC32814651CD</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -150,7 +141,19 @@
 						<key>Identifier</key>
 						<string>/Library/Bitdefender/AVP/BDLDaemon</string>
 						<key>IdentifierType</key>
-						<string>path</string>
+						<string>Path</string>
+						<key>StaticCode</key>
+						<integer>0</integer>
+					</dict>
+					<dict>
+						<key>Allowed</key>
+						<integer>1</integer>
+						<key>CodeRequirement</key>
+						<string>anchor apple generic and identifier "com.bitdefender.cst.net.dci.dci-network-extension" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = GUNFMW623Y)</string>
+						<key>Identifier</key>
+						<string>com.bitdefender.cst.net.dci.dci-network-extension</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
 						<key>StaticCode</key>
 						<integer>0</integer>
 					</dict>
@@ -159,44 +162,42 @@
 		</dict>
 		<dict>
 			<key>PayloadCertificateFileName</key>
-			<string>Bitdefender CA SSL.cer</string>
+			<string>Bitdefender CA SSL</string>
 			<key>PayloadContent</key>
 			<data>
-			MIIDRjCCAi4CCQDUeb7bP+2PqTANBgkqhkiG9w0BAQsFADBlMQsw
-			CQYDVQQGEwJSTzESMBAGA1UECAwJQnVjaGFyZXN0MRIwEAYDVQQH
-			DAlCdWNoYXJlc3QxETAPBgNVBAoMCEVuZHBvaW50MRswGQYDVQQD
-			DBJCaXRkZWZlbmRlciBDQSBTU0wwHhcNMjEwNTE4MjMwOTQ4WhcN
-			MjYwNTE3MjMwOTQ4WjBlMQswCQYDVQQGEwJSTzESMBAGA1UECAwJ
-			QnVjaGFyZXN0MRIwEAYDVQQHDAlCdWNoYXJlc3QxETAPBgNVBAoM
-			CEVuZHBvaW50MRswGQYDVQQDDBJCaXRkZWZlbmRlciBDQSBTU0ww
-			ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDcjm2zkHQB
-			trhD94GOdp//tJ69aXTW86cCpivvPMFcqVrbhilCyD+EU96k231k
-			+wR0vcGUtH34HWNCx1jGLoeeNZQ1SnpaZxYPaK4I0Ex7IjvSXr51
-			tmajEoA46TY5vVmXwMol4eld7EqUqMYypmtQ3slGKILp8W59oCHI
-			iZhXwqO6jz0eTqOiy723QZ0XsFlZa3DNnQ4Ge3dyuNzpqK2M6JiW
-			eJoIPl61UwxxBKiRaMWKGOLJ+N5V9UxqhNgLsp/W8hxhU1Vlyaog
-			ID1neZzXqfsOghCu/0SDXl1Ie1QY7vPbfSlBFx9EPDRLZfCdbLKP
-			8sp6BlHj+XTGjvyYKGZfAgMBAAEwDQYJKoZIhvcNAQELBQADggEB
-			ACK068g13e3GOao5+a3dGC6VchdySALy6adjUj7XiG82R6YXJSZq
-			g/vGVIsqIqrFgyBFtwhCPFVdEDLi5g3Cj4yq4geHD8mwwgw3GPmE
-			9dJ6ej1wNHzdsowx6HC0EjwF4Ryjk/pMJN7caklf0ukDGKtFwHuh
-			mM4+FN6HGyBBMjVXQmVvUxdCMEotiOoTXpk9KoOksbePmkS6ywG4
-			GfYRByZBFI0VrwWhm4fNtiTW8aSjsnzzemHqo+HX4NxYzvsdlvsl
-			Z9vAWEBave3Gdf0KXIE4rjf9+L6VrmZaf1kuMWRLTSkxgcb9vwhy
-			673tNBujmE5iTcCzWjqpRnyQySwWqbQ=
+			MIIDjzCCAnegAwIBAgIJALstyBRUgnIMMA0GCSqGSIb3DQEBCwUA
+			MGUxCzAJBgNVBAYTAlJPMRIwEAYDVQQIDAlCdWNoYXJlc3QxEjAQ
+			BgNVBAcMCUJ1Y2hhcmVzdDERMA8GA1UECgwIRW5kcG9pbnQxGzAZ
+			BgNVBAMMEkJpdGRlZmVuZGVyIENBIFNTTDAeFw0yMzA0MTAyMDQ3
+			MjhaFw0yODA0MDgyMDQ3MjhaMGUxCzAJBgNVBAYTAlJPMRIwEAYD
+			VQQIDAlCdWNoYXJlc3QxEjAQBgNVBAcMCUJ1Y2hhcmVzdDERMA8G
+			A1UECgwIRW5kcG9pbnQxGzAZBgNVBAMMEkJpdGRlZmVuZGVyIENB
+			IFNTTDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKMD
+			YqTRTiPwMBUC8V+iuJKET2/njsFQSKjS1jTF4JIz6Vx3CumAGxH/
+			mZwK73glk+5VXr3k5BAc4u7BEFU7EXyQql+i7dgQ/947zuaeG4fC
+			7ThyhZULKd87ZyxaeTiaKtdhENwUQaqWGlkrkAsqr93pi717fWNx
+			LxI3OqbV5nazLnn0GnYSBHaJMmkm2I/bN4EJSmlnEukpa2FFjweJ
+			+rgdc/jyLMqCqgJnjK8TWtr8lGXktXniMK3xRXNmIK3IdFAtb9HW
+			af0mMdfNNdz4fFw7yAd1mp9I1jIMrC+hIP+3Sum9rDJ8qmvdX1Kw
+			cwi0SmzP11yP1k2YZLVBef/aSP8CAwEAAaNCMEAwDgYDVR0PAQH/
+			BAQDAgEGMA8GA1UdEwQIMAYBAf8CAQAwHQYDVR0OBBYEFGdbARa1
+			NnMlOMI+5TV1GYoHgfMAMA0GCSqGSIb3DQEBCwUAA4IBAQBOULh+
+			HOSxqve0n0PgdrZ2S03SsHtUYi9MI9bDAQGzxCK3UlgyB33mamfW
+			zqlWRg69meEf8Q+6xU+UnLEqQbkrC/f8CZTHdJ5FVJ3x5itszrut
+			4L3C/ibux5vt6mEXt2EFKkyLzOarvl7QPAqyslUlGFdtmNBJLAYC
+			9F1Kad/2pdYu4DCP4fv98oNyMNEFOLU23Khh5Yv+YU1+HNFPh2OC
+			K6UHtdnmp/PTYYnHLYURRD+uCaYsfDbqHl2Wbq8tzCGmEd9ieGH+
+			aabRz48qwFzj8otjfRwVaz5RtII/DuoB6/jDVNbC1uWS6flWVb3y
+			j1/qJHrcbQS/Bj260HNUKcMm
 			</data>
-			<key>PayloadDescription</key>
-			<string></string>
 			<key>PayloadDisplayName</key>
-			<string>Bitdefender CA SSL</string>
+			<string>Certificate Root</string>
 			<key>PayloadIdentifier</key>
-			<string>89BA401A-8EFD-40F2-BAD1-45B8A87B3708</string>
-			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>com.apple.security.root.9AAC02E9-F7A6-46D8-AE99-D937EE23048A</string>
 			<key>PayloadType</key>
 			<string>com.apple.security.root</string>
 			<key>PayloadUUID</key>
-			<string>89BA401A-8EFD-40F2-BAD1-45B8A87B3708</string>
+			<string>9AAC02E9-F7A6-46D8-AE99-D937EE23048A</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -214,13 +215,13 @@
 			<key>PayloadDisplayName</key>
 			<string>Web Content Filter Payload</string>
 			<key>PayloadIdentifier</key>
-			<string>io.kandji.bitdefender.171C736A-CA59-4EBB-B411-3035422499BF</string>
+			<string>io.kandji.bitdefender.6FE18137-99DB-4000-9619-7E184A7BF5E3</string>
 			<key>PayloadOrganization</key>
 			<string>Kandji, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
-			<string>171C736A-CA59-4EBB-B411-3035422499BF</string>
+			<string>6FE18137-99DB-4000-9619-7E184A7BF5E3</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>PluginBundleID</key>
@@ -230,9 +231,9 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Bitdefender System Extensions, PPPC, Certificate, Notifications, and Network content filter</string>
+	<string>Bitdefender System Extensions, Kernel Extensions, PPPC, Notifications, and Network content filter</string>
 	<key>PayloadDisplayName</key>
-	<string>Bitdefender Settings</string>
+	<string>Bitdefender Settings with KEXT</string>
 	<key>PayloadIdentifier</key>
 	<string>com.kandji.profile.custom.E3D409CC-D789-4934-8D48-EECE678F8508</string>
 	<key>PayloadOrganization</key>
@@ -244,7 +245,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>9110F93F-5C45-43A7-B9C9-426A624D7B92</string>
+	<string>538C245E-FB53-4F6C-8897-C8649001FA7C</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>

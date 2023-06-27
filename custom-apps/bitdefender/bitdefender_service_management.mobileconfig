@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>PayloadContent</key>
+		<array>
+			<dict>
+				<key>PayloadType</key>
+				<string>com.apple.servicemanagement</string>
+				<key>Rules</key>
+				<array>
+					<dict>
+						<key>RuleType</key>
+						<string>TeamIdentifier</string>
+						<key>RuleValue</key>
+						<string>GUNFMW623Y</string>
+						<key>Comment</key>
+						<string>Bitdefender Team ID</string>
+					</dict>
+				</array>
+				<key>PayloadDisplayName</key>
+				<string>Bitdefender - Background items</string>
+				<key>PayloadOrganization</key>
+				<string>Kandji</string>
+				<key>PayloadIdentifier</key>
+				<string>io.kandji.bitdefender.service-management.56FEA3E2-F1AE-4097-A065-BA8437825BCF</string>
+				<key>PayloadUUID</key>
+				<string>56FEA3E2-F1AE-4097-A065-BA8437825BCF</string>
+				<key>PayloadVersion</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>PayloadDisplayName</key>
+		<string>Bitdefender Settings</string>
+		<key>PayloadDescription</key>
+		<string>Configures settings for managed background items.</string>
+		<key>PayloadEnabled</key>
+		<true/>
+		<key>PayloadIdentifier</key>
+		<string>AA04EBB8-FA77-495A-B237-1880375E9B74</string>
+		<key>PayloadRemovalDisallowed</key>
+		<true/>
+		<key>PayloadScope</key>
+		<string>System</string>
+		<key>PayloadType</key>
+		<string>Configuration</string>
+		<key>PayloadUUID</key>
+		<string>AA04EBB8-FA77-495A-B237-1880375E9B74</string>
+		<key>PayloadVersion</key>
+		<integer>1</integer>
+	</dict>
+</plist>
+
