@@ -84,7 +84,7 @@ This `python3` script leverages the Kandji API to generate a `CSV` report contai
 - To see `--help` information, use
 
     ```shell
-    python installed_apps.py --help
+    python3 installed_apps.py --help
     
     usage: installed_apps [-h] [--name "Atom"] [--version]
 

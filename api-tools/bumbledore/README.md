@@ -21,7 +21,7 @@ python3 -m pip install toml
 ### --help output
 
 ```
-python bumbledore.py --help
+python3 bumbledore.py --help
 usage: bumbledore.py [-h] [--device-os "11.3.1"] [--device-details] [--device-apps] [--device-status] [--version] [-v LEVEL]
 
 A tool to manipulate information in Kandji via the Enterprise API.
