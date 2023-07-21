@@ -93,9 +93,9 @@ The API permissions required to run the reporting script are as follows. Checkou
 
 ### Examples
 
-- Get the FileVault key, Unlock pin, user activation lock code, and device activation lock code for all devices that have them in the `_testing_apple_silicon` blueprint.
+- Get the FileVault key, Unlock pin, user activation lock code, and device activation lock code for all devices that have them in the `Mac` blueprint. Keep in mind that if your Blueprint name contains capital letters or spaces, you will need to enclose it in quotation marks.
 
-    `python device_secrets.py --filevault --pin --albc --blueprint _testing_apple_silicon`
+    `python3 device_secrets.py --filevault --pin --albc --blueprint "Mac"`
 
     Example output
     
@@ -103,12 +103,12 @@ The API permissions required to run the reporting script are as follows. Checkou
     Version: 0.0.6
     Base URL: https://accuhive.api.kandji.io/api
     
-    Found blueprint matching the name "_testing_apple_silicon"...
+    Found blueprint matching the name "Mac"...
     Getting device inventory from Kandji...
     Total records returned: 19
     Secrets query: FileVault Key, Unlock PIN, Bypass Codes
     Running query...hang tight.
     Total records in report: 19
     Generating device report...
-    Kandji report at: /Users/testuser/device-secrets/filevaultkey_unlockpin_bypasscode__testing_apple_silicon_secrets_report_20230408.csv
+    Kandji report at: /Users/testuser/Desktop/filevaultkey_unlockpin_bypasscode_mac_secrets_report_20230408.csv
     ```
