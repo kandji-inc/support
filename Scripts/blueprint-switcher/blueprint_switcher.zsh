@@ -4,8 +4,10 @@
 # Created by Brian Van Peski, Jan Rosenfeld & Matt Wilson
 # support@kandji.io | Kandji, Inc. | Solutions Engineering
 ################################################################################################
+#  v. 2.1
 #
-# Created on 7/13/2023
+#  Created - 2023-07-13
+#  Updated - 2023-07-24
 #
 ########################################################################################
 # Tested macOS Versions
@@ -19,7 +21,7 @@
 # Software Information
 ################################################################################################
 # 
-# Move an enrolled device to another blueprint via the Kandji API.
+#  Move an enrolled device to another blueprint via the Kandji API.
 # 
 ################################################################################################
 # License Information
@@ -47,7 +49,7 @@
 
 # Set logging - Send logs to stdout as well as Unified Log
 # Use 'log show --process "logger"'to view logs activity.
-LOGGING {
+LOGGING(){
     /bin/echo "${1}"
     /usr/bin/logger "bp_switcher: ${1}"
 }
@@ -80,6 +82,7 @@ notifyUsers=false
 
 # OS Version
 osVer="$(sw_vers -productVersion)"
+
 # Device Serial
 serialnum=$(system_profiler SPHardwareDataType | awk '/Serial/ { print $NF }')
 
@@ -88,6 +91,9 @@ blueprint_name_enc="${assignBlueprint// /%20}"
 
 # Content Type
 content_type="application/json"
+
+# Ensure region variable is lowercase
+region="${region:l}"
 
 # Kandji API base URL
 if [[ -z $region || $region == "us" ]]; then

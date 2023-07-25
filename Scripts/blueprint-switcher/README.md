@@ -3,7 +3,7 @@
 This script is designed to move Mac computers already enrolled into Kandji from one Blueprint to another.
 
 ## Requirements
-* This script (`blueprint_switcher.zsh`)
+* This script ([`blueprint_switcher.zsh`](blueprint_switcher.zsh))
 * An API token with the following permissions:
   * List Blueprints
   * Get Blueprint
@@ -21,7 +21,8 @@ This script does not require any additional script libraries or dependencies.
   * Update a Device
   * Device details
   * Device List
-2. Download the `blueprint_switcher.zsh` script. Edit the script and add your **kandji subdomain**, the **API token** you generated in step 1, and the **Blueprint name or UUID** you want the Mac assigned to in the `USER INPUT` section of the script.
+
+2. Download the [`blueprint_switcher.zsh`](blueprint_switcher.zsh) script. Edit the script and add your **kandji subdomain**, the **API token** you generated in step 1, and the **blueprint name or UUID** you want the Mac assigned to in the `USER INPUT` section of the script.
 ```shell
 ##############################################################
 # USER INPUT 
@@ -39,7 +40,9 @@ token="your-token-here"
 # Blueprint name/UUID (This is the name of the Blueprint as it exists in Kandji that you want to assign devices to).
 assignBlueprint="MyBlueprint"
 ```
+
 3. Create a new **Custom Script** Library item. Change the icon and name as desired, assign it to a Blueprint, and paste your code in.
+
 4. Test and Validate before deploying to production.
 
 ## Icon
@@ -67,7 +70,11 @@ Leverage Assignment Rules to automate switching of a Mac to a Blueprint based on
 
 ### Other
 Any other scenario where you want to automate the switching of an enrolled Mac from one Blueprint to another. You can use it in a Library Item like in the examples above, where it will run locally on the Mac, or you can use the script on a VM for automation.
-* One could leverage this script with some other logic to switch Blueprints based on any other available information (i.e. trigger after a certain criteria is met using audit scripts, etc)
+* One could leverage this script with some other logic to switch Blueprints based on any other available information (i.e. trigger after certain criteria are met using audit scripts, etc)
+
+### New Device Enrollment Considerations
+Running this script as part of an initial enrollment may interrupt agent runs in progress when it switches the Blueprint of a device.
+If you’d like to switch Blueprints after a device initially enrolls into a default Blueprint, you can combine this script with [`installafterLiftoff`](https://github.com/kandji-inc/support/blob/main/Scripts/installAfterLiftoff.zsh) to ensure the device changes Blueprints only after it has completed its initial enrollment.
 
 ## Troubleshooting
 * **I'm getting an error**
