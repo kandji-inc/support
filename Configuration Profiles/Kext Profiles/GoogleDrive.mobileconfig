@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>PayloadContent</key>
+        <array>
+            <dict>
+                <key>PayloadType</key>
+                <string>com.apple.syspolicy.kernel-extension-policy</string>
+                <key>PayloadDisplayName</key>
+                <string>Allow Google Drive Kernel Extension Payload</string>
+                <key>PayloadDescription</key>
+                <string>Payload setting Kernel Extension Allow for Google Drive</string>
+                <key>PayloadIdentifier</key>
+                <string>io.kandji.Google Drive.C44DA56C-5F09-4549-B721-F0C866F270DF.com.apple.syspolicy.kernel-extension-policy.34B61B98-F1BE-407C-84B5-597F24043AA6</string>
+                <key>PayloadUUID</key>
+                <string>34B61B98-F1BE-407C-84B5-597F24043AA6</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <key>AllowUserOverrides</key>
+                <true/>
+                <key>AllowedKernelExtensions</key>
+                <dict>
+                    <key>EQHXZ8M8AV</key>
+                    <array>
+                        <string>com.google.drivefs.filesystems.dfsfuse</string>
+                    </array>
+                </dict>
+            </dict>
+        </array>
+        <key>PayloadDisplayName</key>
+        <string>Google Drive Kernel Extension Allow Profile</string>
+        <key>PayloadDescription</key>
+        <string>Allows Kernel Extension for use with Google Drive</string>
+        <key>PayloadIdentifier</key>
+        <string>com.kandji.profile.custom.3170e686-73a0-4700-92bc-2da3787dcbc5</string>
+        <key>PayloadOrganization</key>
+        <string>Kandji, Inc.</string>
+        <key>PayloadScope</key>
+        <string>System</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadUUID</key>
+        <string>3170e686-73a0-4700-92bc-2da3787dcbc5</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+    </dict>
+</plist>

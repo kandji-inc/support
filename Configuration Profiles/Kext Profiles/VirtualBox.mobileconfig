@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>PayloadContent</key>
+        <array>
+            <dict>
+                <key>PayloadType</key>
+                <string>com.apple.syspolicy.kernel-extension-policy</string>
+                <key>PayloadDisplayName</key>
+                <string>Allow Virtual Box Kernel Extension Payload</string>
+                <key>PayloadDescription</key>
+                <string>Payload setting Kernel Extension Allow for Virtual Box</string>
+                <key>PayloadIdentifier</key>
+                <string>io.kandji.Virtual Box.B77E3A48-376A-4CF7-A990-D3934212EA23.com.apple.syspolicy.kernel-extension-policy.1FB86BB8-D96A-45D2-B26B-5DA2C836E95A</string>
+                <key>PayloadUUID</key>
+                <string>1FB86BB8-D96A-45D2-B26B-5DA2C836E95A</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <key>AllowUserOverrides</key>
+                <true/>
+                <key>AllowedKernelExtensions</key>
+                <dict>
+                    <key>VB5E2TV963</key>
+                    <array>
+                        <string>org.virtualbox.kext.VBoxDrv</string>
+                        <string>org.virtualbox.kext.VBoxUSB</string>
+                        <string>org.virtualbox.kext.VBoxNetFlt</string>
+                        <string>org.virtualbox.kext.VBoxNetAdp</string>
+                    </array>
+                </dict>
+            </dict>
+        </array>
+        <key>PayloadDisplayName</key>
+        <string>Virtual Box Kernel Extension Allow Profile</string>
+        <key>PayloadDescription</key>
+        <string>Allows Kernel Extension for use with Virtual Box</string>
+        <key>PayloadIdentifier</key>
+        <string>com.kandji.profile.custom.ca8dd7b8-1c61-4a33-94cf-517b32654fd2</string>
+        <key>PayloadOrganization</key>
+        <string>Kandji, Inc.</string>
+        <key>PayloadScope</key>
+        <string>System</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadUUID</key>
+        <string>ca8dd7b8-1c61-4a33-94cf-517b32654fd2</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+    </dict>
+</plist>

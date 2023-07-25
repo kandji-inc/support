@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>PayloadContent</key>
+        <array>
+            <dict>
+                <key>PayloadType</key>
+                <string>com.apple.syspolicy.kernel-extension-policy</string>
+                <key>PayloadDisplayName</key>
+                <string>Allow Dropbox Kernel Extension Payload</string>
+                <key>PayloadDescription</key>
+                <string>Payload setting Kernel Extension Allow for Dropbox</string>
+                <key>PayloadIdentifier</key>
+                <string>io.kandji.Dropbox.90DD681E-26C3-4779-A0A6-196A117EF943.com.apple.syspolicy.kernel-extension-policy.4BFA81A6-E29C-4130-92F1-3F79D22EA1D4</string>
+                <key>PayloadUUID</key>
+                <string>4BFA81A6-E29C-4130-92F1-3F79D22EA1D4</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <key>AllowUserOverrides</key>
+                <true/>
+                <key>AllowedKernelExtensions</key>
+                <dict>
+                    <key>G7HH3F8CAK</key>
+                    <array>
+                        <string>com.getdropbox.dropbox.kext</string>
+                    </array>
+                </dict>
+            </dict>
+        </array>
+        <key>PayloadDisplayName</key>
+        <string>Dropbox Kernel Extension Allow Profile</string>
+        <key>PayloadDescription</key>
+        <string>Allows Kernel Extension for use with Dropbox</string>
+        <key>PayloadIdentifier</key>
+        <string>com.kandji.profile.custom.0f365841-9366-4f70-82b8-44b05317d00c</string>
+        <key>PayloadOrganization</key>
+        <string>Kandji, Inc.</string>
+        <key>PayloadScope</key>
+        <string>System</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadUUID</key>
+        <string>0f365841-9366-4f70-82b8-44b05317d00c</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+    </dict>
+</plist>

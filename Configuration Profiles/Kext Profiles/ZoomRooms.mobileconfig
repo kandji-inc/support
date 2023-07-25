@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>PayloadContent</key>
+        <array>
+            <dict>
+                <key>PayloadType</key>
+                <string>com.apple.syspolicy.kernel-extension-policy</string>
+                <key>PayloadDisplayName</key>
+                <string>Allow Zoom Rooms Kernel Extension Payload</string>
+                <key>PayloadDescription</key>
+                <string>Payload setting Kernel Extension Allow for Zoom Rooms</string>
+                <key>PayloadIdentifier</key>
+                <string>io.kandji.Zoom Rooms.247BB82D-623A-49D0-BB99-CD7615D99C3B.com.apple.syspolicy.kernel-extension-policy.D1D0EF9E-C554-453B-A49C-A919D67FF616</string>
+                <key>PayloadUUID</key>
+                <string>D1D0EF9E-C554-453B-A49C-A919D67FF616</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <key>AllowUserOverrides</key>
+                <true/>
+                <key>AllowedKernelExtensions</key>
+                <dict>
+                    <key>BJ4HAAB9B3</key>
+                    <array>
+                        <string>zoom.us.ZoomAudioDevice</string>
+                    </array>
+                </dict>
+            </dict>
+        </array>
+        <key>PayloadDisplayName</key>
+        <string>Zoom Rooms Kernel Extension Allow Profile</string>
+        <key>PayloadDescription</key>
+        <string>Allows Kernel Extension for use with Zoom Rooms</string>
+        <key>PayloadIdentifier</key>
+        <string>com.kandji.profile.custom.a02d71a5-5af3-4566-814c-e10c6ec85680</string>
+        <key>PayloadOrganization</key>
+        <string>Kandji, Inc.</string>
+        <key>PayloadScope</key>
+        <string>System</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadUUID</key>
+        <string>a02d71a5-5af3-4566-814c-e10c6ec85680</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+    </dict>
+</plist>

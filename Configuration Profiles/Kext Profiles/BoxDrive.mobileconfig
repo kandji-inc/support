@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>PayloadContent</key>
+        <array>
+            <dict>
+                <key>PayloadType</key>
+                <string>com.apple.syspolicy.kernel-extension-policy</string>
+                <key>PayloadDisplayName</key>
+                <string>Allow Box Drive Kernel Extension Payload</string>
+                <key>PayloadDescription</key>
+                <string>Payload setting Kernel Extension Allow for Box Drive</string>
+                <key>PayloadIdentifier</key>
+                <string>io.kandji.Box Drive.74C6B820-EB77-4EF2-ADD8-DACA44DB51F5.com.apple.syspolicy.kernel-extension-policy.7D653350-750B-4D71-8C40-F29BA5FECE57</string>
+                <key>PayloadUUID</key>
+                <string>7D653350-750B-4D71-8C40-F29BA5FECE57</string>
+                <key>PayloadVersion</key>
+                <integer>1</integer>
+                <key>AllowUserOverrides</key>
+                <true/>
+                <key>AllowedKernelExtensions</key>
+                <dict>
+                    <key>M683GB7CPW</key>
+                    <array>
+                        <string>com.box.filesystems.osxfuse</string>
+                    </array>
+                </dict>
+            </dict>
+        </array>
+        <key>PayloadDisplayName</key>
+        <string>Box Drive Kernel Extension Allow Profile</string>
+        <key>PayloadDescription</key>
+        <string>Allows Kernel Extension for use with Box Drive</string>
+        <key>PayloadIdentifier</key>
+        <string>com.kandji.profile.custom.04aa8ee2-42a7-4185-8164-2d63022e9ed1</string>
+        <key>PayloadOrganization</key>
+        <string>Kandji, Inc.</string>
+        <key>PayloadScope</key>
+        <string>System</string>
+        <key>PayloadType</key>
+        <string>Configuration</string>
+        <key>PayloadUUID</key>
+        <string>04aa8ee2-42a7-4185-8164-2d63022e9ed1</string>
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+    </dict>
+</plist>
