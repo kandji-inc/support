@@ -37,6 +37,8 @@
 			<string>$EMAIL_PREFIX</string>
 			<key>DEPARTMENT</key>
 			<string>$DEPARTMENT</string>
+			<key>DEVICE_ID</key>
+			<string>$DEVICE_ID</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>

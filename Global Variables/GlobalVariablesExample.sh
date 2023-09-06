@@ -4,7 +4,7 @@
 ################################################################################################
 #
 # Created - 03/29/2021
-# Updated - 03/28/2023 - Brian Goldstein
+# Updated - 08/30/2023 - Brian Goldstein
 #
 ################################################################################################
 # Software Information
@@ -36,37 +36,40 @@
 #
 ################################################################################################
 
-DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-ASSET_TAG=$(/usr/libexec/PlistBuddy -c 'print :ASSET_TAG' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+ASSET_TAG=$(/usr/libexec/PlistBuddy -c 'print :ASSET_TAG' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+DEVICE_ID=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 
 
 echo "
 Global Variables Summary
 
-Department: $DEPARTMENT
+Full Name: $FULL_NAME
 
 Email: $EMAIL
 
 Email Prefix: $EMAIL_PREFIX
 
-Full Name: $FULL_NAME
+Department: $DEPARTMENT
 
 Device Name: $DEVICE_NAME
 
+Serial Number: $SERIAL_NUMBER
+
 Asset Tag: $ASSET_TAG
 
-Profile UUID: $PROFILE_UUID
+Device ID: $DEVICE_ID
 
 Hardware UDID: $UDID
 
-Serial Number: $SERIAL_NUMBER
+Profile UUID: $PROFILE_UUID
 "
 
 exit 0
