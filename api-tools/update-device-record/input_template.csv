@@ -1,5 +1,6 @@
 serial_number,blueprint_name,asset_tag,username,user
-C02J7929G1HW,_testing_blueprint,bee-asset, (for reference only. Not used in script at this time),7
-C02FL5YXQ6LC,_testing_apple_silicon,bee-have, (for reference only. Not used in script at this time),
+JTBFP1UB2LRH,_testing_blueprint,22222, (for reference only. Not used in script at this time),
+ZGNQQHVT0N,_test_something,, (for reference only. Not used in script at this time),
+C02FL5YXQ6LC,_testing_something,bee-have, (for reference only. Not used in script at this time),
 C02J202CG1HW,_testing,444444, (for reference only. Not used in script at this time),
-VM8gRmR1qqab,_testing,555555, (for reference only. Not used in script at this time),9
+VM8gRmR1qqab,_testing,555555, (for reference only. Not used in script at this time),

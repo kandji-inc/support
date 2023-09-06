@@ -14,6 +14,18 @@ and this project adheres to Year Notation Versioning.
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [2023-08-09]
+
+### Added
+
+- Added support in `updated_device_record.py` to update blueprint assignment for devices awaiting enrollment. aka devices that have been assigned to Kandji from AxM but are not yet enrolled in Kandji. With this update, the script will first look for the serial number in enrolled devices. If not found in enrolled devices, the script will look in devices awaiting enrollment (not yet enrolled).
+- Added additional logic in `updated_device_record.py` when looking for the exact match for a blueprint name if multiple blueprints were returned containing the provided string.
+
+### Changed
+
+- Updated README for `update_device_record` script to include information about updating ADE device (device awaiting enrollment)
+- Updated required API permissions for `update_device_record.py`
+
 ## [2023-04-17]
 
 ### Added

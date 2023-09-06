@@ -1,33 +1,26 @@
 # Update Device Record
 
-**NOTE**: As with any script please be sure to test with a subset of devices.
+**NOTE**: Test Test Test--As with any script please be sure to test with a subset of devices.
 
-### About
+## About
 
-This script leverages the Kandji API along with a `CSV` input file to update one or more device inventory records.
+This script leverages the Kandji API along with a `CSV` input file (An example input file can be found in this repo) to update one or more device inventory records. Information for both existing enrolled devices and devices awaiting enrollment (aka ADE devices) can be updated using this script. The script will first try to look for and update enrolled device records. If an enrolled device record cannot be found, the script will attempt to look for  and update the device record in the "Awaiting enrollment" state (aka ADE devices not yet enrolled in Kandji).
 
-An example input file can be found in this repo.
+## Kandji API
 
-### Kandji API
+The API permissions required to run the reporting script are as follows. Checkout the Kandji [Knowledge Base](https://support.kandji.io) for more information.
 
-- The API permissions required to run the reporting script are as follows. Checkout the Kandji [Knowledge Base](https://support.kandji.io) for more information.
+<img src="images/api_permissions.png" alt="drawing" width="1024"/>
 
-    <img src="images/api_permissions.png" alt="drawing" width="1024"/>
+## The following fields can be updated via the Kandji API
 
-### The following fields can be updated via the Kandji API
+Attribute | Enrolled Devices | Devices Awaiting Enrollment (ADE) | Notes
+:-- | :-- | :-- | :--
+Blueprint assignment | ✅ | ✅ | Enter the Blueprint name in the input file as it appears in Kandji. The script will programatically lookup the blueprint ID based on the name provided and then use the ID to update the device assignment. If more than one blueprint is returned containing the specifice name, the script will try to find and exact match. If the blueprint cannot befound, blueprint assignment will not be updated.
+Asset tag | ✅ | ✅ | The asset tag assignment can be cleared by passing a value of `null` for the asset tag. 
+User assignment | ✅ | ❌ | The assigned User can be updated if a Directory Services has been integrated with Kandji and the User exists in the Kandji console. The Kandji user ID Number must be used in the input file. The user assignment can be cleared by passing a value of `null` for the user. <br><br> Use the following steps to find the Kandji user ID number: <ol><li>Log in to the Kandji web app</li><li>Go to the Users module</li><li>Select a user</li><li> Copy the ID out of the address bar. It should be similar to ".../users/all/`53`" where `53` is the Kandji user ID.</li></ol>(**NOTE**: This process will become easier in a future update)
 
-- **Blueprint** - Enter the Blueprint name in the input file as it appears in Kandji.
-- **Asset tag**
-- **User** - The assigned User can be updated if a Directory Services has been integrated with Kandji and the User exists in the Kandji console. The Kandji user ID Number must be used in the input file.
-
-    Use the following steps to find the Kandji user ID number:
-
-    1. Log in to the Kandji web app
-    2. Go to the Users module
-    3. Select a User
-    4. Copy the ID out of the address bar. It should be similar to ".../users/all/`53`" where `53` is the Kandji user ID. (**NOTE**: This process will become easier in a future update)
-
-### Dependencies
+## Dependencies
 
 - This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://updates.kandji.io/auto-app-python-3-214020), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
 
@@ -38,7 +31,7 @@ An example input file can be found in this repo.
     python3 -m pip install pathlib
     ```
 
-### Script Modification
+## Script Modification
 
 1. Open the script in a text editor such as BBEdit or VSCode.
 1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
@@ -64,7 +57,7 @@ An example input file can be found in this repo.
 
 1. Save and close the script.
 
-### Running the Script
+## Running the Script
 
 1. Copy the script and input file to a common location. i.e. Desktop
 2. Add the serial numbers for which you would like to update records.
@@ -117,15 +110,15 @@ An example input file can be found in this repo.
     **NOTE**: You can enter the path to the input file manually or you can drag the file from your Finder window directly into the Terminal window.
 
 
-### Extra
+## Extra
 
-You can see additional help info by using the `--help` flag below.
+You can see additional help info by using the `--help`.
 
 `python3 update_device_record.py --help`
 
 
 ```
-usage: update_device_record [-h] --template "/path/to/input_template.csv" [--version]
+usage: python3 update_device_record [-h] --template "/path/to/input_template.csv" [--version]
 
 Update device inventory information with a CSV file and the Kandji Enterprise API.
 

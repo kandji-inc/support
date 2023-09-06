@@ -7,20 +7,23 @@
 ################################################################################################
 #
 #   Created:  2021-06-03
-#   Modified: 2023-04-06 - Matt Wilson
+#   Modified: 2023-08-09 - Matt Wilson
 #
 ################################################################################################
 # Software Information
 ################################################################################################
 #
 #   This python3 script leverages the Kandji API along using a CSV input file to update
-#   one or more device inventory records.
+#   one or more device inventory records. Information for both existing enrolled devices
+#   and devices awaiting enrollment (aka ADE devices) can be updated using this script.
 #
 #   The following items can be updated:
 #
 #       - blueprint assignment
 #       - asset tag
 #       - user assignment
+#
+#   See the README in this repo for more information.
 #
 ################################################################################################
 # License Information
@@ -46,7 +49,7 @@
 #
 ################################################################################################
 
-__version__ = "1.3.2"
+__version__ = "1.4.0"
 
 
 # Standard library
@@ -60,10 +63,9 @@ import sys
 
 try:
     import requests
-except ImportError as import_error:
-    print(import_error)
+except ImportError:
     sys.exit(
-        "Looks like you need to install the requests module. Open a Terminal and run  "
+        "Looks like you need to install the requests module. Open a Terminal and run "
         "python3 -m pip install requests."
     )
 
@@ -73,7 +75,7 @@ from requests.adapters import HTTPAdapter
 ######################### UPDATE VARIABLES BELOW #######################################
 ########################################################################################
 
-SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
+SUBDOMAIN = ""  # bravewaffles, example, company_name
 
 # us("") and eu - this can be found in the Kandji settings on the Access tab
 REGION = ""
@@ -192,10 +194,6 @@ def http_errors(resp, resp_code, err_msg):
     # 401
     elif resp_code == requests.codes["unauthorized"]:
         print("Make sure that you have the required permissions to access this data.")
-        print(
-            "Depending on the API platform this could mean that access has just been "
-            "blocked."
-        )
         sys.exit(f"\t{err_msg}")
     # 403
     elif resp_code == requests.codes["forbidden"]:
@@ -209,9 +207,9 @@ def http_errors(resp, resp_code, err_msg):
         print(f"\tResponse msg: {resp}")
         print(
             "\tPossible reason: If this is a device it could be because the device is "
-            "not longer\n"
-            "\t\t\t enrolled in Kandji. This would prevent the MDM command from being\n"
-            "\t\t\t sent successfully.\n"
+            "no longer\n"
+            '\t\t\t enrolled in Kandji or the device is in the "Awaiting enrollment"\n'
+            "\t\t\t state.\n"
         )
     # 429
     elif resp_code == requests.codes["too_many_requests"]:
@@ -221,14 +219,13 @@ def http_errors(resp, resp_code, err_msg):
     # 500
     elif resp_code == requests.codes["internal_server_error"]:
         print("The service is having a problem...")
-        sys.exit(err_msg)
+        print(err_msg)
     # 503
     elif resp_code == requests.codes["service_unavailable"]:
         print("Unable to reach the service. Try again later...")
     else:
         print("Something really bad must have happened...")
         print(err_msg)
-        sys.exit()
 
 
 def kandji_api(method, endpoint, params=None, payload=None):
@@ -272,7 +269,80 @@ def kandji_api(method, endpoint, params=None, payload=None):
     return data
 
 
-def create_record_update_payload(_input):
+def get_ade_devices():
+    """Return ADE device records."""
+    # inventory
+    data = []
+
+    # set starting page number for pagination
+    page = 1
+
+    while True:
+        params = {"page": f"{page}"}
+
+        # check to see if a platform was specified
+        response = kandji_api(
+            method="GET",
+            endpoint="/v1/integrations/apple/ade/devices",
+            params=params,
+        )
+
+        # append results to the data list
+        data += response.get("results")
+
+        if response.get("next") is None:
+            break  # no more pages to return
+
+        page += 1
+
+    if len(data) < 1:
+        print("No ADE devices found...\n")
+        sys.exit()
+
+    return data
+
+
+def get_blueprint(bp_name):
+    """Return blueprint records containing the provided name."""
+    bp_record = kandji_api(
+        method="GET",
+        endpoint="/v1/blueprints",
+        params={"name": f"{bp_name}"},
+    )
+
+    if bp_record["count"] == 0:
+        bp_record = ""  # return empty blueprint record
+
+    elif bp_record["count"] == 1 and bp_name == bp_record.get("results")[0]["name"]:
+        bp_record = bp_record["results"][0]
+
+    else:
+        print(
+            f'More than one blueprint was returned containing "{bp_name}". Will '
+            "look through the results for an exact match."
+        )
+
+        for record in bp_record["results"]:
+            print(f"\t{record.get('name')}")
+
+        count = 0
+
+        total_bp_count = bp_record["count"]
+
+        for record in bp_record["results"]:
+            if bp_name == record["name"]:
+                bp_record = record
+                break
+
+            count += 1
+
+            if count == total_bp_count:
+                bp_record = ""  # return empty blueprint record
+
+    return bp_record
+
+
+def create_record_update_payload(_input, enrollment_status):
     """Dynamically build the device update payload.
 
     This function looks at the device record information passed from the input file and
@@ -285,41 +355,60 @@ def create_record_update_payload(_input):
         # Here we are checking to see if we need to lookup the blueprint id in Kandji
         # based on the name provided in the input file.
         if key == "blueprint_name" and value != "":
-            print(f"Looking for \"{_input['blueprint_name']}\" blueprint ...")
             # API call to return blueprint records containing the provided name.
-            blueprint_record = kandji_api(
-                method="GET",
-                endpoint="/v1/blueprints",
-                params={"name": f"{_input['blueprint_name']}"},
-            )
+            blueprint_record = get_blueprint(bp_name=_input["blueprint_name"])
 
-            if blueprint_record["count"] == 0:
-                print(f"WARNING: {_input['blueprint_name']} not found...")
-                print("WARNING: Check the name and try again...")
-                break
-
-            # Loop over the key value pairs returned in the result
-            for record in blueprint_record["results"]:
-                # ensure that the name returned matches the name we are looking for
-                # exactly.
-                if _input["blueprint_name"] == record["name"]:
-                    # update the payload with the found blueprint id
-                    payload.update([("blueprint_id", record["id"])])
+            if blueprint_record:
+                # update the payload with the blueprint id
+                if enrollment_status == "enrolled":
+                    payload.update([("blueprint_id", blueprint_record["id"])])
+                else:
+                    payload.update([("blueprint", blueprint_record["id"])])
+            else:
+                print(
+                    f"\"{_input['blueprint_name']}\" not found in Kandji. Will not "
+                    "attempt to update blueprint assignemnt. If the blueprint does "
+                    "exist, make sure that the name is entered correctly in the input "
+                    "csv."
+                )
 
         # Here we are verifying that the value in the device record is not empty and
         # that it is not the serial_number. We want to check for empty values because
-        # the user, and asset_tag keys cannot be empty in the in json payload sent to
-        # Kandji. If these keys are sent as empty or NULL Kandji will return an error.
-        if value != "" and key not in ["blueprint_name", "serial_number", "username"]:
+        # the user, and asset_tag keys cannot be empty strings in the in json payload
+        # sent to Kandji. If these keys are sent as an empty string or NULL Kandji will
+        # return an error.
+        if value != "" and key in ["asset_tag", "user"]:
             payload.update([(key, value)])
 
-    return json.dumps(payload)
+    return payload
+
+
+def update_device_record(device, enrollment_status, payload):
+    """Update a device record in Kandji."""
+    if enrollment_status == "enrolled":
+        kandji_api(
+            method="PATCH",
+            endpoint=f"/v1/devices/{device['device_id']}",
+            params=None,
+            payload=payload,
+        )
+
+    # updated ade device record
+    else:
+        kandji_api(
+            method="PATCH",
+            endpoint=f"/v1/integrations/apple/ade/devices/{device['id']}",
+            params=None,
+            payload=payload,
+        )
+
+    print("Device updated!")
 
 
 def main():
     """Run main logic."""
-    arguments = program_arguments()
     var_validation()
+    arguments = program_arguments()
 
     print(f"\nVersion: {__version__}")
     print(f"Base URL: {BASE_URL}\n")
@@ -331,9 +420,10 @@ def main():
         try:
             template_data = load_input_file(arguments.template)
             print(f"Found input file: {pathlib.Path(arguments.template)}")
+
             # Make sure that any duplicate serial numbers are removed from the list of
             # device records that need to be updated.
-            print("Checking the input file for duplicate serial_number entries...")
+            print("Checking file for duplicate serial_number entries...")
             template_data = remove_duplicates(template_data, "serial_number")
             print(
                 f"Total unique serial_numbers in the input file: "
@@ -350,35 +440,71 @@ def main():
 
     for device in template_data:
         print("")
-        print(f"Looking for {device['serial_number']} ...")
-        # device record returned from kandji
-        device_record = kandji_api(
+        print(f"Looking for {device['serial_number']} in Kandji...")
+
+        # look for device in kandji
+        kandji_device = kandji_api(
             method="GET",
             endpoint="/v1/devices",
             params={"serial_number": f"{device['serial_number']}"},
         )
 
-        if len(device_record) < 1:
-            print(f"WARNING: {device['serial_number']} not found...")
-            break
+        # device found in enrolled devices
+        if (
+            isinstance(kandji_device, list)
+            and kandji_device
+            and len(kandji_device) == 1
+        ):
+            kandji_device = kandji_device[0]
 
-        for attribute in device_record:
-            if device["serial_number"].upper() == attribute["serial_number"].upper():
-                print("Building request payload ...")
-                # Build the payload
-                payload = create_record_update_payload(_input=device)
-                if len(payload) < 3:
-                    print("WARNING: Will not attempt to update record...")
-                    break
-                print(f"Request payload: {payload}")
+            if (
+                device["serial_number"].lower()
+                == kandji_device["serial_number"].lower()
+            ):
+                print("Found device in enrolled devices.")
+
+                enrollment_status = "enrolled"
+
+        # look for device in devices awaiting enrollment
+        else:
+            for ade_device in get_ade_devices():
+                if (
+                    device["serial_number"].lower()
+                    == ade_device["serial_number"].lower()
+                ):
+                    print("Found in devices awaiting enrollment.")
+                    kandji_device = ade_device
+                    enrollment_status = "awaiting_enrollment"
+
+        # if the device record is not found in the tenant
+        if not kandji_device:
+            print(
+                f"Unable to find {device.get('serial_number')} in Kandji. Ensure that "
+                "the serial number is entered in the csv file correctly. If this is an "
+                "ADE device, ensure that it is assigned to this Kandji tenant in AxM."
+            )
+
+        if kandji_device:
+            # Build the payload
+            payload = create_record_update_payload(
+                _input=device, enrollment_status=enrollment_status
+            )
+
+            if payload:
+                payload = json.dumps(payload)
+
                 print("Attempting to update device record...")
-                # Update the device inventory records found in the input
-                kandji_api(
-                    method="PATCH",
-                    endpoint=f"/v1/devices/{attribute['device_id']}",
-                    params=None,
+                print(f"Request payload: {json.dumps(payload)}")
+
+                update_device_record(
+                    device=kandji_device,
+                    enrollment_status=enrollment_status,
                     payload=payload,
                 )
+
+            else:
+                print("Payload is empty. Will not attempt to update the device record.")
+
     print()
     print("Finished ...")
 
