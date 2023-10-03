@@ -4,7 +4,9 @@
 
 ## About
 
-This script leverages the Kandji API along with a `CSV` input file (An example input file can be found in this repo) to update one or more device inventory records. Information for both existing enrolled devices and devices awaiting enrollment (aka ADE devices) can be updated using this script. The script will first try to look for and update enrolled device records. If an enrolled device record cannot be found, the script will attempt to look for  and update the device record in the "Awaiting enrollment" state (aka ADE devices not yet enrolled in Kandji).
+This script leverages the Kandji API along with a `CSV` input file (An example input file can be found in this repo) to update one or more device inventory records. Information for both existing enrolled devices and devices awaiting enrollment (aka ADE devices) can be updated using this script. 
+
+The script will first try to look for and update enrolled device records. If an enrolled device record cannot be found, the script will attempt to look for  and update the device record in the "Awaiting enrollment" state (aka ADE devices not yet enrolled in Kandji). Additionally, the script will perform some light sanitization on the input template headers to ensure that they are in the proper format and have not been altered.
 
 ## Kandji API
 
@@ -72,37 +74,79 @@ User assignment | ✅ | ❌ | The assigned User can be updated if a Directory Se
     
     **Example output**
     
-    ```
-    Version: 1.3.0
-    Base URL: https://accuhive.clients.us-1.kandji.io/api
+    ```shell
+    python3 update_device_record.py --template input_template_test.csv
+
+    Version: 1.4.1
+    Base URL: https://accihive.api.kandji.io/api
     
-    Found input file: /path/to/input_template.csv
-    Checking the input file for duplicate serial_number entries...
-    Total unique serial_numbers in the input file: 4
+    Found input file: input_template_test.csv
+    Checking file for duplicate serial_number entries...
+    Total unique serial_numbers in the input file: 6
     
-    Looking for C02J7929G1HW ...
-    Building request payload ...
-    Looking for "_testing_blueprint" blueprint ...
-    WARNING: _testing_blueprint not found...
-    WARNING: Check the name and try again...
-    WARNING: Will not attempt to update record...
-    
-    Looking for C02FL5YXQ6LC ...
-    Building request payload ...
-    Looking for "_testing_apple_silicon" blueprint ...
-    Request payload: {"blueprint_id": "97e4e175-1631-43f6-a02b-33fd1c748ab8", "asset_tag": "bee-have"}
+    Looking for C02J50A8G1HW in Kandji...
+    Found device in enrolled devices.
+    More than one blueprint was returned containing "_test_something". Will look through the results for an 
+    exact match.
+            _test_something
+            _test_something_went_wrong
+            _test_something_went_wrong_2
+            _test_something_went_wrong_3
     Attempting to update device record...
-    Record updated
+    Request payload: "{\"blueprint_id\": \"ab102b9d-8e9c-420d-a498-f2a1123091c7\", \"asset_tag\": \"this_is_a_test\", \"user\": \"9564\"}"
+    Device updated!
     
-    Looking for C02J202CG1HW ...
-    Building request payload ...
-    Looking for "_testing" blueprint ...
-    Request payload: {"blueprint_id": "ee0c13ff-90ca-48c5-9b4c-7bc4b9cb89fe", "asset_tag": "444444"}
+    Looking for GG7FF8QSQ1GH in Kandji...
+    Found device in enrolled devices.
+    "_tester_something" not found in Kandji. Will not attempt to update blueprint assignemnt. If the blueprint does
+    exist, make sure that the name is entered correctly in the input csv.
     Attempting to update device record...
-    Record updated
+    Request payload: "{\"asset_tag\": \"this_is_a_test_02\", \"user\": \"9564\"}"
+    Device updated!
     
-    Looking for VM8gRmR1qqab ...
-    WARNING: VM8gRmR1qqab not found...
+    Looking for C02FL5YXQ6LC in Kandji...
+    Found device in enrolled devices.
+    More than one blueprint was returned containing "_test_something". Will look through the results for an 
+    exact match.
+            _test_something
+            _test_something_went_wrong
+            _test_something_went_wrong_2
+            _test_something_went_wrong_3
+    Attempting to update device record...
+    Request payload: "{\"blueprint_id\": \"ab102b9d-8e9c-420d-a498-f2a1123091c7\", \"asset_tag\": \"this_is_a_test_03\", \"user\": \"9564\"}"
+    Device updated!
+    
+    Looking for ZGNQQHVT0N in Kandji...
+    Found device in enrolled devices.
+    More than one blueprint was returned containing "_test_something". Will look through the results for an 
+    exact match.
+            _test_something
+            _test_something_went_wrong
+            _test_something_went_wrong_2
+            _test_something_went_wrong_3
+    Attempting to update device record...
+    Request payload: "{\"blueprint_id\": \"ab102b9d-8e9c-420d-a498-f2a1123091c7\", \"asset_tag\": \"this_is_a_test_04\", \"user\": \"9564\"}"
+    Device updated!
+    
+    Looking for FVHHFKF7Q6L4 in Kandji...
+    Found device in enrolled devices.
+    "_tester_something" not found in Kandji. Will not attempt to update blueprint assignemnt. If the blueprint does
+    exist, make sure that the name is entered correctly in the input csv.
+    Attempting to update device record...
+    Request payload: "{\"asset_tag\": \"this_is_a_test_05\", \"user\": \"9564\"}"
+    Device updated!
+    
+    Looking for ZGFRNNQGQD in Kandji...
+    Found device in enrolled devices.
+    More than one blueprint was returned containing "_test_something". Will look through the results for an 
+    exact match.
+            _test_something
+            _test_something_went_wrong
+            _test_something_went_wrong_2
+            _test_something_went_wrong_3
+    Attempting to update device record...
+    Request payload: "{\"blueprint_id\": \"ab102b9d-8e9c-420d-a498-f2a1123091c7\", \"asset_tag\": \"this_is_a_test_06\", \"user\": \"9564\"}"
+    Device updated!
     
     Finished ...
     ```

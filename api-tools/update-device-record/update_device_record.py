@@ -49,7 +49,7 @@
 #
 ################################################################################################
 
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 
 
 # Standard library
@@ -70,12 +70,13 @@ except ImportError:
     )
 
 from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 ########################################################################################
 ######################### UPDATE VARIABLES BELOW #######################################
 ########################################################################################
 
-SUBDOMAIN = ""  # bravewaffles, example, company_name
+SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
 # us("") and eu - this can be found in the Kandji settings on the Access tab
 REGION = ""
@@ -109,8 +110,7 @@ def var_validation():
     """Validate variables."""
     if SUBDOMAIN in ["", "accuhive"]:
         print(
-            f'\nThe subdomain "{SUBDOMAIN}" in {BASE_URL} needs to be updated to '
-            "your Kandji tenant subdomain..."
+            "\nPlease update the SUBDOMAIN varialble with your Kandji tenant subdomain."
         )
         print("Please see the example in the README for this repo.\n")
         sys.exit()
@@ -211,6 +211,17 @@ def http_errors(resp, resp_code, err_msg):
             '\t\t\t enrolled in Kandji or the device is in the "Awaiting enrollment"\n'
             "\t\t\t state.\n"
         )
+    # 422
+    elif resp_code == requests.codes["unprocessable"]:
+        print(
+            "The server understands the content type of the request entity (hence a 415 "
+            "Unsupported Media Type status code is inappropriate), and the syntax of "
+            "the request entity is correct (thus a 400 Bad Request status code is "
+            "inappropriate) but was unable to process the contained instructions. For "
+            "example, this error condition may occur if a JSON request body contains "
+            "well-formed (i.e., syntactically correct), but semantically erroneous, "
+            "JSON instructions."
+        )
     # 429
     elif resp_code == requests.codes["too_many_requests"]:
         print("You have reached the rate limit ...")
@@ -218,11 +229,22 @@ def http_errors(resp, resp_code, err_msg):
         sys.exit(f"\t{err_msg}")
     # 500
     elif resp_code == requests.codes["internal_server_error"]:
-        print("The service is having a problem...")
+        print(
+            "The server encountered an unexpected condition that prevented it from "
+            "fulfilling the request...."
+        )
         print(err_msg)
+    # 502
+    elif resp_code == requests.codes["bad_gateway"]:
+        print(
+            "The server, while acting as a gateway or proxy, received an invalid "
+            "response from an inbound server it accessed while attempting to fulfill "
+            "the request."
+        )
     # 503
     elif resp_code == requests.codes["service_unavailable"]:
         print("Unable to reach the service. Try again later...")
+        sys.exit()
     else:
         print("Something really bad must have happened...")
         print(err_msg)
@@ -238,7 +260,13 @@ def kandji_api(method, endpoint, params=None, payload=None):
                methods.
     Returns a JSON data object.
     """
-    attom_adapter = HTTPAdapter(max_retries=3)
+    retries = Retry(
+        total=3,
+        backoff_factor=0.3,
+        allowed_methods=["GET", "PUT", "POST", "DELETE"],
+        status_forcelist=[500, 502, 503, 504],
+    )
+    attom_adapter = HTTPAdapter(max_retries=retries)
     session = requests.Session()
     session.mount(BASE_URL, attom_adapter)
 
@@ -352,21 +380,26 @@ def create_record_update_payload(_input, enrollment_status):
     payload = {}
 
     for key, value in _input.items():
+        # just encase there are any leading or trailing spaces in the headers.
+        key = key.strip()
+
         # Here we are checking to see if we need to lookup the blueprint id in Kandji
         # based on the name provided in the input file.
         if key == "blueprint_name" and value != "":
             # API call to return blueprint records containing the provided name.
-            blueprint_record = get_blueprint(bp_name=_input["blueprint_name"])
+            blueprint_record = get_blueprint(bp_name=value)
 
             if blueprint_record:
                 # update the payload with the blueprint id
                 if enrollment_status == "enrolled":
+                    # enrolled device
                     payload.update([("blueprint_id", blueprint_record["id"])])
                 else:
+                    # device awaiting enrollment
                     payload.update([("blueprint", blueprint_record["id"])])
             else:
                 print(
-                    f"\"{_input['blueprint_name']}\" not found in Kandji. Will not "
+                    f'"{value}" not found in Kandji. Will not '
                     "attempt to update blueprint assignemnt. If the blueprint does "
                     "exist, make sure that the name is entered correctly in the input "
                     "csv."
