@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<!-- replace accuhive.okta.com with your tenant -->
+			<key>OktaVerify.OrgUrl</key>
+			<string>https://accuhive.okta.com</string>
+			<!-- replace YOUR_CLIENT_ID with your Desktop Password Sync app Client ID -->
+			<key>OktaVerify.PasswordSyncClientID</key>
+			<string>YOUR_CLIENT_ID</string>
+			<!-- optional keys-->
+			<key>OktaVerify.EnrollmentOptions</key>
+			<string>SilentEnrollmentEnabled</string>
+			<key>OktaVerify.ReportDiagnostics</key>
+			<true/>
+			<key>OktaVerify.UserPrincipalName</key>
+			<string>username@domain.com</string>
+			<!-- optional keys-->
+			<key>PayloadDescription</key>
+			<string>Configures Okta Verify settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Okta Verify configuration</string>
+			<key>PayloadIdentifier</key>
+			<string>DEB5863A-E503-468C-A3DE-D90479F1E10A</string>
+			<key>PayloadOrganization</key>
+			<string>CUSTOMER NAME</string>
+			<key>PayloadType</key>
+			<string>com.okta.mobile</string>
+			<key>PayloadUUID</key>
+			<string>1D89FEA8-BAFE-42F5-9393-634BE23009D8</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<!-- replace accuhive.okta.com with your tenant -->
+			<key>OktaVerify.OrgUrl</key>
+			<string>https://accuhive.okta.com</string>
+			<!-- replace YOUR_CLIENT_ID with your Desktop Password Sync app Client ID -->
+			<key>OktaVerify.PasswordSyncClientID</key>
+			<string>YOUR_CLIENT_ID</string>
+			<!-- optional keys-->
+			<key>OktaVerify.EnrollmentOptions</key>
+			<string>SilentEnrollmentEnabled</string>
+			<key>OktaVerify.ReportDiagnostics</key>
+			<true/>
+			<key>OktaVerify.UserPrincipalName</key>
+			<string>username@domain.com</string>
+			<!-- optional keys-->
+			<key>PayloadDescription</key>
+			<string>Configures Okta Verify settings</string>
+			<key>PayloadDisplayName</key>
+			<string>Okta Verify (auth service) configuration</string>
+			<key>PayloadIdentifier</key>
+			<string>E5F1356E-3B04-43F7-8E8C-2213F7D74B13</string>
+			<key>PayloadOrganization</key>
+			<string>CUSTOMER NAME</string>
+			<key>PayloadType</key>
+			<string>com.okta.mobile.auth-service-extension</string>
+			<key>PayloadUUID</key>
+			<string>6764E8E4-0A37-4206-96E2-A73B2DFA5673</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Configures settings</string>
+	<key>PayloadDisplayName</key>
+	<string>Okta Verify Configuration</string>
+	<key>PayloadIdentifier</key>
+	<string>com.customer-name.profiles.oktaverify</string>
+	<key>PayloadOrganization</key>
+	<string>CUSTOMER NAME</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>9A641D93-471C-44D7-8B54-264E842A12C8</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

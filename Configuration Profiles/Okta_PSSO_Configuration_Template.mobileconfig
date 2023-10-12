@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>Configuration</key>
+			<array>
+				<dict>
+					<key>ApplicationIdentifier</key>
+					<string>B7F62B65BN.com.okta.mobile.auth-service-extension</string>
+					<key>AssociatedDomains</key>
+					<array>
+						<!-- replace accuhive.okta.com with your tenant address -->
+						<string>authsrv:accuhive.okta.com</string>
+					</array>
+				</dict>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Associated Domains for Okta Verify</string>
+			<key>PayloadIdentifier</key>
+			<string>F65C9B21-13AD-4F46-86E5-C3352E7D97B6</string>
+			<key>PayloadOrganization</key>
+			<string>CUSTOMER NAME</string>
+			<key>PayloadType</key>
+			<string>com.apple.associated-domains</string>
+			<key>PayloadUUID</key>
+			<string>F65C9B21-13AD-4F46-86E5-C3352E7D97B6</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>AuthenticationMethod</key>
+			<string>Password</string>
+			<key>ExtensionIdentifier</key>
+			<string>com.okta.mobile.auth-service-extension</string>
+			<key>Hosts</key>
+			<array/>
+			<key>TeamIdentifier</key>
+			<string>B7F62B65BN</string>
+			<key>Type</key>
+			<string>Redirect</string>
+			<key>URLs</key>
+			<array>
+				<!-- replace accuhive.okta.com with your tenant address -->
+				<string>https://accuhive.okta.com/device-access/api/v1/nonce</string>
+				<string>https://accuhive.okta.com/oauth2/v1/token</string>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Okta Verify Sign-On Extensions Payload</string>
+			<key>PayloadIdentifier</key>
+			<string>77058B08-6943-4DEC-899A-721F55B4EEE8</string>
+			<key>PayloadOrganization</key>
+			<string>CUSTOMER NAME</string>
+			<key>PayloadType</key>
+			<string>com.apple.extensiblesso</string>
+			<key>PayloadUUID</key>
+			<string>77058B08-6943-4DEC-899A-721F55B4EEE8</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Okta PSSO extension configuration</string>
+	<key>PayloadDisplayName</key>
+	<string>Okta PSSO extension</string>
+	<key>PayloadIdentifier</key>
+	<string>com.customer-name.profiles.ssoextension</string>
+	<key>PayloadOrganization</key>
+	<string>CUSTOMER NAME</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>D78FE406-0C61-4007-8C51-FFA5FDE5F54B</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
