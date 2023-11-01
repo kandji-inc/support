@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+        <dict>
+            <key>OktaVerify.Plugins</key>
+            <array>
+                <string>com.crowdstrike.zta</string>
+            </array>
+            <key>com.crowdstrike.zta</key>
+            <dict>
+				<key>name</key>
+                <string>com.crowdstrike.zta</string>
+                <key>description</key>
+                <string>File based EDR integration between Okta Verify and the Crowdstrike Falcon agent.</string>
+                <key>location</key>
+                <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/OVSignals.zta</string>
+				<key>format</key>
+                <string>JWT</string>
+                <key>type</key>
+                <string>file</string>
+            </dict>
+            <key>PayloadIdentifier</key>
+			<string>com.okta.mobile.auth-service-extension.1901A130-0E7F-450D-9707-43C7FA8E874A</string>
+			<key>PayloadType</key>
+			<string>com.okta.mobile.auth-service-extension</string>
+			<key>PayloadUUID</key>
+			<string>1901A130-0E7F-450D-9707-43C7FA8E874A</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+        </dict>
+        <dict>
+            <key>OktaVerify.Plugins</key>
+            <array>
+                <string>com.crowdstrike.zta</string>
+            </array>
+            <key>com.crowdstrike.zta</key>
+            <dict>
+                <key>description</key>
+                <string>File based EDR integration between Okta Verify and the Crowdstrike Falcon agent.</string>
+                <key>format</key>
+                <string>JWT</string>
+                <key>location</key>
+                <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/OVSignals.zta</string>
+                <key>name</key>
+                <string>com.crowdstrike.zta</string>
+                <key>type</key>
+                <string>file</string>
+            </dict>
+            <key>PayloadIdentifier</key>
+			<string>com.okta.mobile.E3836E8E-475E-4A1A-8A1E-13BAC6AD2DF7</string>
+			<key>PayloadType</key>
+			<string>com.okta.mobile</string>
+			<key>PayloadUUID</key>
+			<string>E3836E8E-475E-4A1A-8A1E-13BAC6AD2DF7</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+        </dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>Okta Verify - EDR Plugin</string>
+	<key>PayloadIdentifier</key>
+	<string>io.kandji.verify.7170DAC0-25E5-47D3-A44C-6BEBBF04D2ED</string>
+	<key>PayloadOrganization</key>
+	<string>Kandji, Inc. </string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>7170DAC0-25E5-47D3-A44C-6BEBBF04D2ED</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
