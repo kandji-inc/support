@@ -16,6 +16,14 @@
 ################################################################################################
 # Collects the Current Password and Expiration Date from macOSLAPS and submits
 # that to a device's Notes in Kandji.
+#
+# Note: Password retrieval in macOSLAPS, by design, returns passwords in plaintext to the
+# standard out of macOS. The LAPS Retriever script from Kandji does not modify or extend this
+# functionality; it simply creates a note on the device record with the information requested.
+# The same plaintext output can also be found on the status page of the Custom Script Library
+# Item. Please ensure this behavior aligns with your organization's security and compliance
+# standards. Kandji shall not be held liable for any legal implications or breaches resulting
+# from the use of macOSLAPS or its inherent behaviors."
 ################################################################################################
 # License Information
 ################################################################################################
