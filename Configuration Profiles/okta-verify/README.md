@@ -30,7 +30,7 @@ This payload covers the following preference domains.
         <key>description</key>
         <string>File based EDR integration between Okta Verify and the Crowdstrike Falcon agent.</string>
         <key>location</key>
-        <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/OVSignals.zta</string>
+        <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/data.zta</string>
 		<key>format</key>
         <string>JWT</string>
         <key>type</key>
@@ -51,7 +51,7 @@ This payload covers the following preference domains.
         <key>format</key>
         <string>JWT</string>
         <key>location</key>
-        <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/OVSignals.zta</string>
+        <string>/Library/Application Support/Crowdstrike/ZeroTrustAssessment/data.zta</string>
         <key>name</key>
         <string>com.crowdstrike.zta</string>
         <key>type</key>
