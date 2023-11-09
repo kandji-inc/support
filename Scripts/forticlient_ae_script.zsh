@@ -68,7 +68,7 @@ APP_NAME="FortiClient.app"
 
 # The profiles variable will be set to an array of profiles that match the prefix in
 # the PROFILE_ID_PREFIX variable
-profiles=$(/usr/bin/profiles show | grep "$PROFILE_ID_PREFIX" | sed 's/.*\ //')
+profiles=($(/usr/bin/profiles show | grep "$PROFILE_ID_PREFIX" | sed 's/.*\ //'))
 
 # If matching profiles are found exit 1 so the installer will run, else exit 0 to wait
 if [[ ${#profiles[@]} -eq 0 ]]; then
