@@ -4,6 +4,7 @@
 # Created by Matt Wilson | se@kandji.io | Kandji, Inc. | Solutions Engineering
 ###################################################################################################
 # Created on 2021.09.08
+# Updated on 2023.09.12 - Added home folder check
 ###################################################################################################
 # Software Information
 ###################################################################################################
@@ -39,7 +40,7 @@
 ###################################################################################################
 
 # Update USER_TO_REMOVE to match the username to delete
-USER_TO_REMOVE="USER_NAME_HERE"
+USER_TO_REMOVE=""
 
 ###################################################################################################
 ############################### MAIN LOGIC - DO NOT MODIFY BELOW ##################################
@@ -92,9 +93,16 @@ for user in $user_array; do
 
 done
 
-echo "Removing the Home directory for $USER_TO_REMOVE ..."
-# echo "Removing Home directory /Users/$USER_TO_REMOVE ..."
-/bin/rm -Rf /Users/"$USER_TO_REMOVE"
+# Get the home folder for $USER_TO_REMOVE
+home_folder=`/usr/bin/dscl . read /Users/$USER_TO_REMOVE NFSHomeDirectory| awk {'print $2'}`
+
+# Confirm the home folder exists
+if [[ -d "$home_folder" ]]; then
+    /bin/echo "Removing the Home directory for $USER_TO_REMOVE ..."
+    /bin/rm -Rf "$home_folder"
+else
+    /bin/echo "No home folder exists for $USER_TO_REMOVE"
+fi
 
 echo "Removing account: $USER_TO_REMOVE ..."
 # /usr/sbin/sysadminctl -deleteUser "$USER_TO_REMOVE"
