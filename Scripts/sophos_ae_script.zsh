@@ -85,7 +85,7 @@ profile_search() {
 
 # The profiles_list variable will be set to an array of profiles that match the prefix
 # in the PAYLOAD_ID_PREFIX variable
-profiles_list=$(profile_search "$PAYLOAD_ID_PREFIX")
+profiles_list=($(profile_search "$PAYLOAD_ID_PREFIX"))
 
 # Check to see if the profile ID prefix defined in $PAYLOAD_ID_PREFIX. If not found the script
 # will exit and check again at next agent checkin.
@@ -105,7 +105,7 @@ osvers_major="$(/usr/bin/sw_vers -productVersion | /usr/bin/awk -F '.' '{print $
 if [[ "${osvers_major}" -ge 13 ]]; then
     # The profiles variable will be set to an array of profiles that match the prefix in
     # the SERVICE_MANAGEMENT_PREFIX variable
-    profiles=$(profile_search "$SERVICE_MANAGEMENT_PREFIX")
+    profiles=($(profile_search "$SERVICE_MANAGEMENT_PREFIX"))
 
     # If matching profiles are found exit 1 so the installer will run, else exit 0 to
     # wait
