@@ -4,13 +4,16 @@
 # Created by Danny Hanes | support@kandji.io | Kandji, Inc.
 ########################################################################################
 #
-#   Created - 06/27/2023
+#   Created - 2023-06-27
+#   Updated - 2023-10-13
 #
 ########################################################################################
 # Tested macOS Versions
 ########################################################################################
 #
 #   - 13.4
+#   - 13.4.1
+#   - 14.0
 #
 ########################################################################################
 # Software Information
@@ -45,7 +48,7 @@
 ################################################################################################
 
 # Script version
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 ########################################################################################
 ################################# USER VARIABLES #######################################
@@ -81,6 +84,7 @@ dockutilBinary="/usr/local/bin/dockutil"
 dockutilURL="https://api.github.com/repos/kcrawford/dockutil/releases/latest"
 dockutilInstaller="/var/tmp/dockutil.pkg"
 dockutilTeamID="Z5J8CJBUWC"
+version=$(sw_vers -productVersion | awk -F '.' '{print $1}')
 
 installDockutil () {
 
@@ -89,7 +93,7 @@ installDockutil () {
         url=$(/usr/bin/curl -s $dockutilURL | /usr/bin/grep "download_url" | /usr/bin/awk '{print $2}' | /usr/bin/tr -d '"')
         /usr/bin/curl -L -o "$dockutilInstaller" "$url"
         
-        packageID=$(/usr/sbin/pkgutil --check-signature "${dockutilInstaller}" | sed -n -e 's/^.*Developer ID Installer: //p' | sed -e 's/.*(\(.*\)).*/\1/;s/,//g')
+        packageID="$(/usr/sbin/pkgutil --check-signature "${dockutilInstaller}" | sed -n -e 's/^.*Developer ID Installer: //p' | sed -e 's/.*(\(.*\)).*/\1/;s/,//g')"
 
         if [[ "${packageID}" != "${dockutilTeamID}" ]]; then
             /bin/echo "Signature check failed..."
@@ -119,6 +123,11 @@ configureDock () {
     fi
 
     for app in ${APPLICATION_LIST[@]}; do
+    
+        if [[ $app == "/Applications/Safari.app" ]] && [[ $version -gt 12 ]]; then
+            app="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app"
+        fi
+        
         if [[ ! -d $app ]] && [[ "$SKIP_MISSING" == "Y" ]]; then
             /bin/echo "$app does not exist; skipping"
         else
