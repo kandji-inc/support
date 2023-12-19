@@ -5,13 +5,14 @@
 ###################################################################################################
 #
 #   Created - 5.22.23
-#   Updated - 6.19.23
+#   Updated - 12.14.23
 #
 ###################################################################################################
 # Tested macOS Versions
 ###################################################################################################
 #
 #   - 13.3.1
+#   - 14.1.1
 #
 ###################################################################################################
 # Software Information
@@ -113,7 +114,10 @@ check_jq
 user_response=$(/usr/bin/osascript -e 'display dialog "Please enter your email address" default answer "you@yourcompany.com" buttons {"Cancel", "Submit"} default button "Submit"')
 
 # Parse email address entered by the end user
-user_email=$(/bin/echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
+user_email_input=$(/bin/echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
+
+# Modify user input to be lowercase
+user_email="${user_email_input:l}"
 
 /bin/echo The user entered "$user_email"
 
