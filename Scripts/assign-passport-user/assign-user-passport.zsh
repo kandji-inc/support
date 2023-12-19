@@ -5,12 +5,14 @@
 ################################################################################################
 #
 #   Created - 07/13/2023
+#   Updated - 12/18/2023
 #
 ################################################################################################
 # TESTED MACOS VERSIONS
 ################################################################################################
 #
-#   - 13.4.1
+#   - 14.2
+#   - 13.6
 #   - 12.6.1
 #
 ################################################################################################
@@ -50,7 +52,7 @@
 ################################################################################################
 
 # Script version
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 ################################################################################################
 ###################################### VARIABLES ###############################################
@@ -119,7 +121,9 @@ assignmentCheck(){
     /bin/echo "ERROR: Account '$localAccount' does not appear to be managed by Passport."
     exit 1
   else
-    passportEmailAddress=$(/bin/echo $passportLinkedAccountName | /usr/bin/awk '{print $2}')
+    passportEmailAddressRaw=$(/bin/echo $passportLinkedAccountName | /usr/bin/awk '{print $2}')
+    # Make sure the email address is all lower case
+    passportEmailAddress="${passportEmailAddressRaw:l}"
     /bin/echo "Account '$localAccount' appears to be managed by Passport."
     /bin/echo "$localAccount's e-mail address is $passportEmailAddress"
   fi
