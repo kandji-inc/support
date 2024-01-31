@@ -127,7 +127,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
-			<string>E27E39AE-6367-425B-951C-D80D1D0CCBFD</string>
+			<string>EFB73626-25E5-4530-B746-80018A38B23B</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>Services</key>
@@ -288,6 +288,20 @@
 						<key>StaticCode</key>
 						<false/>
 					</dict>
+					<dict>
+						<key>Allowed</key>
+						<true/>
+						<key>CodeRequirement</key>
+						<string>identifier "com.sophos.macendpoint.Sophos-Installer" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<key>Comment</key>
+						<string>All Sophos products</string>
+						<key>Identifier</key>
+						<string>com.sophos.macendpoint.Sophos-Installer</string>
+						<key>IdentifierType</key>
+						<string>bundleID</string>
+						<key>StaticCode</key>
+						<false/>
+					</dict>
 				</array>
 			</dict>
 		</dict>
@@ -305,7 +319,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>1e69d4c7-3bb2-44c3-a5c4-be0570305ebc</string>
+	<string>BEFA13DF-E06F-4B58-BD45-1DC2799C5B22</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
