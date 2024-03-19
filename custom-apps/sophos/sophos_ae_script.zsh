@@ -4,30 +4,30 @@
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ################################################################################################
 # Created - 06/09/2021
-# Updated - 2022-01-30 - Matt Wilson
+# Updated - 2024-03-06 - Joe Borner
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   12.3
-#   11.6.2
-#   10.15.7
+#   14.3.1
+#   13.6.4
+#   12.7.3
 #
 ################################################################################################
 # Software Information
 ################################################################################################
 #
-# This Audit and Enforce script is used to ensure that a specific Bitdefender configuration
-# profile is installed and ensure that Bitdefender is running properly after installation.
+# This Audit and Enforce script is used to ensure that a specific Sophos configuration
+# profile is installed and ensure that Sophos is running properly after installation.
 #
-# Configuration profiles are included with the Bitdefender deployment instructions found in the
+# Configuration profiles are included with the Sophos deployment instructions found in the
 # Kandji Knowledge Base.
 #
 ################################################################################################
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software

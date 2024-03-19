@@ -20,13 +20,13 @@
 			<key>PayloadDisplayName</key>
 			<string>Sophos Web Content Filter</string>
 			<key>PayloadIdentifier</key>
-			<string>io.kandji.sophos.0ABFC7DA-DF66-4D25-8988-55E446857F39.com.apple.webcontent-filter.BE52724C-9538-4E0F-9C9F-393CA1FD2A10</string>
+			<string>io.kandji.sophos.0ABFC7DA-DF66-4D25-8988-55E446857F39.com.apple.webcontent-filter.74641116-36DE-46AE-8200-7E00E197805E</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji.io Inc</string>
+			<string>ThoughtWorks Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
-			<string>BE52724C-9538-4E0F-9C9F-393CA1FD2A10</string>
+			<string>74641116-36DE-46AE-8200-7E00E197805E</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>PluginBundleID</key>
@@ -37,22 +37,50 @@
 		<dict>
 			<key>AllowUserOverrides</key>
 			<true/>
+			<key>AllowedSystemExtensions</key>
+			<dict>
+				<key>2H5GFH3774</key>
+				<array>
+					<string>com.sophos.endpoint.networkextension</string>
+					<string>com.sophos.endpoint.scanextension</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string></string>
+			<key>PayloadDisplayName</key>
+			<string>Sophos System Extension Policy settings</string>
+			<key>PayloadEnabled</key>
+			<true/>
+			<key>PayloadIdentifier</key>
+			<string>io.kandji.sophos.system-extension-policy.B8133FF9-9539-4298-8774-11B153A6E151</string>
+			<key>PayloadOrganization</key>
+			<string>ThoughtWorks Inc..</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>B8133FF9-9539-4298-8774-11B153A6E151</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>AllowUserOverrides</key>
+			<true/>
 			<key>AllowedTeamIdentifiers</key>
 			<array>
 				<string>2H5GFH3774</string>
 			</array>
 			<key>PayloadDescription</key>
-			<string></string>
+			<string>Configures Kernel Extension Policy settings</string>
 			<key>PayloadDisplayName</key>
-			<string>Sophos System Extension Policy settings</string>
+			<string>Kernel Extension Policy</string>
 			<key>PayloadIdentifier</key>
-			<string>io.kandji.sophos.system-extension-policy.D550B75A-E7DF-4E03-8516-2F5FFC12CF83</string>
+			<string>io.kandji.sophos.EA69037E-115C-4C66-AC6E-AC2118FB0CBE.com.apple.syspolicy.kernel-extension-policy.565AC497-393F-4689-A5D9-6DC22CE6D244</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji.io Inc.</string>
+			<string></string>
 			<key>PayloadType</key>
-			<string>com.apple.system-extension-policy</string>
+			<string>com.apple.syspolicy.kernel-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>5E71C2A9-0BE7-445D-93CF-AF57A1E17533</string>
+			<string>565AC497-393F-4689-A5D9-6DC22CE6D244</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -77,13 +105,13 @@
 			<key>PayloadDisplayName</key>
 			<string>Notifications</string>
 			<key>PayloadIdentifier</key>
-			<string>io.kandji.sophos.EA69037E-115C-4C66-AC6E-AC2118FB0CBE.com.apple.notificationsettings.ECFCF3E8-F59C-46D1-BFDF-22F7BE9B05D9</string>
+			<string>io.kandji.sophos.EA69037E-115C-4C66-AC6E-AC2118FB0CBE.com.apple.notificationsettings.4BB29369-EDB0-45DD-9AD7-1C1F54DE7A76</string>
 			<key>PayloadOrganization</key>
 			<string></string>
 			<key>PayloadType</key>
 			<string>com.apple.notificationsettings</string>
 			<key>PayloadUUID</key>
-			<string>ECFCF3E8-F59C-46D1-BFDF-22F7BE9B05D9</string>
+			<string>4BB29369-EDB0-45DD-9AD7-1C1F54DE7A76</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
@@ -99,7 +127,7 @@
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
-			<string>AC89B7AD-8449-469B-AC21-19E34E2F6B1D</string>
+			<string>EFB73626-25E5-4530-B746-80018A38B23B</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 			<key>Services</key>
@@ -264,13 +292,13 @@
 						<key>Allowed</key>
 						<true/>
 						<key>CodeRequirement</key>
-						<string>identifier SophosMDR and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
+						<string>identifier "com.sophos.macendpoint.Sophos-Installer" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2H5GFH3774"</string>
 						<key>Comment</key>
 						<string>All Sophos products</string>
 						<key>Identifier</key>
-						<string>/Library/Sophos Managed Detection and Response/SophosMDR</string>
+						<string>com.sophos.macendpoint.Sophos-Installer</string>
 						<key>IdentifierType</key>
-						<string>path</string>
+						<string>bundleID</string>
 						<key>StaticCode</key>
 						<false/>
 					</dict>
@@ -279,11 +307,11 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>System Extension, Content Filter, Notifications, and PPPC for Sophos Central macOS Endpoint Agent</string>
+	<string>Kernel Extension, System Extension, Content Filter, Notifications, and PPPC for Sophos Central macOS Endpoint Agent</string>
 	<key>PayloadDisplayName</key>
 	<string>Sophos Central Settings</string>
 	<key>PayloadIdentifier</key>
-	<string>com.kandji.profile.custom.AE58F9D6-E427-43AC-AD85-8513556A9E10</string>
+	<string>com.kandji.profile.custom.1e69d4c7-3bb2-44c3-a5c4-be0570305ebc</string>
 	<key>PayloadOrganization</key>
 	<string>Kandji, Inc.</string>
 	<key>PayloadScope</key>
@@ -291,7 +319,7 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>AE58F9D6-E427-43AC-AD85-8513556A9E10</string>
+	<string>BEFA13DF-E06F-4B58-BD45-1DC2799C5B22</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
