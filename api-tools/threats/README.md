@@ -112,4 +112,4 @@ A CSV report named `threats_report_<current_date>.csv` will be generated in the 
 
 ### Note
 
-This script was written by @TheBoatyMcBoatFace on behalf of @CivicActions in March of 2024. We used portions of the various scripts in the [Kandji Support](https://github.com/kandji-inc/support) repo to accomplish this.
+This script was written by [@TheBoatyMcBoatFace](https://github.com/TheBoatyMcBoatFace) on behalf of [@CivicActions](https://github.com/CivicActions) in March of 2024. We used portions of the various scripts in the [Kandji Support](https://github.com/kandji-inc/support) repo to accomplish this.
