@@ -4,7 +4,7 @@
 ################################################################################################
 #
 # Created - 03/29/2021
-# Updated - 08/30/2023 - Brian Goldstein
+# Updated - 03/27/2024 - Brian Goldstein
 #
 ################################################################################################
 # Software Information
@@ -16,7 +16,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -40,10 +40,13 @@ FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Pref
 EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+JOB_TITLE=$(/usr/libexec/PlistBuddy -c 'print :JOB_TITLE' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 ASSET_TAG=$(/usr/libexec/PlistBuddy -c 'print :ASSET_TAG' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEVICE_ID=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+BLUEPRINT_NAME=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+BLUEPRINT_ID=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 
@@ -59,6 +62,8 @@ Email Prefix: $EMAIL_PREFIX
 
 Department: $DEPARTMENT
 
+Job Title: $JOB_TITLE
+
 Device Name: $DEVICE_NAME
 
 Serial Number: $SERIAL_NUMBER
@@ -66,6 +71,10 @@ Serial Number: $SERIAL_NUMBER
 Asset Tag: $ASSET_TAG
 
 Device ID: $DEVICE_ID
+
+Blueprint Name: $BLUEPRINT_NAME
+
+Blueprint ID: $BLUEPRINT_ID
 
 Hardware UDID: $UDID
 
