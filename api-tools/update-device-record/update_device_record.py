@@ -7,7 +7,7 @@
 ################################################################################################
 #
 #   Created:  2021-06-03
-#   Modified: 2023-08-09 - Matt Wilson
+#   Modified: 2024-04-12 - Brian Goldstein
 #
 ################################################################################################
 # Software Information
@@ -29,7 +29,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -49,7 +49,7 @@
 #
 ################################################################################################
 
-__version__ = "1.4.1"
+__version__ = "1.5.1"
 
 
 # Standard library
@@ -380,7 +380,7 @@ def create_record_update_payload(_input, enrollment_status):
     payload = {}
 
     for key, value in _input.items():
-        # just encase there are any leading or trailing spaces in the headers.
+        # just in case there are any leading or trailing spaces in the headers.
         key = key.strip()
 
         # Here we are checking to see if we need to lookup the blueprint id in Kandji
@@ -405,13 +405,17 @@ def create_record_update_payload(_input, enrollment_status):
                     "csv."
                 )
 
-        # Here we are verifying that the value in the device record is not empty and
-        # that it is not the serial_number. We want to check for empty values because
-        # the user, and asset_tag keys cannot be empty strings in the in json payload
-        # sent to Kandji. If these keys are sent as an empty string or NULL Kandji will
-        # return an error.
+        # Here we are verifying that the value in the device record is not null or empty.
+        # If the value is null, we will clear the user or asset tag on the device record.
+        # We want to check for empty values because the user, and asset_tag keys cannot 
+        # be empty strings in the in json payload sent to Kandji. If these keys are sent
+        # as an empty string Kandji will return an error.
         if value != "" and key in ["asset_tag", "user"]:
             payload.update([(key, value)])
+        if value == "null" and key in ["asset_tag", "user"]:
+            value = None
+            payload.update([(key, value)])
+    return payload
 
     return payload
 
