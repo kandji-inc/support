@@ -1,15 +1,15 @@
 #!/bin/zsh
 ###################################################################################################
 # Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
-# Modified by Sean Burke | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Modified by Daniel Chapa | se@kandji.io | Kandji, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 05/18/2022
-# Updated on 10/16/2023
+# Updated on 05/07/2024
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.0.1
 #
 # Uninstaller script for Microsoft Teams (Classic)
 # NOTE: It is recommended you remove Microsoft Teams (Classic) from any Blueprints where this uninstaller is added
@@ -24,7 +24,7 @@
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -67,6 +67,9 @@ if [[ -e "${application_path}" || -e "${application_path_secondary}" ]]; then
     # Kill App Processes
     /bin/echo "Killing any active ${app_friendly_name} processes..."
     /bin/ps aux | /usr/bin/grep -i 'Microsoft Teams classic.app\|Microsoft Teams.app' | /usr/bin/grep -v grep | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill -9
+
+    # Remove App from Dock
+    /usr/local/bin/kandji dock --remove com.microsoft.teams
 
     /bin/echo "Deleting application bundle for ${app_friendly_name}..."
     /bin/rm -f -R "${application_path}"
