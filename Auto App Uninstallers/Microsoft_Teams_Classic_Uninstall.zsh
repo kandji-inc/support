@@ -5,16 +5,18 @@
 ###################################################################################################
 # Created on 05/18/2022
 # Updated on 05/07/2024
+# Updated on 05/15/2024
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.1
+# Version 1.0.2
 #
 # Uninstaller script for Microsoft Teams (Classic)
 # NOTE: It is recommended you remove Microsoft Teams (Classic) from any Blueprints where this uninstaller is added
 # NOTE: Failure to do so may result in Microsoft Teams (Classic) being reinstalled upon next Kandji agent check-in
-# Code will first kill any active Microsoft Teams (Classic) processes
+# Code will first locate install(s) of Microsoft Teams (Classic) by bundle identifier
+# Kills any active Microsoft Teams (Classic) processes
 # Next, if Microsoft Teams (Classic) application bundle exists in /Applications, it will be deleted
 # Finally, iterates over all users with UID ≥ 500, populates their home directory paths,
 # and confirms a user Library exists under the identified home directory by NFSHomeDirectory
@@ -51,8 +53,7 @@
 ########## VARIABLES #########
 ##############################
 
-application_path="/Applications/Microsoft Teams classic.app"
-application_path_secondary="/Applications/Microsoft Teams.app"
+application_bundle_id="com.microsoft.teams"
 app_friendly_name="Microsoft Teams (Classic)"
 
 ###############
@@ -62,18 +63,30 @@ app_friendly_name="Microsoft Teams (Classic)"
 # Populate array of users from DSCL with UID ≥500
 dscl_users=($(/usr/bin/dscl /Local/Default -list /Users UniqueID | /usr/bin/awk '$2 >= 500 {print $1}'))
 
-if [[ -e "${application_path}" || -e "${application_path_secondary}" ]]; then
+# Find via bundle ID using mdfind; sort to bring shortest path (if multiple) to top and assign
+application_path=$(/usr/bin/mdfind "kMDItemCFBundleIdentifier == '${application_bundle_id}'" | /usr/bin/sort | /usr/bin/head -1)
+if [[ -z ${application_path} ]]; then
+    # Search /Applications for app bundle dir structures, match on BID from Info.plists and assign matching app (if any)
+    info_plist_path=$(/usr/bin/find /Applications -maxdepth 4 -path "*\.app/Contents/Info.plist" -print0 -exec /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "{}" \; 2>/dev/null | /usr/bin/grep -a "${application_bundle_id}" | /usr/bin/sed -n "s/${application_bundle_id}$//p")
+    # Shell built-in to lop off two sub dirs
+    application_path=${info_plist_path%/*/*}
+fi
+if [[ -z ${application_path} ]]; then
+    application_path="/Applications/Microsoft Teams classic.app"
+fi
 
+if [[ -d "${application_path}" ]]; then
+
+    /bin/echo "Located installed ${app_friendly_name} at ${application_path}..."
     # Kill App Processes
     /bin/echo "Killing any active ${app_friendly_name} processes..."
-    /bin/ps aux | /usr/bin/grep -i 'Microsoft Teams classic.app\|Microsoft Teams.app' | /usr/bin/grep -v grep | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill -9
+    /usr/bin/lsappinfo info $(/usr/bin/lsappinfo find bundleid=${application_bundle_id}) -only pid | /usr/bin/cut -d '=' -f2 | /usr/bin/xargs kill -9
 
     # Remove App from Dock
-    /usr/local/bin/kandji dock --remove com.microsoft.teams
+    /usr/local/bin/kandji dock --remove ${application_bundle_id}
 
     /bin/echo "Deleting application bundle for ${app_friendly_name}..."
     /bin/rm -f -R "${application_path}"
-    /bin/rm -f -R "${application_path_secondary}"
 
     for du in "${dscl_users[@]}"; do
         # Derive home directory value from DSCL attribute
