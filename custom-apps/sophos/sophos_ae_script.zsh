@@ -4,7 +4,7 @@
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ################################################################################################
 # Created - 06/09/2021
-# Updated - 2024-03-06 - Joe Borner
+# Updated - 2024-05-29 - Joe Borner
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
@@ -53,7 +53,7 @@
 
 # This is the profile ID that contains all settings.
 # This prefix exists in the KEXT and kextless version of the settings profile
-PAYLOAD_ID_PREFIX="io.kandji.sophos.EA69037E"
+PAYLOAD_ID_PREFIX="io.kandji.sophos.system-extension-policy"
 
 # Service management profile prefix
 # NOTE: this profile only contains managed backgroud settings for macOS 13+

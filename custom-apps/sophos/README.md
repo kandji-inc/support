@@ -8,7 +8,7 @@ Resources to aid in the deployment of the [Sophos Endpoint deployment KB](https:
 
 Item | Status
 :-- | :--
-Last updated | 2024.03.05
+Last updated | 2024.05.29
 latest version tested | `1.7.0`
 Settings mobileconfig profiles | `pass`
 AE script | `pass`
