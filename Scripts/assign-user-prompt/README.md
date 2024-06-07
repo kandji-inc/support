@@ -6,7 +6,7 @@ This script is designed to prompt a macOS end user for their email address. It w
 ![End user experience](images/aup-image1.png)
 ![End user success](images/aup-image2.png)
 
-While the intended use of this script was to be deployed via Kandji Self Service, there is no reason that in couldn't be run in another context. For example, [after Liftoff completes](https://github.com/kandji-inc/support/blob/main/Scripts/installAfterLiftoff.zsh).
+While the intended use of this script was to be deployed via Kandji Self Service, there is no reason that in couldn't be run in another context. For example, [after Liftoff completes](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff).
 
 ## Prerequisites
 

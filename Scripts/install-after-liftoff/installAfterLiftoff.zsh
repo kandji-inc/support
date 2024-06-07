@@ -5,45 +5,32 @@
 ################################################################################################
 #
 #   Created - 05/07/2022
-#   Updated - 1/18/2023
+#   Updated - 05/28/2024
 #
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   13.1
-#   12.6.1
+#   - 14.5
+#   - 13.6.7
+#   - 12.7.5
 #
 ################################################################################################
 # Software Information
 ################################################################################################
 #
-# This script creates a launchdaemon that will trigger the execution of a library item
-# as soon as Liftoff is closed.  This can be useful for some security platforms that
-# aggresively disrupt the network connectivity during install or require user
-# interaction to complete.
+# This script can be used to trigger the execution of Library Items when Liftoff advances to the
+# Complete Screen or is quit.  This can be useful for some security platforms that aggresively 
+# disrupt the network connectivity during install or require user interaction to complete.
+# 
+# For full instructions please visit:
+# https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff
 #
-# To use this script, update the LIBRARY_ITEM variable to match the name of the Library
-# Item in the Kandji Web App and add the following script to the beginning of the audit
-# and enforce script of the library item.
-#
-# 	#!/bin/zsh
-# 	if pgrep "Liftoff" > /dev/null; then
-#   	/bin/echo "Liftoff is running, aborting process..."
-#   	exit 0
-# 	else
-#   	/bin/echo "Liftoff is not running, continuing process..."
-# 	fi
-#
-# Considerations:
-# If the execution of the library item does not need to happen immediately after
-# Liftoff closes, it is advisable to keep it simple and put the above snippet in your
-# audit and enforce script and avoid using this custom script.
 ################################################################################################
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -63,85 +50,102 @@
 #
 ################################################################################################
 # Script version
-VERSION="1.0.1"
+VERSION="2.0.3"
 
 ################################################################################################
 ########################################## VARIABLES ###########################################
 ################################################################################################
-# Adjust this to match the Library Item name in the Kandji Web App. ie "Zscaler
-# Connector"
+# List of Library Items that you want to execute
+# You may use the Library Item display name, such as "Zscaler Connector" or the Library Item
+# UUID such as "ad06b6ad-b90c-4308-b932-3c223b9e8880".
+libraryItemList=(
+        "Zscaler Connector"
+        "VLC"
+        "fb36e3c6-e748-40e8-b69d-15ece20a01d5"
+    )
 
-LIBRARY_ITEM="Zscaler Connector"
+# By default, the install(s) will start once Liftoff has been quit. If you'd rather have the 
+# install(s) start once Liftoff advances to the Complete Screen, change
+startAtLiftoffQuit="true"
 
 ################################################################################################
 ################################ MAIN LOGIC - DO NOT MODIFY BELOW ##############################
 ################################################################################################
 
-# Do not modify below, there be dragons. Modify at your own risk.
 daemonName="io.kandji.installAfterLiftoff"
-scriptPath="/tmp/installAfterLiftoff.sh"
+scriptPath="/tmp/installAfterLiftoff.zsh"
 
-# Content for Script
-script=$(
-         /bin/cat <<EOF
-#!/bin/bash
+# Define method to trigger the install(s)
+if [[ "${startAtLiftoffQuit}" == "true" ]]; then
+    trigger='# Wait for Liftoff to close
+until ! pgrep "Liftoff" >/dev/null; do
+    sleep 1
+    echo "Liftoff is running..."
+done'
+elif [[ "${startAtLiftoffQuit}" == "false" ]]; then 
+    trigger='# Wait for Liftoff to complete
+until [[ ! -f /Library/LaunchAgents/io.kandji.Liftoff.plist ]]; do
+    sleep 1
+    echo "Liftoff is still running..."
+done'
+else
+    echo "Invalid startAtLiftoffQuit variable, please check your work and try again."
+    exit 1
+fi
 
-# Wait for Liftoff to close
-until ! pgrep "Liftoff" >/dev/null
-	do
-	sleep 1
-	/bin/echo "Liftoff is running..."
-	done
+# Build list of Library Item execution lines
+nl=$'\n'
+executeLibraryItems=()
+for libraryItem in "${libraryItemList[@]}"; do
+    line="/usr/local/bin/kandji library --item \"${libraryItem}\" -F"
+    executeLibraryItems+=("${line}${nl}")
+done
 
-# Execute Library Item
-/usr/local/bin/kandji library --item "$LIBRARY_ITEM" -F
+# Create Script
+echo "Creating Script at ${scriptPath}..."
+/bin/cat > "${scriptPath}" <<EOF
+#!/bin/zsh
+
+${trigger}
+
+# Execute Library Item(s)
+${executeLibraryItems}
 
 # Clean Up After Yourself
-rm "/tmp/$daemonName.plist"
-rm "$scriptPath"
+/bin/rm "/tmp/${daemonName}.plist"
+/bin/rm "${scriptPath}"
 
 # Unload LaunchDaemon
-/bin/launchctl unload "/tmp/$daemonName.plist"
+/bin/launchctl bootout system/${daemonName}
 EOF
-)
 
-# Content for LaunchDaemon
-launchDaemon=$(
-               /bin/cat <<EOF
+# Create LaunchDaemon
+echo "Creating LaunchDaemon at /tmp/${daemonName}.plist..."
+/bin/cat > "/tmp/${daemonName}.plist" <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>$daemonName</string>
+    <string>${daemonName}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/bin/bash</string>
-        <string>$scriptPath</string>
+        <string>/bin/zsh</string>
+        <string>${scriptPath}</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
 </dict>
 </plist>
 EOF
-)
-
-# Create Script
-/bin/echo "Creating Script at $scriptPath..."
-/bin/echo "$script" >"$scriptPath"
-
-# Create LaunchDaemon
-/bin/echo "Creating LaunchDaemon at /tmp/$daemonName.plist..."
-/bin/echo "$launchDaemon" >/tmp/$daemonName.plist
 
 # Set Correct Permissions on LaunchDaemon
-/bin/echo "Setting Permissions on LaunchDaemon..."
-/usr/sbin/chown root:wheel /tmp/$daemonName.plist
-/bin/chmod 644 /tmp/$daemonName.plist
-/bin/chmod +x "$scriptPath"
+echo "Setting Permissions on LaunchDaemon..."
+/usr/sbin/chown root:wheel "/tmp/${daemonName}.plist"
+/bin/chmod 644 "/tmp/${daemonName}.plist"
+/bin/chmod +x "${scriptPath}"
 
 # Load LaunchDaemon
-/bin/echo "Loading LaunchDaemon..."
-/bin/launchctl load "/tmp/$daemonName.plist"
-
+echo "Loading LaunchDaemon..."
+/bin/launchctl bootstrap system "/tmp/${daemonName}.plist"
 exit 0

@@ -15,4 +15,4 @@ You will need to make a few changes to the script in order to add the applicatio
 | `SKIP_MISSING` | `Y/N` | If an application is missing, do you want to skip it (`Y`) and continue with the rest of the applications, or place a question mark (`?`) icon in the users dock before continuing.|
 
 ## Notes
-* This script can be paired with [installAfterLiftoff.zsh](https://github.com/kandji-inc/support-stage/blob/main/Scripts/installAfterLiftoff.zsh) in order to ensure that it runs after all applications have been installed. 
+* This script can be paired with [installAfterLiftoff.zsh](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff) in order to ensure that it runs after all applications have been installed. 
