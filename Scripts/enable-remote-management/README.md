@@ -1,9 +1,9 @@
 
-# enable-remote-desktop
+# enable-remote-management
 
-This script is designed to automatically toggle on Remote Desktop for any macOS endpoint it is run on. This could be used to enable Remote Desktop for all devices in a particular blueprint, or could be executed via Self Service for a user-centric approach.
+This script is designed to automatically toggle on Remote Management for any macOS endpoint it is run on. This could be used to enable Remote Desktop for all devices in a particular blueprint, or could be executed via Self Service for a user-centric approach.
 
-![macOS Sharing Pane](https://github.com/kandji-inc/support-stage/blob/e8240dc972de28412129acd61b729fa4cc612d60/Scripts/enable-remote-desktop/images/Screenshot%202023-07-17%20at%209.36.00%20PM.png)
+![macOS Sharing Pane](images/remote_mgmt.png)
 
 ## Prerequisites
 
