@@ -22,7 +22,7 @@
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.sophos.0ABFC7DA-DF66-4D25-8988-55E446857F39.com.apple.webcontent-filter.74641116-36DE-46AE-8200-7E00E197805E</string>
 			<key>PayloadOrganization</key>
-			<string>ThoughtWorks Inc.</string>
+			<string>Kandji, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
@@ -54,7 +54,7 @@
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.sophos.system-extension-policy.B8133FF9-9539-4298-8774-11B153A6E151</string>
 			<key>PayloadOrganization</key>
-			<string>ThoughtWorks Inc..</string>
+			<string>Kandji, Inc..</string>
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
