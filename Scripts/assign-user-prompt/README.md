@@ -10,14 +10,41 @@ While the intended use of this script was to be deployed via Kandji Self Service
 
 ## Prerequisites
 
-1. Kandji API Token with Device Information Permissions. For more infomation about setting up an API token, see https://support.kandji.io/support/solutions/articles/72000560412-kandji-api
-2. SCIM Directory Integration & Token. For more information about setting up a SCIM Integration and obtaining your token, see https://support.kandji.io/support/solutions/articles/72000560494-scim-directory-integration
-3. JQ. The script will check for, download, and install JQ automatically in order to parse JSON. In the future, this script may be updated to leverage plutil and move away from the JQ depencency. 
+1. [Kandji API Token](https://support.kandji.io/support/solutions/articles/72000560412-kandji-api) with Update a device and Device list permissions.
+<img src="images/api-permissions.png" width="800"></img>
+2. [SCIM Directory Integration and Token](https://support.kandji.io/support/solutions/articles/72000560494-scim-directory-integration)
+3. [jq](https://jqlang.github.io/jq). The script will check for, download, and install jq automatically for JSON parsing. If the script installs jq it will also delete it before exiting.
  
 ## Prepare the Script
  
-Simply fill in the variables section of the script with the appropriate information from your Kandji tenant. Add the script as a Custom Script library item and set your execution to Self Service. 
+1. Open the script in a text editor such as BBEdit or VSCode.
+1. Update the User Input variables:
+    1. Set `SUBDOMAIN` to your Kandji subdomain.
+    1. Set `REGION` to match your tenant region (us or eu).
+    1. Set `SCIM_TOKEN` to the SCIM token generated when you created your Kandji SCIM integration.
+    1. Set `TOKEN` to your Kandji Enterprise API bearer token.
+    ```Shell
+    ##############################################################################
+    ############################# USER INPUT #####################################
+    ##############################################################################
+    
+    # Set your kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
+    SUBDOMAIN="subdomain"
+    
+    # Set your region (example: "us" or "eu")
+    REGION="us"
+    
+    # Set the SCIM API token
+    SCIM_TOKEN="SCIM token goes here"
+    
+    # API token (requires "Device Information" permissions)
+    TOKEN="API token goes here"
+    ```
+1. Save and close the script.
+1. In Kandji, create a new Custom Script Library Item.
+1. Set a title and assign it to the Blueprint(s) you want the item to be a part of.
+1. Set the execution frequency to "Run on-demand from Self Service" or your desired execution frequency.
+1. Paste your modified assign-user-prompt.zsh script in the "Audit Script" section.
+1. Click Save.
 
-## Notes
 
-By default, the SCIM API call is set to return 10,000 records. If your user directory is larger, you can increase this value in the script by modifying the `"$base_url/v1/scim/Users?count=10000"` to an appropriate number.

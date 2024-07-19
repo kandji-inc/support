@@ -1,5 +1,5 @@
 
-# assign-passport-user
+# assign-user-passport
 
 This script is designed to automatically look for the IdP user who signed in with Passport and assign that user to the device record in Kandji. It will look up the IdP user in your Kandji SCIM Directory Integration, and if a match is found, assign that user to the device record.
 
@@ -13,26 +13,28 @@ This script is designed to automatically look for the IdP user who signed in wit
 ## Prepare the Script
  
 1. Open the script in a text editor such as BBEdit or VSCode.
-2. Update the `subdomain` variable to match your Kandji subdomain, `region` to match your tenant region (us or eu), `scimToken` with the SCIM token generated when creating your Kandji SCIM integration, and `apiToken` with your Kandji API bearer token.
-
-```Shell
-################################################################################################
-###################################### VARIABLES ###############################################
-################################################################################################
-
-# Set your Kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
-subdomain="subdomain"
-
-# Set your region (example: "us" or "eu")
-region="us"
-
-# Kandji SCIM API token
-scimToken="SCIM token goes here"
-
-# Kandji API token
-apiToken="API token goes here"
-
-```
+1. Update the User Input variables:
+    1. Set `SUBDOMAIN` to your Kandji subdomain.
+    1. Set `REGION` to match your tenant region (us or eu).
+    1. Set `SCIM_TOKEN` to the SCIM token generated when you created your Kandji SCIM integration.
+    1. Set `TOKEN` to your Kandji Enterprise API bearer token.
+    ```Shell
+    ##############################################################################
+    ############################# USER INPUT #####################################
+    ##############################################################################
+    
+    # Set your kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
+    SUBDOMAIN="subdomain"
+    
+    # Set your region (example: "us" or "eu")
+    REGION="us"
+    
+    # Set the SCIM API token
+    SCIM_TOKEN="SCIM token goes here"
+    
+    # API token (requires "Device Information" permissions)
+    TOKEN="API token goes here"
+    ```
 3. Save and close the script.
 4. In Kandji, create a new Custom Script.
 5. Set a title and assign it to the correct Blueprint(s)
