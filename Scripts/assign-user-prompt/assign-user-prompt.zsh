@@ -1,36 +1,36 @@
 #!/bin/zsh
 
-###################################################################################################
+################################################################################################
 # Created by Jan Rosenfeld | support@kandji.io | Kandji, Inc.
-###################################################################################################
+################################################################################################
 #
 #   Created - 2023.05.22
-#   Updated - 2024.07.17
+#   Updated - 2024.09.30
 #
-###################################################################################################
+################################################################################################
 # Tested macOS Versions
-###################################################################################################
+################################################################################################
 #
-#   - 14.5
+#   - 15
+#    -14.7
 #   - 13.6.7
-#   - 12.7.5
-#   - 11.7.10
 #
-###################################################################################################
+################################################################################################
 # Software Information
-###################################################################################################
+################################################################################################
 #
-#   This script will prompt an end user to input an email address, then search the Kandji SCIM 
-#   directory integration for that email. If found, it will update the assigned user field in the 
-#   device record for that device.
+#   This script will prompt an end user to input an email address, then search the Kandji user 
+#   directory for that email. If found, it will update the assigned user on the device record.
 #
 #   This script is intended to be used in Kandji Self Service
-#   This script requires a SCIM directory integration in Kandji
-#   This script will install JQ in order to parse JSON data
+#   If not already installed, the script will install JQ in order to parse JSON data
 #
-###################################################################################################
+#   For details, see https://github.com/kandji-inc/support/tree/main/Scripts/assign-user-prompt
+#
+################################################################################################
 # License Information
-###################################################################################################
+################################################################################################
+#
 # Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
@@ -48,31 +48,32 @@
 # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
-###################################################################################################
+#
+################################################################################################
 
 # Script Version
-VERSION="1.3.2"
+VERSION="2.0.0"
 
-##############################################################################
-############################# USER INPUT #####################################
-##############################################################################
+################################################################################################
+###################################### USER INPUT ##############################################
+################################################################################################
 
-# Set your kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
+# Set your Kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
 SUBDOMAIN="subdomain"
 
 # Set your region (example: "us" or "eu")
 REGION="us"
 
-# Set the SCIM API token
-SCIM_TOKEN="SCIM token goes here"
+# Kandji Enterprise API token
+# Requires the following permissions: List Users, Update a device, and Device List
+TOKEN="Kandji API Token Here"
 
-# API token (requires "Device Information" permissions)
-TOKEN="API token goes here"
+# User Directory Integration UUID (leave blank to search all integrations)
+INTEGRATION_ID=""
 
-
-##############################################################################
-################## FUNCTIONS - DO NOT MODIFY BELOW ###########################
-##############################################################################
+################################################################################################
+########################### FUNCTIONS - DO NOT MODIFY BELOW ####################################
+################################################################################################
 
 # Set logging - Send logs to stdout as well as Unified Log
 # Usage: logging "LEVEL" "Message..."
@@ -106,7 +107,6 @@ check_jq() {
         jq_binary="/Library/KandjiSE/jq"
       else
         # Install Kandji provided jq
-        cd /Library/KandjiSE/ 
         /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.7-UNIVERSAL.pkg.tar.gz"
         /usr/bin/tar -xf JQ-1.7-UNIVERSAL.pkg.tar.gz
         /usr/sbin/installer -pkg JQ-1.7-UNIVERSAL.pkg -target / > /dev/null
@@ -147,19 +147,9 @@ check_jq() {
   fi
 }
 
-
-# URL-encode the email address for use in SCIM API call
-urlencode_email() {
-  local input="${1}"
-  # Encode @ as %40
-  local encoded="${input//@/%40}"
-  # Add URL-encoded quotation marks around the email
-  email_encoded="%22${encoded}%22"
-}
-
-##############################################################################
-############################# VARIABLES ######################################
-##############################################################################
+################################################################################################
+###################################### VARIABLES ###############################################
+################################################################################################
 
 # Set language environment variable
 # This is not set in the shell session Kandji scripts run in.
@@ -188,9 +178,9 @@ fi
 # Get the device serial number
 SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F\" '/IOPlatformSerialNumber/{print $(NF-1)}')
 
-##############################################################################
-################### MAIN LOGIC - DO NOT MODIFY BELOW #########################
-##############################################################################
+################################################################################################
+############################## MAIN LOGIC - DO NOT MODIFY BELOW ################################
+################################################################################################
 
 ################################################
 ## Run initial checks                         ##
@@ -199,7 +189,7 @@ SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F
 # Verify we have a serial number
 if [[ -z "${SERIAL_NUMBER}" ]]; then
   logging "ERROR" "Could not determine device serial number ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue finding the serial number of your computer. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons ("OK") giving up after 180' 2>/dev/null
+  /usr/bin/osascript -e 'display dialog "There was an issue finding the serial number of your computer. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
   exit 1
 fi
 
@@ -236,7 +226,7 @@ fi
 ################################################
 
 # Present a dialog to the user up to three times to enter their email address.
-user_response=$(/usr/bin/osascript -e 'display dialog "Your computer needs to be assigned to you in Kandji. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
+user_response=$(/usr/bin/osascript -e 'display dialog "Your computer needs to be assigned to you in Kandji. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
 
 attempt_counter=0
 max_attempts=3
@@ -269,7 +259,7 @@ while [[ ${attempt_counter} -lt ${max_attempts} ]] && [[ ${email_valid} == false
     attempt_counter=$((attempt_counter + 1))
     if [[ $attempt_counter -lt $max_attempts ]]; then
       logging "INFO" "Attempting again... Attempt ${attempt_counter} of ${max_attempts}."
-      user_response=$(/usr/bin/osascript -e 'display dialog "A valid email address was not entered. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
+      user_response=$(/usr/bin/osascript -e 'display dialog "A valid email address was not entered. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
     else
       logging "ERROR" "Maximum attempts reached. Exiting."
       exit 1
@@ -277,31 +267,32 @@ while [[ ${attempt_counter} -lt ${max_attempts} ]] && [[ ${email_valid} == false
   fi
 done
 
-# Encode email address for SCIM API call
-urlencode_email "${user_email}"
-
-# Make the SCIM api call
-scim_response=$(/usr/bin/curl --silent --location --url "${BASE_URL}/v1/scim/Users?filter=userName%20eq%20${email_encoded}" \
---header "Authorization: Bearer ${SCIM_TOKEN}")
+# Make the API call to get the user ID
+user_response=$(/usr/bin/curl --silent --location --url "${BASE_URL}/v1/users?email=${user_email}&integration_id=${INTEGRATION_ID}" \
+--header "Authorization: Bearer ${TOKEN}")
 
 # Check if curl command was successful
-if [ $? -ne 0 ]; then
-  logging "ERROR" "Failed to make the SCIM API call."
+if [[ $? -ne 0 ]]; then
+  logging "ERROR" "Failed to make the API call to get the user ID."
   exit 1
 fi
 
-# Parse the SCIM JSON response for the user ID (and generate user_id variable)
-user_id=$(echo "${scim_response}" | "${jq_binary}" -r '.Resources[0].id')
+# Extract the number of results
+result_count=$(echo "${user_response}" | "${jq_binary}" '.results | length')
 
-# Check if user ID is empty
-if [[ -z "${user_id}" ]] || [[ "${user_id}" == "null" ]]; then
-  logging "ERROR" "User ID not found for the given email."
-  logging "ERROR" "SCIM API Response: ${scim_response}"
-  /usr/bin/osascript -e 'display dialog "The email address you entered was not found. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons ("OK") giving up after 180' 2>/dev/null
+# Make sure that we only received 1 result
+if [[  "${result_count}" -eq 0 ]]; then
+  logging "ERROR" "No Kandji users returned for ${user_email}. Please check your directory and try again."
+  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
   exit 1
-else
-  logging "INFO" "Found User ID of ${user_id} for ${user_email}"
+elif [[ "${result_count}" -gt 1 ]]; then
+  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+  exit 1
 fi
+
+# Parse the response for the user ID (and generate user_id variable)
+user_id=$(echo "${user_response}" | "${jq_binary}" -r '.results[0].id')
+logging "INFO" "Found User ID of ${user_id} for ${user_email}"
 
 ################################################
 ## Get the Device ID and Assign the           ##
@@ -322,13 +313,13 @@ update_device_response=$(/usr/bin/curl --silent --request PATCH --url "${BASE_UR
 
 if [[ "$update_device_response" == "400" ]]; then
   logging "ERROR" "Bad request code ${update_device_response} ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue assigning your computer in Kandji. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons ("OK") giving up after 180' 2>/dev/null
+  /usr/bin/osascript -e 'display dialog "There was an issue assigning your computer in Kandji. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
   exit 1
 fi
 
 # Print response and alert the end user
 logging "INFO" "The device has been updated with a new assigned user."
-/usr/bin/osascript -e 'display dialog "Thank you! Your computer has been assigned to you in Kandji." with title "Computer Assignment" with icon POSIX file "'${KANDJI_ICON}'" buttons ("OK") giving up after 180' 2>/dev/null
+/usr/bin/osascript -e 'display dialog "Thank you! Your computer has been assigned to you in Kandji." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
 
 check_jq "remove"
 

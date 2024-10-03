@@ -5,16 +5,15 @@
 ################################################################################################
 #
 #   Created - 2023/07/13
-#   Updated - 2024/07/17
+#   Updated - 2024/09/30
 #
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   - 14.5
+#   - 15
+#    -14.7
 #   - 13.6.7
-#   - 12.7.5
-#   - 11.7.10
 #
 ################################################################################################
 # Software Information
@@ -23,10 +22,10 @@
 # This script is designed to automatically look for the IdP user who signed in with Passport and 
 # assign that user to the device record in Kandji. 
 #
-# It will look up the IdP user in your Kandji SCIM Directory Integration, and if a match is
-# found, assign that user to the device record.
+# By default, the script searches across all user directory integrations. To limit the search to
+# a specific integration, please set the INTEGRATION_ID variable.
 #
-# For details, see https://github.com/kandji-inc/support/tree/main/Scripts/assign-passport-user
+# For details, see https://github.com/kandji-inc/support/tree/main/Scripts/assign-user-passport
 #
 ################################################################################################
 # License Information
@@ -53,11 +52,11 @@
 ################################################################################################
 
 # Script version
-VERSION="1.2.2"
+VERSION="2.0.0"
 
-##############################################################################
-############################# USER INPUT #####################################
-##############################################################################
+################################################################################################
+###################################### USER INPUT ##############################################
+################################################################################################
 
 # Set your Kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
 SUBDOMAIN="subdomain"
@@ -65,15 +64,16 @@ SUBDOMAIN="subdomain"
 # Set your region (example: "us" or "eu")
 REGION="us"
 
-# Kandji SCIM Integration API token
-SCIM_TOKEN="SCIM token goes here"
-
 # Kandji Enterprise API token
-TOKEN="API token goes here"
+# Requires the following permissions: List Users, Update a device, and Device List
+TOKEN="Kandji API Token Here"
 
-##############################################################################
-################## FUNCTIONS - DO NOT MODIFY BELOW ###########################
-##############################################################################
+# User Directory Integration UUID (leave blank to search all integrations)
+INTEGRATION_ID=""
+
+################################################################################################
+########################### FUNCTIONS - DO NOT MODIFY BELOW ####################################
+################################################################################################
 
 # Set logging - Send logs to stdout as well as Unified Log
 # Usage: logging "LEVEL" "Message..."
@@ -107,7 +107,7 @@ check_jq() {
         jq_binary="/Library/KandjiSE/jq"
       else
         # Install Kandji provided jq
-        cd /Library/KandjiSE/ 
+        cd /Library/KandjiSE/ || exit 
         /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.7-UNIVERSAL.pkg.tar.gz"
         /usr/bin/tar -xf JQ-1.7-UNIVERSAL.pkg.tar.gz
         /usr/sbin/installer -pkg JQ-1.7-UNIVERSAL.pkg -target / > /dev/null
@@ -165,18 +165,9 @@ current_user(){
   fi
  }
 
-# URL-encode the email address for use in SCIM API call
-urlencode_email() {
-  local input="${1}"
-  # Encode @ as %40
-  local encoded="${input//@/%40}"
-  # Add URL-encoded quotation marks around the email
-  email_encoded="%22${encoded}%22"
-}
-
-##############################################################################
-############################# VARIABLES ######################################
-##############################################################################
+################################################################################################
+###################################### VARIABLES ###############################################
+################################################################################################
 
 # Set language environment variable
 # This is not set in the shell session Kandji scripts run in.
@@ -199,9 +190,9 @@ else
   exit 1
 fi
 
-##############################################################################
-################### MAIN LOGIC - DO NOT MODIFY BELOW #########################
-##############################################################################
+################################################################################################
+############################## MAIN LOGIC - DO NOT MODIFY BELOW ################################
+################################################################################################
 
 
 # Check and install jq if needed
@@ -213,7 +204,7 @@ current_user
 ################################################
 ## Get the users email address from Passport  ##
 ################################################
-passport_linked_account_name=$(/usr/bin/dscl . -read /Users/${local_account} "io.kandji.KandjiLogin.LinkedAccountName" 2>&1)
+passport_linked_account_name=$(/usr/bin/dscl . -read /Users/"${local_account}" "io.kandji.KandjiLogin.LinkedAccountName" 2>&1)
 
 if [[ "${passport_linked_account_name}" == *"No such key"* ]]; then
   logging "ERROR" "Account ${local_account} does not appear to be managed by Passport..."
@@ -228,8 +219,8 @@ else
 fi
 
 ################################################
-## Get the device details and find            ##
-## if a the current user is assigned          ##
+## Get the device details and check if the    ##
+## user is already assigned to the device.    ##
 ################################################
 
 # Search for device by serial number
@@ -242,7 +233,7 @@ if [[ "${device_record}" == "[]" ]]; then
   exit 1
 fi
 
-assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user.email')
+assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user.email' 2>/dev/null)
 
 if [[ -z "${assigned_user}" ]]; then
   logging "INFO" "No user assigned. Will attempt to assign ${passport_email} to the device..."
@@ -250,41 +241,41 @@ elif [[ "${assigned_user}" == "${passport_email}" ]]; then
   logging "INFO" "${passport_email} is already the assigned user. Nothing to do!"
   exit 0
 else
-  logging "WARNING" "Unable to determine if a user is assigned to this device."
-  logging "WARNING" "Will attempt to assign the device to ${passport_email}..."
+  logging "INFO" "${assigned_user} is currently assigned. Will attempt to assign ${passport_email} to the device..."
 fi
 
 ################################################
-## Find the user email in Kandji directory    ##
+## Find the user in the Kandji user directory ##
 ################################################
 
-# Encode user email address for SCIM API call
-urlencode_email "${passport_email}"
-
-# Make the SCIM api call
-scim_response=$(/usr/bin/curl --silent --location --url "${BASE_URL}/v1/scim/Users?filter=userName%20eq%20${email_encoded}" \
---header "Authorization: Bearer ${SCIM_TOKEN}")
+# Make the API call to get the user ID
+user_response=$(/usr/bin/curl --fail-with-body --silent --location --url "${BASE_URL}/v1/users?email=${passport_email}&integration_id=${INTEGRATION_ID}" \
+--header "Authorization: Bearer ${TOKEN}")
 
 # Check if curl command was successful
-if [ $? -ne 0 ]; then
-  logging "ERROR" "Failed to make the SCIM API call."
+if [[ $? -ne 0 ]]; then
+  logging "ERROR" "Failed to make the API call to get the user ID."
   exit 1
 fi
 
-# Parse the SCIM JSON response for the user ID (and generate user_id variable)
-user_id=$(echo "${scim_response}" | "${jq_binary}" -r '.Resources[0].id')
+# Extract the number of results
+result_count=$(echo "${user_response}" | "${jq_binary}" '.results | length')
 
-# Check if user ID is empty
-if [[ -z "${user_id}" ]] || [[ "${user_id}" == "null" ]]; then
-  logging "ERROR" "User ID not found for the given email."
-  logging "ERROR" "SCIM API Response: ${scim_response}"
+# Make sure that we only received 1 result
+if [[ "${result_count}" -eq 0 ]]; then
+  logging "ERROR" "No Kandji users returned for ${passport_email}. Please check your directory and try again."
   exit 1
-else
-  logging "INFO" "Found User ID of ${user_id} for ${passport_email}"
+elif [[ "${result_count}" -gt 1 ]]; then
+  logging "ERROR" "Multiple Kandji users returned for ${passport_email}. Please check your directory or include an Integration ID to limit the search and try again."
+  exit 1
 fi
+
+# Parse the response for the user ID (and generate user_id variable)
+user_id=$(echo "${user_response}" | "${jq_binary}" -r '.results[0].id')
+logging "INFO" "Found User ID of ${user_id} for ${passport_email}"
 
 ################################################
-## Assign the device to the user record       ##
+## Assign the user to the device record       ##
 ################################################
 
 # Parse device_record and extract device ID
