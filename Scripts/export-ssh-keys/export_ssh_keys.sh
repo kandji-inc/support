@@ -5,8 +5,8 @@
 #                                                                                        #
 # A generic script to export SSH keys from a user's home directory.                      #
 #                                                                                        #
-# This script checks for various SSH key types (RSA, Ed25519) and known_hosts in the     #
-# user's .ssh directory and prints them to the console.                                  #
+# This script checks for various SSH key types (RSA, Ed25519, ECDSA, DSA, etc.)          #
+# and known_hosts in the user's .ssh directory and prints them to the console.           #
 #                                                                                        #
 # Author: Joseph Milla                                                                   #
 #                                                                                        #
@@ -42,13 +42,18 @@ print_ssh_keys() {
     fi
 }
 
-# Check for different types of SSH keys
+# Check for SSH keys (any public key files in the .ssh directory)
 if [[ -d "$user_home/.ssh" ]]; then
     echo "Checking for SSH keys in $user_home/.ssh directory..."
 
-    # Check for RSA, Ed25519, and known_hosts files
-    print_ssh_keys "$user_home/.ssh/id_rsa.pub"
-    print_ssh_keys "$user_home/.ssh/id_ed25519.pub"
+    # Loop through all public key files in the .ssh directory (matching *.pub)
+    for pub_key in "$user_home/.ssh/"*.pub; do
+        if [[ -e "$pub_key" ]]; then
+            print_ssh_keys "$pub_key"
+        fi
+    done
+
+    # Also check for known_hosts file
     print_ssh_keys "$user_home/.ssh/known_hosts"
 
 else
