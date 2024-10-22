@@ -7,8 +7,9 @@ Resources to aid in the deployment of the [CrowdStrike deployment KB](https://su
 ## Status of the things
 
 Item | Status
-:-- | :--
-Last updated | 2024.03.26
+:-- | :--:
+Last updated | 2024.10.14
+Last version tested | 7.18.18701.0
 Settings mobileconfig profiles | `pass`
 AE script | `pass`
 pre-install script | NA
@@ -67,7 +68,20 @@ kb article | `pass`
 </array>
 ```
 
+Additional settings for macOS 15 onwards
+
+```xml
+<key>NonRemovableFromUISystemExtensions</key>
+<dict>
+	<key>X9E956P446</key>
+	<array>
+		<string>com.crowdstrike.falcon.Agent</string>
+	</array>
+</dict>
+```
+
 ### Web content filter
+
 ```xml
 <key>PayloadType</key>
 <string>com.apple.webcontent-filter</string>
@@ -147,11 +161,42 @@ kb article | `pass`
 		</dict>
 	</array>
 </dict>
+<key>BluetoothAlways</key>
+<array>
+	<dict>
+		<key>Allowed</key>
+		<true/>
+		<key>Authorization</key>
+		<string>Allow</string>
+		<key>CodeRequirement</key>
+		<string>identifier "com.crowdstrike.falcon.Agent" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = X9E956P446</string>
+		<key>Identifier</key>
+		<string>com.crowdstrike.falcon.Agent</string>
+		<key>IdentifierType</key>
+		<string>bundleID</string>
+		<key>StaticCode</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>Allowed</key>
+		<true/>
+		<key>Authorization</key>
+		<string>Allow</string>
+		<key>CodeRequirement</key>
+		<string>identifier "com.crowdstrike.falcon.App" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = X9E956P446</string>
+		<key>Identifier</key>
+		<string>com.crowdstrike.falcon.App</string>
+		<key>IdentifierType</key>
+		<string>bundleID</string>
+		<key>StaticCode</key>
+		<false/>
+	</dict>
+</array>
 ```
 
 ### macOS 13 - background settings
 
-Note: set assigment rule to `OS Version` is greater than or equal to `13.0`
+Note: set assignment rule to `OS Version` is greater than or equal to `13.0`
 
 ```xml
 <key>PayloadType</key>
@@ -171,7 +216,9 @@ Note: set assigment rule to `OS Version` is greater than or equal to `13.0`
 
 ## Downloading the package
 
-Download the installer package for Mac from your [Crowdstrike portal](https://falcon.crowdstrike.com/login/) by navigating to **Hosts** > **Sensor Downloads**.
+Download the installer package for Mac from your [CrowdStrike portal](https://falcon.crowdstrike.com/login/) by navigating to **Hosts** > **Sensor Downloads**.
 
 ## Resources
 - [CrowdStrike Support](https://supportportal.crowdstrike.com/s/login)
+- [CrowdStrike Article Regarding Bluetooth Support](https://supportportal.crowdstrike.com/s/article/Release-Notes-Falcon-Sensor-for-Mac-7-17-18604)
+- [New MDM Requirements for macOS Sequoia](https://supportportal.crowdstrike.com/s/article/Tech-Alert-Support-for-macOS-Sequoia-15-0-1)
