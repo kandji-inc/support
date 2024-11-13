@@ -45,6 +45,10 @@
 			<string>$BLUEPRINT_NAME</string>
 			<key>BLUEPRINT_ID</key>
 			<string>$BLUEPRINT_ID</string>
+			<key>MODEL_NAME</key>
+			<string>$MODEL_NAME</string>
+			<key>MODEL_IDENTIFIER</key>
+			<string>$MODEL_IDENTIFIER</string>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>

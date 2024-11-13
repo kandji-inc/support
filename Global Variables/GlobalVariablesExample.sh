@@ -4,13 +4,16 @@
 ################################################################################################
 #
 # Created - 03/29/2021
-# Updated - 03/27/2024 - Brian Goldstein
+# Updated - 10/24/2024 - Brian Goldstein
 #
 ################################################################################################
 # Software Information
 ################################################################################################
 #
-# Example script reading in Kandji global variables from the global variables custom profile
+# Example script reading in Kandji global variables from the global variables custom profile.
+#
+# For more information about Global Variables, please refer to the Kandji Knowledge Base
+# https://support.kandji.io/support/solutions/articles/72000560519-global-variables
 #
 ################################################################################################
 # License Information
@@ -49,7 +52,8 @@ BLUEPRINT_NAME=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_NAME' /Library/Man
 BLUEPRINT_ID=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-
+MODEL_NAME=$(/usr/libexec/PlistBuddy -c 'print :MODEL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+MODEL_IDENTIFIER=$(/usr/libexec/PlistBuddy -c 'print :MODEL_IDENTIFIER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 
 echo "
 Global Variables Summary
@@ -77,6 +81,10 @@ Blueprint Name: $BLUEPRINT_NAME
 Blueprint ID: $BLUEPRINT_ID
 
 Hardware UDID: $UDID
+
+Model Name: $MODEL_NAME
+
+Model Identifier: $MODEL_IDENTIFIER
 
 Profile UUID: $PROFILE_UUID
 "
