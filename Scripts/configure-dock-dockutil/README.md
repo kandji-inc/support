@@ -13,6 +13,9 @@ You will need to make a few changes to the script in order to add the applicatio
 | `DOWNLOADS_FOLDER` | `Y/N` | Do you want to leave the downloads folder in the dock (`Y`) or remove it (`N`)? |
 | `APPLICATION_LIST` | `"/Application Path/Application Name.app"` | Each new icon must be added on a new line using the same format in the example. Be sure to include quotes. 
 | `SKIP_MISSING` | `Y/N` | If an application is missing, do you want to skip it (`Y`) and continue with the rest of the applications, or place a question mark (`?`) icon in the users dock before continuing.|
+| `INSTALL_AFTER_LIFTOFF` | `Y/N` | If you are using this with [installAfterLiftoff.zsh](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff) then choose yes. |
+| `TRIGGER` | `COMPLETE/QUIT` | Do you want the script to run when Liftoff reaches the COMPLETE screen, or Liftoff has been QUIT? |
 
 ## Notes
 * This script can be paired with [installAfterLiftoff.zsh](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff) in order to ensure that it runs after all applications have been installed. 
+* If using [installAfterLiftoff.zsh](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff), please note that you can skip the "Audit Script Modification" instruction as this script already includes to required adjustments. 
