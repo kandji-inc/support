@@ -65,7 +65,7 @@ libraryItemList=(
     )
 
 # By default, the install(s) will start once Liftoff has been quit. If you'd rather have the 
-# install(s) start once Liftoff advances to the Complete Screen, change
+# install(s) start once Liftoff advances to the Complete Screen, change this to "false".
 startAtLiftoffQuit="true"
 
 ################################################################################################

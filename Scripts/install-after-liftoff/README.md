@@ -32,22 +32,29 @@ libraryItemList=(
     )
 
 # By default, the install(s) will start once Liftoff has been quit. If you'd rather have the 
-# install(s) start once Liftoff advances to the Complete Screen, change
+# install(s) start once Liftoff advances to the Complete Screen, change to this to "false".
 startAtLiftoffQuit="true"
 ```
 
 ### Audit Script Modification
-To ensure your Library Item does not install during Liftoff, you need to add a check for the Liftoff process to the beginning of your existing audit script for each Library Item being executed by Install After Liftoff.
+To ensure your Library Item does not install during Liftoff, you need to add a check to the beginning of your existing audit script for each Library Item being executed by Install After Liftoff.
 
-The code snippet below will cause Library Items to be skipped while Liftoff is running, but will display as Completed in Liftoff to avoid user confusion. 
+- If you set the variable `startAtLiftoffQuit` to `true`, please include the following code snippet in each Library Item's Aduit Script in order for it to be skipped while Liftoff is running. The exit 0 will cause it to display as Completed in Liftoff to avoid user confusion. 
 
-```Shell
-if pgrep "Liftoff" > /dev/null; then
-  echo "Liftoff is running, aborting process..."
-  exit 0
-else
-  echo "Liftoff is not running, continuing process..."
-fi
-```
+      if pgrep "Liftoff" > /dev/null; then
+        echo "Liftoff is running, aborting process..."
+        exit 0
+      else
+        echo "Liftoff is not running, continuing process..."
+      fi
 
-For Library Items with an execution/installation set to `Run/Install on-demand from Self Service` no audit script changes are necessary.
+- If you set the variable `startAtLiftoffQuit` to `false`, please include the following code snippet in each Library Item's Aduit Script in order for it to be skipped while Liftoff has not advanced to the complete screen. The exit 0 will cause it to display as Completed in Liftoff to avoid user confusion. 
+
+      if [[ -f /Library/LaunchAgents/io.kandji.Liftoff.plist ]] ; then
+        echo "Liftoff has not completed yet, aborting process..."
+        exit 0
+      else
+        echo "Liftoff is complete, continuing process..."
+      fi
+
+- For Library Items with an execution/installation set to `Run/Install on-demand from Self Service` no audit script changes are necessary.
