@@ -107,6 +107,7 @@ check_jq() {
         jq_binary="/Library/KandjiSE/jq"
       else
         # Install Kandji provided jq
+        cd /Library/KandjiSE/ 
         /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.7-UNIVERSAL.pkg.tar.gz"
         /usr/bin/tar -xf JQ-1.7-UNIVERSAL.pkg.tar.gz
         /usr/sbin/installer -pkg JQ-1.7-UNIVERSAL.pkg -target / > /dev/null
@@ -211,7 +212,7 @@ if [[ "${device_record}" == "[]" ]]; then
   exit 1
 fi
 
-assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user.email')
+assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user // empty')
 
 if [[ -z "${assigned_user}" ]]; then
   logging "INFO" "No user currently assigned to computer. Proceeding..."
