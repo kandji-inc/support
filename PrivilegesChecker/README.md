@@ -4,6 +4,11 @@
 
 This code is designed for use as an add-on to the [SAP Privileges](https://github.com/SAP/macOS-enterprise-privileges) application
 
+> [!IMPORTANT]
+> Privileges Checker only supports **SAP Privileges 1.X**
+>
+> **Privileges 2** adds native functionality which is provided by this add-on; configuration documentation for that release can be found [here](https://github.com/SAP/macOS-enterprise-privileges/wiki/Managing-Privileges)
+
 ### Background 
 
 - Privileges has some limited functionality for enforcing demotion of rights once granted:
