@@ -1,7 +1,7 @@
 # Kandji Connector Action Card Details
 You can use the Kandji connector to integrate Kandji device management with Okta Workflows to help automate critical components of the user lifecycle that are prone to friction or manual error.
 
-The first step is to [Authorize your Kandji tenant for Okta Workflows](https://support.kandji.io/support/solutions/articles/72000566084).
+The first step is to [Authorize your Kandji tenant for Okta Workflows](https://support.kandji.io/kb/authorize-your-kandji-tenant-for-okta-workflows).
 
 After you set up a Kandji connection, you can use the following Kandji connector action cards in a Workflow.
 

@@ -11,7 +11,7 @@ If the execution of the library item does not need to happen immediately after L
 ### Instructions
 1. Download the [installAfterLiftoff.zsh](https://github.com/kandji-inc/support/blob/main/Scripts/install-after-liftoff/installAfterLiftoff.zsh) script
 2. Edit the script variables (see [Script Modification](#script-modification) below)
-3. Add the modified script to Kandji as a [Custom Script](https://support.kandji.io/support/solutions/articles/72000558749-custom-scripts-overview) set to `Run once per device`
+3. Add the modified script to Kandji as a [Custom Script](https://support.kandji.io/kb/custom-scripts-overview) set to `Run once per device`
 4. Modify the audit script of Custom Scripts or Custom Apps being triggered by Install After Liftoff (see [Audit Script Modification](#audit-script-modification) below)
 
 ### Script Modification

@@ -10,9 +10,9 @@ While the intended use of this script was to be deployed via Kandji Self Service
 
 ## Prerequisites
 
-1. [Kandji API Token](https://support.kandji.io/support/solutions/articles/72000560412-kandji-api) with List Users, Update a device, and Device list permissions.
+1. [Kandji API Token](https://support.kandji.io/kb/kandji-api#generate-an-api-token) with List Users, Update a device, and Device list permissions.
 <img src="images/api-permissions.png" width="800"></img>
-2. [User Directory Integration](https://support.kandji.io/support/solutions/articles/72000560544-user-directory-integration)
+2. [User Directory Integration](https://support.kandji.io/kb/user-directory-integration)
 3. [jq](https://jqlang.github.io/jq). The script will check for, download, and install jq automatically for JSON parsing. If the script installs jq it will also delete it before exiting.
  
 ## Prepare the Script

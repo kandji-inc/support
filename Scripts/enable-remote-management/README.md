@@ -7,7 +7,7 @@ This script is designed to automatically toggle on Remote Management for any mac
 
 ## Prerequisites
 
-1. Kandji API Token with Update Device, Device List, and Remote Desktop permissions. For more infomation about setting up an API token, see https://support.kandji.io/support/solutions/articles/72000560412-kandji-api
+1. Kandji API Token with Update Device, Device List, and Remote Desktop permissions. For more infomation about setting up an API token, see [Kandji API Token](https://support.kandji.io/kb/kandji-api#generate-an-api-token)
 2. JQ. The script will check for, download, and install JQ automatically in order to parse JSON. At the end of the script, JQ will be removed.
  
 ## Prepare the Script
@@ -16,4 +16,4 @@ Simply fill in the variables section of the script with the appropriate informat
 
 ## Notes
 
-For more information about Remote Desktop on macOS, see: https://support.kandji.io/support/solutions/articles/72000590260-turn-on-remote-desktop
+For more information about Remote Desktop on macOS, see: https://support.kandji.io/kb/turn-on-remote-desktop

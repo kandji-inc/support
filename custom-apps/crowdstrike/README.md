@@ -2,7 +2,7 @@
 
 <img src="_Images/CrowdStrike.png" alt="drawing" width="128"/>
 
-Resources to aid in the deployment of the [CrowdStrike deployment KB](https://support.kandji.io/support/solutions/articles/72000560521)
+Resources to aid in the deployment of the [CrowdStrike deployment KB](https://support.kandji.io/kb/deploying-crowdstrike-as-a-custom-app)
 
 ## Status of the things
 

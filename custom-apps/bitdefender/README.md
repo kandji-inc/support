@@ -2,7 +2,7 @@
 
 <img src="bitdefender_icon.png" alt="drawing" width="128"/>
 
-Resources to aid in the deployment of the [Bitdefender deployment KB](https://support.kandji.io/support/solutions/articles/72000568518)
+Resources to aid in the deployment of the [Bitdefender deployment KB](https://support.kandji.io/kb/deploying-bitdefender-endpoint-security-tool-as-a-custom-app)
 
 ## Status of the things
 
@@ -195,7 +195,7 @@ Note: set assigment rule to `OS Version` is greater than or equal to `13.0`
 
 Bitdefender requires that a PFX certificate be created and deployed to macOS. This section is based on this <a href="https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7"> Bitdefender KB</a>. Please see the KB article for more information.
 
-This script can be used to generate a `.pfx` certificate that can be uploaded to Kandji in a [Certificate profile library item](https://support.kandji.io/support/solutions/articles/72000558739-certificate-profile).
+This script can be used to generate a `.pfx` certificate that can be uploaded to Kandji in a [Certificate profile library item](https://support.kandji.io/kb/certificate-profile).
 
 1. Open the script in a text editor or IDE like VScode, BBEdit, or Nova.
 1. Fill in the certificate information section of the script.
@@ -231,7 +231,7 @@ This script can be used to generate a `.pfx` certificate that can be uploaded to
     ```
 
 1. A Finder.app window should open to your Desktop, showing the `certificate.pfx` file.
-1. Upload this certificate to Kandji in a [Certificate profile library item](https://support.kandji.io/support/solutions/articles/72000558739-certificate-profile).
+1. Upload this certificate to Kandji in a [Certificate profile library item](https://support.kandji.io/kb/certificate-profile).
 
 ## Resources
 

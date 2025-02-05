@@ -13,7 +13,7 @@
 # Example script reading in Kandji global variables from the global variables custom profile.
 #
 # For more information about Global Variables, please refer to the Kandji Knowledge Base
-# https://support.kandji.io/support/solutions/articles/72000560519-global-variables
+# https://support.kandji.io/kb/global-variables
 #
 ################################################################################################
 # License Information
