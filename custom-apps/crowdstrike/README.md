@@ -8,8 +8,8 @@ Resources to aid in the deployment of the [CrowdStrike deployment KB](https://su
 
 Item | Status
 :-- | :--:
-Last updated | 2024.10.14
-Last version tested | 7.18.18701.0
+Last updated | 2025.02.14
+Last version tested | 7.21.19203
 Settings mobileconfig profiles | `pass`
 AE script | `pass`
 pre-install script | NA
