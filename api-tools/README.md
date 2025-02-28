@@ -17,6 +17,7 @@ Name | Description
 `device-parameters` | These scripts leverage the Kandji API to interact with and generate reports from the device parameters endpoint.
 `device-secrets` | List and generate reports from the device secrets API. Filevault PRK, Activation lock bypass code, and unlock PIN.
 `device-status` | Generate device reports from the device status API.
+`threats` | These scripts leverage the Kandji API to generate reports about detected threats.
 `update-device-record` | update-device-record leverages the Kandji API along with a CSV input file to update one or more device inventory records. At present, a device the blueprint, asset tag, and assigned user can be updated using this script.
 
 The full API documentation can be found at [https://api.kandji.io](https://api.kandji.io/).
