@@ -7,15 +7,15 @@
 #  v. 2.1
 #
 #  Created - 2023-07-13
-#  Updated - 2024-04-25
+#  Updated - 2025-02-14
 #
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
+#  15.3.1
 #  14.4.1
 #  13.6.6
-#  12.7.4
 #
 ################################################################################################
 # Software Information
@@ -27,7 +27,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2024 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software

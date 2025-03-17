@@ -5,12 +5,13 @@
 ################################################################################################
 #
 #   Created - 09/13/2022
-#   Updated - 05/24/2024
+#   Updated - 02/14/2025
 #
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
+#   - 15.3.1
 #   - 14.5
 #   - 13.6.7
 #   - 12.7.5
@@ -30,7 +31,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2024 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
