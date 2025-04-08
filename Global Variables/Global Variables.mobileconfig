@@ -31,6 +31,8 @@
 			<string>$PROFILE_UUID</string>
 			<key>EMAIL</key>
 			<string>$EMAIL</string>
+			<key>USERNAME</key>
+			<string>$USERNAME</string>
 			<key>FULL_NAME</key>
 			<string>$FULL_NAME</string>
 			<key>EMAIL_PREFIX</key>
@@ -64,8 +66,8 @@
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>265684E2-8DCC-464B-8C6A-606E89C630DA</string>
-	<key>PayloadVersion</key>
+	<string>265684E2-8DC
+			<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>
 </plist>
