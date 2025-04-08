@@ -8,7 +8,7 @@ At present, the Okta EDR integration for macOS only supports CrowdStrike ZTA. (s
 
 ## Deployment
 
-Upload the `okta_verify_edr_plugin.mobileconfig` profile in this repo to Kandji as a [custom configuration profile](https://support.kandji.io/support/solutions/articles/72000573519-custom-profile-overview). You can right-click [this link](https://raw.githubusercontent.com/kandji-inc/support/main/Configuration%20Profiles/okta-verify/okta_verify_edr_plugin.mobileconfig) and select Save link as… to download the mobileconfig file directly.
+Upload the `okta_verify_edr_plugin.mobileconfig` profile in this repo to Kandji as a [custom configuration profile](https://support.kandji.io/kb/custom-profiles-overview). You can right-click [this link](https://raw.githubusercontent.com/kandji-inc/support/main/Configuration%20Profiles/okta-verify/okta_verify_edr_plugin.mobileconfig) and select Save link as… to download the mobileconfig file directly.
 
 ## Payload settings
 

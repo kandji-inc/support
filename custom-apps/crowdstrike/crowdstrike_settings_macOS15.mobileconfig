@@ -5,51 +5,45 @@
 	<key>PayloadContent</key>
 	<array>
 		<dict>
-			<key>NotificationSettings</key>
-			<array>
-					<dict>
-						<key>BundleIdentifier</key>
-						<string>com.cloudflare.1dot1dot1dot1.macos</string>
-						<key>NotificationsEnabled</key>
-						<true/>
-					</dict>
-			</array>
+			<key>NonRemovableFromUISystemExtensions</key>
+			<dict>
+				<key>X9E956P446</key>
+				<array>
+					<string>com.crowdstrike.falcon.Agent</string>
+				</array>
+			</dict>
 			<key>PayloadDescription</key>
-			<string>Managed Notifications</string>
+			<string>Configures System Extensions Policy settings</string>
 			<key>PayloadDisplayName</key>
-			<string>Managed Notifications</string>
-			<key>PayloadEnabled</key>
-			<true/>
+			<string>System Extensions</string>
 			<key>PayloadIdentifier</key>
-			<string>io.kandji.cloudflare.EC275B21-ECA0-40D3-BB2D-1743C8E0FD6D</string>
+			<string>com.apple.system-extension-policy.20258B06-5866-4424-8893-A3AF1AFAAEDC</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>CrowdStrike Inc.</string>
 			<key>PayloadType</key>
-			<string>com.apple.notificationsettings</string>
+			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
-			<string>EC275B21-ECA0-40D3-BB2D-1743C8E0FD6D</string>
+			<string>20258B06-5866-4424-8893-A3AF1AFAAEDC</string>
 			<key>PayloadVersion</key>
 			<integer>1</integer>
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Notifications</string>
+	<string>System Extensions - Non-Removable from UI</string>
 	<key>PayloadDisplayName</key>
-	<string>Cloudflare WARP Settings</string>
+	<string>CrowdStrike Settings</string>
 	<key>PayloadEnabled</key>
 	<true/>
 	<key>PayloadIdentifier</key>
-	<string>com.kandji.cloudflare.warp</string>
+	<string>io.kandji.profile.custom.04499e0f-4334-46ba-b24a-d9cd56548f75</string>
 	<key>PayloadOrganization</key>
 	<string>Kandji, Inc.</string>
-	<key>PayloadRemovalDisallowed</key>
-	<false/>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>
 	<string>Configuration</string>
 	<key>PayloadUUID</key>
-	<string>45D1E11D-3D7B-4214-B3AF-215874056392</string>
+	<string>04499e0f-4334-46ba-b24a-d9cd56548f75</string>
 	<key>PayloadVersion</key>
 	<integer>1</integer>
 </dict>

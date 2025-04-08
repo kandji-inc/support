@@ -4,21 +4,23 @@
 # Created by Brian Van Peski | support@kandji.io | Kandji, Inc. | Solutions Engineering
 ################################################################################################
 #
-# Created on 3/21/2023
+# Created - 3/21/2023
+# Updated - 2/14/2024
 #
-########################################################################################
+################################################################################################
 # Tested macOS Versions
-########################################################################################
+################################################################################################
 #
-#   - 13.2
-#   - 12.6.1
+#  15.3.1
+#  14.4.1
+#  13.6.6
 #
 ################################################################################################
 # Software Information
 ################################################################################################
 # 
-# This script is designed to set wallpaper for a user while allowing them to still
-# modify it if they choose. Set the script to "run once" to set the initial wallpaper.
+# This script is designed to set the desktop wallpaper for a user while allowing them to 
+# modify it later if they choose. Set the script to "run once" to set the initial wallpaper.
 #
 # If you want to lock a Mac to a specific wallpaper, deploy a configuration profile
 # with the `com.apple.desktop` payload. (Use a tool like iMazing Profile Editor and use the
@@ -32,7 +34,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software

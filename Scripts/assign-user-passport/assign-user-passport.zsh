@@ -1,11 +1,11 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Jan Rosenfeld | support@kandji.io | Kandji, Inc.
+# Created by Brian Goldstein | support@kandji.io | Kandji, Inc.
 ################################################################################################
 #
-#   Created - 2023.05.22
-#   Updated - 2024.09.30
+#   Created - 2023/07/13
+#   Updated - 2024/09/30
 #
 ################################################################################################
 # Tested macOS Versions
@@ -19,13 +19,13 @@
 # Software Information
 ################################################################################################
 #
-#   This script will prompt an end user to input an email address, then search the Kandji user 
-#   directory for that email. If found, it will update the assigned user on the device record.
+# This script is designed to automatically look for the IdP user who signed in with Passport and 
+# assign that user to the device record in Kandji. 
 #
-#   This script is intended to be used in Kandji Self Service
-#   If not already installed, the script will install JQ in order to parse JSON data
+# By default, the script searches across all user directory integrations. To limit the search to
+# a specific integration, please set the INTEGRATION_ID variable.
 #
-#   For details, see https://github.com/kandji-inc/support/tree/main/Scripts/assign-user-prompt
+# For details, see https://github.com/kandji-inc/support/tree/main/Scripts/assign-user-passport
 #
 ################################################################################################
 # License Information
@@ -51,7 +51,7 @@
 #
 ################################################################################################
 
-# Script Version
+# Script version
 VERSION="2.0.0"
 
 ################################################################################################
@@ -79,7 +79,7 @@ INTEGRATION_ID=""
 # Usage: logging "LEVEL" "Message..."
 # Use 'log show --process "logger"'to view logs activity.
 logging(){
-  script_id="assign_user_prompt"
+  script_id="assign_user_passport"
   timestamp=$(/bin/date +"%m-%d-%Y %H:%M:%S")
   
   echo "${timestamp} ${1}: ${2}"
@@ -107,7 +107,7 @@ check_jq() {
         jq_binary="/Library/KandjiSE/jq"
       else
         # Install Kandji provided jq
-        cd /Library/KandjiSE/ 
+        cd /Library/KandjiSE/ || exit 
         /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.7-UNIVERSAL.pkg.tar.gz"
         /usr/bin/tar -xf JQ-1.7-UNIVERSAL.pkg.tar.gz
         /usr/sbin/installer -pkg JQ-1.7-UNIVERSAL.pkg -target / > /dev/null
@@ -148,6 +148,23 @@ check_jq() {
   fi
 }
 
+# Check for logged in user
+current_user(){
+  # Get the current logged in or most common user of the system
+  local_account=$(/usr/bin/stat -f%Su /dev/console)
+  # If root, no console session
+  # Find most common user by console time and assign
+  if [[ "${local_account}" == "root" ]]; then
+    local_account=$(/usr/sbin/ac -p | \
+      /usr/bin/sort -nk 2 | \
+      /usr/bin/grep -E -v "total|root|mbsetup|adobe" | \
+      /usr/bin/tail -1 | \
+      /usr/bin/xargs | \
+      /usr/bin/cut -d " " -f1)
+    logging "INFO" "No console user found...Assuming ${local_account} from total logged in time"
+  fi
+ }
+
 ################################################################################################
 ###################################### VARIABLES ###############################################
 ################################################################################################
@@ -157,49 +174,53 @@ check_jq() {
 # A value is needed to correctly parse characters with diacritical marks.
 export LANG=en_US.UTF-8
 
+# Get the device serial number
+SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F\" '/IOPlatformSerialNumber/{print $(NF-1)}')
+
 # Content Type
 CONTENT_TYPE="application/json"
 
 # Kandji API base URL
-if [[ -z ${REGION} || ${REGION} == "us" ]]; then
+if [[ -z $REGION || $REGION == "us" ]]; then
   BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
-elif [[ ${REGION} == "eu" ]]; then
+elif [[ $REGION == "eu" ]]; then
   BASE_URL="https://${SUBDOMAIN}.api.${REGION}.kandji.io/api"
 else
-  logging "ERROR" "Unsupported region: ${REGION}. Please update and try again."
+  /bin/echo "Unsupported region: $REGION. Please update and try again."
   exit 1
 fi
-
-KANDJI_ICON="/Applications/Kandji Self Service.app/Contents/Resources/AppIcon.icns"
-# If Kandji icon not found, use Finder icon
-if [[ ! -f "${KANDJI_ICON}" ]]; then
-    KANDJI_ICON="/System/Library/CoreServices/Finder.app/Contents/Resources/Finder.icns"
-fi
-
-# Get the device serial number
-SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F\" '/IOPlatformSerialNumber/{print $(NF-1)}')
 
 ################################################################################################
 ############################## MAIN LOGIC - DO NOT MODIFY BELOW ################################
 ################################################################################################
 
-################################################
-## Run initial checks                         ##
-################################################
-
-# Verify we have a serial number
-if [[ -z "${SERIAL_NUMBER}" ]]; then
-  logging "ERROR" "Could not determine device serial number ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue finding the serial number of your computer. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
-fi
 
 # Check and install jq if needed
 check_jq "install"
 
+# Check for logged in or most active user
+current_user
+
 ################################################
-## Get the device details and find            ##
-## if a user is already assigned              ##
+## Get the users email address from Passport  ##
+################################################
+passport_linked_account_name=$(/usr/bin/dscl . -read /Users/"${local_account}" "io.kandji.KandjiLogin.LinkedAccountName" 2>&1)
+
+if [[ "${passport_linked_account_name}" == *"No such key"* ]]; then
+  logging "ERROR" "Account ${local_account} does not appear to be managed by Passport..."
+  logging "ERROR" "Exiting."
+  exit 1
+else
+  passport_email_raw=$(echo "${passport_linked_account_name}" | /usr/bin/awk '{print $2}')
+  # Make sure the email address is all lower case
+  passport_email="${passport_email_raw:l}"
+  logging "INFO" "Account '${local_account}' appears to be managed by Passport..."
+  logging "INFO" "${local_account}'s e-mail address is ${passport_email}. Proceeding..."
+fi
+
+################################################
+## Get the device details and check if the    ##
+## user is already assigned to the device.    ##
 ################################################
 
 # Search for device by serial number
@@ -207,69 +228,28 @@ device_record=$(/usr/bin/curl --silent --request GET --url "${BASE_URL}/v1/devic
 --header "Authorization: Bearer ${TOKEN}")
 
 if [[ "${device_record}" == "[]" ]]; then
-  logging "ERROR" "Device info was not found for serial number: ${SERIALNUMBER}."
+  logging "ERROR" "Device info was not found for serial number: ${SERIAL_NUMBER}."
   logging "ERROR" "Exiting..."
   exit 1
 fi
 
-assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user // empty')
+assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user.email' 2>/dev/null)
 
 if [[ -z "${assigned_user}" ]]; then
-  logging "INFO" "No user currently assigned to computer. Proceeding..."
-else
-  logging "INFO" "There is already a user assigned to this computer. Nothing to do!"
+  logging "INFO" "No user assigned. Will attempt to assign ${passport_email} to the device..."
+elif [[ "${assigned_user}" == "${passport_email}" ]]; then
+  logging "INFO" "${passport_email} is already the assigned user. Nothing to do!"
   exit 0
+else
+  logging "INFO" "${assigned_user} is currently assigned. Will attempt to assign ${passport_email} to the device..."
 fi
 
 ################################################
-## Get the users email address and            ##
-## check if it exists in the Kandji directory ##
+## Find the user in the Kandji user directory ##
 ################################################
 
-# Present a dialog to the user up to three times to enter their email address.
-user_response=$(/usr/bin/osascript -e 'display dialog "Your computer needs to be assigned to you in Kandji. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
-
-attempt_counter=0
-max_attempts=3
-email_valid=false
-
-while [[ ${attempt_counter} -lt ${max_attempts} ]] && [[ ${email_valid} == false ]]; do
-  
-  # Check if user pressed Cancel
-  if [[ -z "${user_response}" ]]; then
-    logging "ERROR" "User canceled the dialog. No email address submitted..."
-    logging "ERROR" "Exiting."
-    exit 1
-  fi
-  
-  # Parse email address entered by the end user
-  user_email_input=$(echo "${user_response}" | /usr/bin/awk -F ":" '{print $NF}')
-  
-  # Modify user input to be lowercase
-  user_email="${user_email_input:l}"
-  
-  # Validate the user entered an email address
-  valid_email="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-  if [[ "${user_email}" =~ ${valid_email} ]]; then
-    logging "INFO" "User entered a valid email address. Proceeding..."
-    logging "INFO" "The user entered ${user_email}"
-    email_valid=true
-  else
-    logging "ERROR" "A valid email address was not entered."
-    logging "ERROR" "User entered ${user_email_input}"
-    attempt_counter=$((attempt_counter + 1))
-    if [[ $attempt_counter -lt $max_attempts ]]; then
-      logging "INFO" "Attempting again... Attempt ${attempt_counter} of ${max_attempts}."
-      user_response=$(/usr/bin/osascript -e 'display dialog "A valid email address was not entered. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
-    else
-      logging "ERROR" "Maximum attempts reached. Exiting."
-      exit 1
-    fi
-  fi
-done
-
 # Make the API call to get the user ID
-user_response=$(/usr/bin/curl --silent --location --url "${BASE_URL}/v1/users?email=${user_email}&integration_id=${INTEGRATION_ID}" \
+user_response=$(/usr/bin/curl --fail-with-body --silent --location --url "${BASE_URL}/v1/users?email=${passport_email}&integration_id=${INTEGRATION_ID}" \
 --header "Authorization: Bearer ${TOKEN}")
 
 # Check if curl command was successful
@@ -282,26 +262,24 @@ fi
 result_count=$(echo "${user_response}" | "${jq_binary}" '.results | length')
 
 # Make sure that we only received 1 result
-if [[  "${result_count}" -eq 0 ]]; then
-  logging "ERROR" "No Kandji users returned for ${user_email}. Please check your directory and try again."
-  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+if [[ "${result_count}" -eq 0 ]]; then
+  logging "ERROR" "No Kandji users returned for ${passport_email}. Please check your directory and try again."
   exit 1
 elif [[ "${result_count}" -gt 1 ]]; then
-  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+  logging "ERROR" "Multiple Kandji users returned for ${passport_email}. Please check your directory or include an Integration ID to limit the search and try again."
   exit 1
 fi
 
 # Parse the response for the user ID (and generate user_id variable)
 user_id=$(echo "${user_response}" | "${jq_binary}" -r '.results[0].id')
-logging "INFO" "Found User ID of ${user_id} for ${user_email}"
+logging "INFO" "Found User ID of ${user_id} for ${passport_email}"
 
 ################################################
-## Get the Device ID and Assign the           ##
-## computer to the user in Kandji             ##
+## Assign the user to the device record       ##
 ################################################
 
-# Parse device_record and extract device ID using jq
-device_id=$(echo "${device_record}" | ${jq_binary} -r '.[0].device_id')
+# Parse device_record and extract device ID
+device_id=$(echo "${device_record}" | "${jq_binary}" -r '.[0].device_id')
 
 # Print the device ID
 logging "INFO" "Device ID: ${device_id}"
@@ -312,16 +290,15 @@ update_device_response=$(/usr/bin/curl --silent --request PATCH --url "${BASE_UR
 --header "Content-Type: ${CONTENT_TYPE}" \
 --data "{\"user\": \"${user_id}\"}")
 
-if [[ "$update_device_response" == "400" ]]; then
-  logging "ERROR" "Bad request code ${update_device_response} ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue assigning your computer in Kandji. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
+
+if [[ "${update_device_response}" == "400" ]]; then
+    logging "ERROR" "Bad request code ${update_device_response} ..."
+    exit 1
+else
+    logging "INFO" "User has been successfully assigned to the device record."
 fi
 
-# Print response and alert the end user
-logging "INFO" "The device has been updated with a new assigned user."
-/usr/bin/osascript -e 'display dialog "Thank you! Your computer has been assigned to you in Kandji." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-
+# Clean up Kandji jq if used
 check_jq "remove"
 
 exit 0

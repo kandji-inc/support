@@ -74,7 +74,7 @@ Any other scenario where you want to automate the switching of an enrolled Mac f
 
 ### New Device Enrollment Considerations
 Running this script as part of an initial enrollment may interrupt agent runs in progress when it switches the Blueprint of a device.
-If you’d like to switch Blueprints after a device initially enrolls into a default Blueprint, you can combine this script with [`installafterLiftoff`](https://github.com/kandji-inc/support/blob/main/Scripts/installAfterLiftoff.zsh) to ensure the device changes Blueprints only after it has completed its initial enrollment.
+If you’d like to switch Blueprints after a device initially enrolls into a default Blueprint, you can combine this script with [`installafterLiftoff`](https://github.com/kandji-inc/support/tree/main/Scripts/install-after-liftoff) to ensure the device changes Blueprints only after it has completed its initial enrollment.
 
 ## Troubleshooting
 * **I'm getting an error**

@@ -17,7 +17,7 @@
 # Software Information
 ###################################################################################################
 #
-# Designed for use as an add-on to the SAP Privileges app for macOS. Installs in two parts: a
+# Designed for use as an add-on to the SAP Privileges 1.X app for macOS. Installs in two parts: a
 # Launch Agent that runs a lightweight enforcement script every 30 seconds and validates console
 # user permissions. If permissions are administrative, rights are revoked after a certain number
 # of minutes, set either in this script below (MINUTES_TO_WAIT) or via Configuration Profile key
@@ -26,7 +26,7 @@
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2022 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -186,7 +186,7 @@ function privs_execute_deploy() {
 ################################################################################################
 # License Information
 ################################################################################################
-# Copyright 2022 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software

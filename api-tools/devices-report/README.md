@@ -4,18 +4,18 @@
 
 ### About
 
-This `python3` script leverages the [Kandji API](https://api.kandji.io/#intro) to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant.
+This `python3` script leverages the [Kandji API](https://api-docs.kandji.io/#intro) to generate a device report based on the GET Devices API endpoint for all devices in a Kandji tenant.
 
 ### Kandji API
 
-- See the [Kandji API KB](https://support.kandji.io/api) article to see how to generate an API Token
+- See the [Kandji API KB](https://support.kandji.io/kb/kandji-api) article to see how to generate an API Token
 - The API permissions required to run the reporting script are as follows.
 
     <img src="images/api_permissions_required.png" alt="drawing" width="1024"/>
 
 ### Dependencies
 
-- This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://updates.kandji.io/auto-app-python-3-214020), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
+- This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://support.kandji.io/kb/auto-apps-overview), from [python.org](https://www.python.org/downloads/), or via [Homebrew](https://brew.sh)
 
 - Python dependencies can be installed individually below, or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
 

@@ -16,7 +16,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2024 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -36,7 +36,7 @@
 #
 ################################################################################################
 
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 
 
 # Standard library
@@ -146,6 +146,13 @@ def program_arguments():
         "--albc",
         action="store_true",
         help="Return the device-based and user-based activation lock bypass codes.",
+        required=False,
+    )
+
+    group_secrets.add_argument(
+        "--recovery",
+        action="store_true",
+        help="Return the device recovery key that is configured by the Recovery Password library item.",
         required=False,
     )
 
@@ -529,6 +536,12 @@ def main():
     if arguments.albc:
         looking_for.append("Bypass Codes")
         secret = "bypasscode"
+        secrets.append(secret)
+        report_name_items.append(f"{secret.lower()}")
+
+    if arguments.recovery:
+        looking_for.append("Recovery Key")
+        secret = "recoverypassword"
         secrets.append(secret)
         report_name_items.append(f"{secret.lower()}")
 

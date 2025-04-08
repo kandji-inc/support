@@ -1,6 +1,6 @@
 # API Tools
 
-Tools that can be used to interact with the [Kandji API](https://support.kandji.io/support/solutions/articles/72000560412-kandji-api). Bee sure to checkout the README docs specific to each script for more detail.
+Tools that can be used to interact with the [Kandji API](https://support.kandji.io/kb/kandji-api). Be sure to checkout the README docs specific to each script for more detail.
 
 ### Tool descriptions
 
@@ -24,7 +24,7 @@ The full API documentation can be found at [https://api.kandji.io](https://api.k
 
 ### Dependencies
 
-- Many of these scripts rely on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://updates.kandji.io/auto-app-python-3-214020), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
+- Many of these scripts rely on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://support.kandji.io/kb/auto-apps-overview), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
 
 - Python dependencies can be installed individually below, or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
 

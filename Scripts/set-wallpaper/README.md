@@ -4,7 +4,8 @@ This script is designed to set a specified image across all connected desktops w
 
 You can run it as a custom script or add it as a post-install script to a Custom App Library Item containing your desktop images.
 
->**Note:** If you want to set your Desktop image and *lock it in place* to prevent users from making changes, then you should set it [using a configuration profile](https://support.kandji.io/support/solutions/articles/72000560465-set-a-custom-desktop-picture).
+>[!NOTE]
+>If you want to set your Desktop image and *lock it in place* to prevent users from making changes, then you should set it [using a configuration profile](https://support.kandji.io/kb/configuring-a-custom-desktop-picture).
 You can create that profile with a tool like [iMazing Profile Editor](https://imazing.com/profile-editor).
 
 **Best Practices**

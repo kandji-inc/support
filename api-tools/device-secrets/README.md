@@ -12,7 +12,7 @@ The API permissions required to run the reporting script are as follows. Checkou
 
 ### Dependencies
 
-- This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://updates.kandji.io/auto-app-python-3-214020), from [python.org](https://www.python.org/downloads/), or via [homebrew](https://brew.sh)
+- This script relies on Python 3 to run. Python 3 can be installed directly as an [Auto App](https://support.kandji.io/kb/auto-apps-overview), from [python.org](https://www.python.org/downloads/), or via [Homebrew](https://brew.sh)
 
 - Python dependencies can be installed individually below, or with the included `requirements.txt` file using the following command from a Terminal: `python3 -m pip install -r requirements.txt`
 
@@ -56,7 +56,7 @@ The API permissions required to run the reporting script are as follows. Checkou
 3. Enter the command `python3 device_secrets.py --help` in the Terminal window to see script options.
 
     ```text
-    usage: device_secrets.py [-h] [--filevault] [--pin] [--albc] (--serial-number XX7FFXXSQ1GH | 
+    usage: device_secrets.py [-h] [--filevault] [--pin] [--albc] [--recovery] (--serial-number XX7FFXXSQ1GH | 
     --blueprint [blueprint_name] | --platform [Mac|iPhone|iPad|AppleTV] | --all-devices) [--version]
 
     Get device secrets from a Kandji instance.
@@ -72,6 +72,8 @@ The API permissions required to run the reporting script are as follows. Checkou
       --filevault           Return the FileVault recovery key. Only for macOS.
       --pin                 Return the unlockpin
       --albc                Return the device-based and user-based activation lock bypass codes.
+      --recovery            Return the device recovery key that is configured by the Recovery Password library item.
+    
     
     Search options:
       A search can be limited to a specific device, blueprint, or an entire device platform.
@@ -93,9 +95,9 @@ The API permissions required to run the reporting script are as follows. Checkou
 
 ### Examples
 
-- Get the FileVault key, Unlock pin, user activation lock code, and device activation lock code for all devices that have them in the `Mac` blueprint. Keep in mind that if your Blueprint name contains capital letters or spaces, you will need to enclose it in quotation marks.
+- Get the FileVault key, Unlock pin, user activation lock code, device activation lock code and Recovery Key for all devices that have them in the `Mac` blueprint. Keep in mind that if your Blueprint name contains capital letters or spaces, you will need to enclose it in quotation marks.
 
-    `python3 device_secrets.py --filevault --pin --albc --blueprint "Mac"`
+    `python3 device_secrets.py --filevault --pin --albc --recovery --blueprint "Mac"`
 
     Example output
     
@@ -106,7 +108,7 @@ The API permissions required to run the reporting script are as follows. Checkou
     Found blueprint matching the name "Mac"...
     Getting device inventory from Kandji...
     Total records returned: 19
-    Secrets query: FileVault Key, Unlock PIN, Bypass Codes
+    Secrets query: FileVault Key, Unlock PIN, Bypass Codes, Recovery Key
     Running query...hang tight.
     Total records in report: 19
     Generating device report...
