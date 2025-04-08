@@ -39,6 +39,7 @@
 FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+USERNAME=$(/usr/libexec/PlistBuddy -c 'print :USERNAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
@@ -56,6 +57,8 @@ Full Name: $FULL_NAME
 Email: $EMAIL
 
 Email Prefix: $EMAIL_PREFIX
+
+Username: $USERNAME
 
 Department: $DEPARTMENT
 
