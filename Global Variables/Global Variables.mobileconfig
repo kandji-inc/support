@@ -35,6 +35,10 @@
 			<string>$FULL_NAME</string>
 			<key>EMAIL_PREFIX</key>
 			<string>$EMAIL_PREFIX</string>
+			<key>USERNAME</key>
+			<string>$USERNAME</string>
+			<key>USERNAME_PREFIX</key>
+			<string>$USERNAME_PREFIX</string>
 			<key>DEPARTMENT</key>
 			<string>$DEPARTMENT</string>
 			<key>JOB_TITLE</key>

@@ -1,10 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
 ################################################################################################
 # Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
 ################################################################################################
 #
 # Created - 03/29/2021
-# Updated - 10/24/2024 - Brian Goldstein
+# Updated - 04/24/2025
 #
 ################################################################################################
 # Software Information
@@ -42,6 +42,8 @@
 FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+USERNAME=$(/usr/libexec/PlistBuddy -c 'print :USERNAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+USERNAME_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :USERNAME_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 JOB_TITLE=$(/usr/libexec/PlistBuddy -c 'print :JOB_TITLE' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
 DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
@@ -63,6 +65,10 @@ Full Name: $FULL_NAME
 Email: $EMAIL
 
 Email Prefix: $EMAIL_PREFIX
+
+Username: $USERNAME
+
+Username Prefix: $USERNAME_PREFIX
 
 Department: $DEPARTMENT
 
