@@ -59,7 +59,7 @@ notToExceedHours="5"
 
 # Set this value to "report" if the script should exit and report long lived power assertions
 # Set this value to "kill" if the script should kill the owning process.
-killOrReport="kill"
+killOrReport="report"
 
 #########################################################################################
 echo "Script is set to ${killOrReport} power assertions lived for more than ${notToExceedHours} hours."
