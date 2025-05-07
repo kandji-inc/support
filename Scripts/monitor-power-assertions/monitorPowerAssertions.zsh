@@ -55,7 +55,7 @@
 
 # Set this line to the number of hours a given power management assertion should not exceed
 # If any assertion exceeds this threshold it will be reported or acted upon.
-notToExceedHours="5"
+notToExceedHours="3"
 
 # Set this value to "report" if the script should exit and report long lived power assertions
 # Set this value to "kill" if the script should kill the owning process.
@@ -140,6 +140,8 @@ done
 
 if $foundLongAssertion; then
   echo "One or more long lived assertions detected."
+  echo "Current power assertions:"
+  echo "$pmset_output"
   exit 2
 else
   echo "No long lived assertions."
