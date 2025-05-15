@@ -8,10 +8,11 @@ Resources to aid in the deployment of the [Bitdefender deployment KB](https://su
 
 Item | Status
 :-- | :--
-Last updated | 2023.04.12
-latest version tested | `7.14.26.200010`
+Last updated | 2025.05.08
+latest version tested | `7.20.51.200067`
 Settings snippets | `pass`
 Settings mobileconfig profiles | `pass`
+Settings macOS 15 mobileconfig profiles | `pass`
 AE script | `pass`
 pre-install script | NA
 post-install script | `pass`
@@ -65,19 +66,16 @@ kb article | `pass`
 <string>com.apple.system-extension-policy</string>
 ```
 
-### Kernel extension
+#### Additional settings for macOS 15 onwards
 
 ```xml
-<key>PayloadType</key>
-<string>com.apple.syspolicy.kernel-extension-policy</string>
-<key>AllowNonAdminUserApprovals</key>
-<true/>
-<key>AllowUserOverrides</key>
-<true/>
-<key>AllowedTeamIdentifiers</key>
-<array>
-	<string>GUNFMW623Y</string>
-</array>
+<key>NonRemovableFromUISystemExtensions</key>
+<dict>
+	<key>GUNFMW623Y</key>
+	<array>
+		<string>com.bitdefender.cst.net.dci.dci-network-extension</string>
+	</array>
+</dict>
 ```
 
 ### Network content filter
@@ -185,17 +183,17 @@ Note: set assigment rule to `OS Version` is greater than or equal to `13.0`
 ## Downloading the package
 
 1. Login to [Bitdefender gravity zone](https://gravityzone.bitdefender.com/).
-1. On the left-hand navigation under Network, click **Packages**.
-1. Click **Add**.
-1. Configure settings for the installer. (make sure to set an uninstall password - this password will also be used in the create of the [certificate](https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7) used by Bitdender), click **Save**.
+1. On the left-hand navigation under Network, click **Installation Packages**.
+1. Click **Create**.
+1. Configure settings for the installer. (make sure to set an uninstall password - this password will also be used in the creation of the [certificate](https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7) used by Bitdefender), click **Save**.
 1. Select the package that was just built and click **Download**.
-1. Select the install type, if deploying to both Intel and Apple Silicon devices download both installers.
+1. Select the install type. If deploying to both Intel and Apple Silicon devices, download both installers.
 
 ## Using the bitdefender_cert_generator.zsh script
 
-Bitdefender requires that a PFX certificate be created and deployed to macOS. This section is based on this <a href="https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7"> Bitdefender KB</a>. Please see the KB article for more information.
+Bitdefender requires that a PFX certificate be created and deployed to macOS. This section is based on this [Bitdefender KB](https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7). Please see the KB article for more information.
 
-This script can be used to generate a `.pfx` certificate that can be uploaded to Kandji in a [Certificate profile library item](https://support.kandji.io/kb/certificate-profile).
+This `bitdefender_cert_generator.zsh` script can be used to generate a PFX certificate that can be uploaded to Kandji in a [Certificate profile library item](https://support.kandji.io/kb/certificate-profile).
 
 1. Open the script in a text editor or IDE like VScode, BBEdit, or Nova.
 1. Fill in the certificate information section of the script.

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>NonRemovableFromUISystemExtensions</key>
+			<dict>
+				<key>GUNFMW623Y</key>
+				<array>
+					<string>com.bitdefender.cst.net.dci.dci-network-extension</string>
+				</array>
+			</dict>
+			<key>PayloadDescription</key>
+			<string>Configures System Extensions Policy settings</string>
+			<key>PayloadDisplayName</key>
+			<string>System Extensions</string>
+			<key>PayloadIdentifier</key>
+			<string>com.apple.system-extension-policy.ee53670d-b9df-4088-9e83-19f91d275944</string>
+			<key>PayloadOrganization</key>
+			<string>Bitdefender</string>
+			<key>PayloadType</key>
+			<string>com.apple.system-extension-policy</string>
+			<key>PayloadUUID</key>
+			<string>ee53670d-b9df-4088-9e83-19f91d275944</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>System Extensions - Non-Removable from UI</string>
+	<key>PayloadDisplayName</key>
+	<string>Bitdefender Settings</string>
+	<key>PayloadEnabled</key>
+	<true/>
+	<key>PayloadIdentifier</key>
+	<string>io.kandji.profile.custom.f6fa498c-38fc-4e86-975b-973fdb57ce66</string>
+	<key>PayloadOrganization</key>
+	<string>Kandji, Inc.</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>f6fa498c-38fc-4e86-975b-973fdb57ce66</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

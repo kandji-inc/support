@@ -4,15 +4,15 @@
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ################################################################################################
 # Created - 2022-02-09
-# Updated - 2023-04-11
+# Updated - 2025-05-08
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
 #
-#   13.3.1
-#   12.6
-#   11.6.7
-#   10.15.7
+#    15.4.1
+#    14.7.5
+#    13.7.5
+#    12.7.6
 #
 ################################################################################################
 # Software Information
@@ -24,7 +24,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
