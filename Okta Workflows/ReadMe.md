@@ -53,7 +53,7 @@ Make an authenticated HTTP request to the Kandji API.
 **Inputs**
 | Field | Definition | Type | Required |
 |---|---|---|---|
-| Relative URL | Specify the relative URL to the API following `/v1` | String | TRUE |
+| Relative URL | Specify the relative URL to the API following `/v1` <br>e.g. for a licensing request, use `/settings/licensing` | String | TRUE |
 | Query | Additional query parameters in object format | Object | FALSE |
 | Headers | Additional headers beyond authorization/content-type | Object | FALSE |
 | Body | Request body in JSON format | Object | FALSE |
