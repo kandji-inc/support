@@ -41,6 +41,11 @@
 			<!-- replace YOUR_CLIENT_ID with your Desktop Password Sync app Client ID -->
 			<key>OktaVerify.PasswordSyncClientID</key>
 			<string>YOUR_CLIENT_ID</string>
+			<!-- Set the PlatformSSO.ProtocolVersion to the appropriate version for your org -->
+			<!-- For macOS 13 Ventura, set to 1.0 -->
+			<!-- For macOS 14 Sonoma or later, set to 2.0 -->
+			<key>PlatformSSO.ProtocolVersion</key>
+			<string>1.0</string>
 			<!-- optional keys-->
 			<key>OktaVerify.EnrollmentOptions</key>
 			<string>SilentEnrollmentEnabled</string>
