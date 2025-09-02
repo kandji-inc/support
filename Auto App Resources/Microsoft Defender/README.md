@@ -1,5 +1,10 @@
 # Microsoft Defender Kandji Exclusions
 
+> [!WARNING]
+> A recent issue with Microsoft Defender for Endpoint on macOS ignores valid tamper protection exclusions, resulting in failures when applying a client upgrade
+>
+> Defender `101.25072.0011` and later includes a fix for this issue, but may require temporarily setting `tamper-protection` to `disabled` or `audit` in order to apply this update (see [Microsoft's docs to update tamper protection](https://learn.microsoft.com/en-us/defender-endpoint/tamperprotection-macos#configure-tamper-protection-on-macos-devices))
+
 ## ABOUT
 
 `add_kandji_exclusions.zsh` automatically adds Microsoft Defender tamper protection exclusions for Kandji components to macOS configuration profile (`.mobileconfig`) files, enabling Kandji to manage Microsoft Defender updates and installations.
