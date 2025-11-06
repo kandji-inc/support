@@ -6,6 +6,7 @@
 #
 # Created on 12/08/2020
 # Updated on 01/18/2023
+# Updated on 05/11/2025
 #
 ################################################################################################
 # Software Information
@@ -17,7 +18,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2023 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -37,22 +38,19 @@
 #
 ################################################################################################
 
-#Gets the current value for the timestamp_timeout value
-timestampTimeoutCurrenState=$(/bin/cat "/etc/sudoers" | /usr/bin/grep 'Defaults timestamp_timeout=')
-
-#Checks if the current value is already set to 5
-if [ "${timestampTimeoutCurrenState}" = "Defaults timestamp_timeout=5" ]; then
-	echo "timestamp_timeout is already set to 5 minutes... no changed needed..."
-	exit 0
-else 
-	echo "timestamp_timeout is not set to 5 minutes...changes needed..."
-fi 
+# Checks if timestamp_timeout is already set to 5 (allows for variable whitespace); exits if true.
+if /usr/bin/grep -E -q '^Defaults\s+timestamp_timeout\s*=\s*5\b' /etc/sudoers; then
+    echo "timestamp_timeout is already set to 5 minutes... no changes needed..."
+    exit 0
+else
+    echo "timestamp_timeout is not set to 5 minutes...changes needed..."
+fi
 	
 #Copies the current sudoers file
 /bin/cp /etc/sudoers /tmp/sudoers-tmp
 
 #Uses sed to find and replace the default timestamp line
-/usr/bin/sed -i -backup 's/Defaults	timestamp\_timeout\=0/Defaults	timestamp\_timeout\=5/g' /tmp/sudoers-tmp
+/usr/bin/sed -i --backup -E 's/^(Defaults[[:space:]]+timestamp_timeout[[:space:]]*=).*/\15/' /tmp/sudoers-tmp
 
 #Uses visudo to validate the syntax of the new file prior to copying
 /usr/sbin/visudo -cf /tmp/sudoers-tmp
