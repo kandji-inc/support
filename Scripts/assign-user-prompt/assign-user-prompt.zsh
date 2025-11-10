@@ -5,7 +5,7 @@
 ################################################################################################
 #
 #   Created - 2023.05.22
-#   Updated - 2024.09.30
+#   Updated - 2025.11.07
 #
 ################################################################################################
 # Tested macOS Versions
@@ -19,7 +19,7 @@
 # Software Information
 ################################################################################################
 #
-#   This script will prompt an end user to input an email address, then search the Kandji user 
+#   This script will prompt an end user to input an email address, then search the Kandji user
 #   directory for that email. If found, it will update the assigned user on the device record.
 #
 #   This script is intended to be used in Kandji Self Service
@@ -31,7 +31,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2024 Kandji, Inc.
+# Copyright 2025 Kandji, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -78,74 +78,74 @@ INTEGRATION_ID=""
 # Set logging - Send logs to stdout as well as Unified Log
 # Usage: logging "LEVEL" "Message..."
 # Use 'log show --process "logger"'to view logs activity.
-logging(){
-  script_id="assign_user_prompt"
-  timestamp=$(/bin/date +"%m-%d-%Y %H:%M:%S")
-  
-  echo "${timestamp} ${1}: ${2}"
-  /usr/bin/logger "${script_id}: [${1}] ${2}"
+logging() {
+    script_id="assign_user_prompt"
+    timestamp=$(/bin/date +"%m-%d-%Y %H:%M:%S")
+
+    echo "${timestamp} ${1}: ${2}"
+    /usr/bin/logger "${script_id}: [${1}] ${2}"
 }
 
 # Check if jq is installed. If not found will install Kandji provided jq
 # Usage: check_jq "CHECK_TYPE"
 # CHECK_TYPE should be either "install" or "remove"
 check_jq() {
-  
-  local check_type="${1}"
-  
-  if [[ "${check_type}" == "install" ]]; then
-    if ! /usr/bin/command -v jq &> /dev/null; then
-      logging "INFO" "jq is not installed. Installing Kandji provided jq..."
-      
-      # Create KandjiSE directory if needed
-      if [[ ! -d "/Library/KandjiSE" ]]; then
-        /bin/mkdir "/Library/KandjiSE"
-      fi  
-      
-      if [[ -f "/Library/KandjiSE/jq" ]]; then
-        logging "INFO" "Kandji jq already installed..."
-        jq_binary="/Library/KandjiSE/jq"
-      else
-        # Install Kandji provided jq
-        cd /Library/KandjiSE/ 
-        /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.7-UNIVERSAL.pkg.tar.gz"
-        /usr/bin/tar -xf JQ-1.7-UNIVERSAL.pkg.tar.gz
-        /usr/sbin/installer -pkg JQ-1.7-UNIVERSAL.pkg -target / > /dev/null
-        jq_binary="/Library/KandjiSE/jq"
-      fi
-      
-      # Verify jq is available now
-      if ! /usr/bin/command -v "${jq_binary}" &> /dev/null; then
-        logging "ERROR" "Unable to find jq after installing..."
-        logging "ERROR" "Exiting."
+
+    local check_type="${1}"
+
+    if [[ "${check_type}" == "install" ]]; then
+        if ! /usr/bin/command -v jq &>/dev/null; then
+            logging "INFO" "jq is not installed. Installing Kandji provided jq..."
+
+            # Create KandjiSE directory if needed
+            if [[ ! -d "/Library/KandjiSE" ]]; then
+                /bin/mkdir "/Library/KandjiSE"
+            fi
+
+            if [[ -f "/Library/KandjiSE/jq" ]]; then
+                logging "INFO" "Kandji jq already installed..."
+                jq_binary="/Library/KandjiSE/jq"
+            else
+                # Install Kandji provided jq
+                cd /Library/KandjiSE/
+                /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.1-UNIVERSAL.pkg.tar.gz"
+                /usr/bin/tar -xf JQ-1.8.1-UNIVERSAL.pkg.tar.gz
+                /usr/sbin/installer -pkg JQ-1.8.1-UNIVERSAL.pkg -target / >/dev/null
+                jq_binary="/Library/KandjiSE/jq"
+            fi
+
+            # Verify jq is available now
+            if ! /usr/bin/command -v "${jq_binary}" &>/dev/null; then
+                logging "ERROR" "Unable to find jq after installing..."
+                logging "ERROR" "Exiting."
+                exit 1
+            fi
+
+            # Set flag for Kandji jq uninstall
+            kandji_jq_install="true"
+        else
+            logging "INFO" "jq is already installed."
+            jq_binary=$(/usr/bin/which jq)
+        fi
+    elif [[ "${check_type}" == "remove" ]]; then
+        # Check if Kandji installed jq was used
+        if [[ "${kandji_jq_install}" == "true" ]]; then
+            logging "INFO" "Removing Kandji jq files."
+            if [[ $(/bin/ls /Library/KandjiSE | /usr/bin/wc -l) == "       3" ]]; then
+                /bin/rm -rf /Library/KandjiSE
+            else
+                /bin/rm /Library/KandjiSE/jq
+                /bin/rm /Library/KandjiSE/JQ-1.8.1-UNIVERSAL.pkg.tar.gz
+                /bin/rm /Library/KandjiSE/JQ-1.8.1-UNIVERSAL.pkg
+            fi
+        else
+            logging "INFO" "Kandji provided jq was not used. Nothing to do..."
+        fi
+    else
+        logging "ERROR" "Invalid check_type value specified..."
+        logging "Exiting."
         exit 1
-      fi
-      
-      # Set flag for Kandji jq uninstall
-      kandji_jq_install="true"
-    else
-      logging "INFO" "jq is already installed."
-      jq_binary=$(/usr/bin/which jq)
     fi
-  elif [[ "${check_type}" == "remove" ]]; then
-    # Check if Kandji installed jq was used
-    if [[ "${kandji_jq_install}" == "true" ]] ; then
-      logging "INFO" "Removing Kandji jq files."
-      if [[ $(/bin/ls /Library/KandjiSE | /usr/bin/wc -l) == "       3" ]]; then
-      /bin/rm -rf /Library/KandjiSE
-      else
-      /bin/rm /Library/KandjiSE/jq
-      /bin/rm /Library/KandjiSE/JQ-1.7-UNIVERSAL.pkg.tar.gz
-      /bin/rm /Library/KandjiSE/JQ-1.7-UNIVERSAL.pkg
-      fi
-    else
-      logging "INFO" "Kandji provided jq was not used. Nothing to do..."
-    fi
-  else
-    logging "ERROR" "Invalid check_type value specified..."
-    logging "Exiting."
-    exit 1
-  fi
 }
 
 ################################################################################################
@@ -162,12 +162,12 @@ CONTENT_TYPE="application/json"
 
 # Kandji API base URL
 if [[ -z ${REGION} || ${REGION} == "us" ]]; then
-  BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
+    BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
 elif [[ ${REGION} == "eu" ]]; then
-  BASE_URL="https://${SUBDOMAIN}.api.${REGION}.kandji.io/api"
+    BASE_URL="https://${SUBDOMAIN}.api.${REGION}.kandji.io/api"
 else
-  logging "ERROR" "Unsupported region: ${REGION}. Please update and try again."
-  exit 1
+    logging "ERROR" "Unsupported region: ${REGION}. Please update and try again."
+    exit 1
 fi
 
 KANDJI_ICON="/Applications/Kandji Self Service.app/Contents/Resources/AppIcon.icns"
@@ -189,9 +189,9 @@ SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F
 
 # Verify we have a serial number
 if [[ -z "${SERIAL_NUMBER}" ]]; then
-  logging "ERROR" "Could not determine device serial number ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue finding the serial number of your computer. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
+    logging "ERROR" "Could not determine device serial number ..."
+    /usr/bin/osascript -e 'display dialog "There was an issue finding the serial number of your computer. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+    exit 1
 fi
 
 # Check and install jq if needed
@@ -204,21 +204,21 @@ check_jq "install"
 
 # Search for device by serial number
 device_record=$(/usr/bin/curl --silent --request GET --url "${BASE_URL}/v1/devices/?serial_number=${SERIAL_NUMBER}" \
---header "Authorization: Bearer ${TOKEN}")
+    --header "Authorization: Bearer ${TOKEN}")
 
 if [[ "${device_record}" == "[]" ]]; then
-  logging "ERROR" "Device info was not found for serial number: ${SERIALNUMBER}."
-  logging "ERROR" "Exiting..."
-  exit 1
+    logging "ERROR" "Device info was not found for serial number: ${SERIALNUMBER}."
+    logging "ERROR" "Exiting..."
+    exit 1
 fi
 
 assigned_user=$(echo "${device_record}" | "${jq_binary}" -r '.[0].user // empty')
 
 if [[ -z "${assigned_user}" ]]; then
-  logging "INFO" "No user currently assigned to computer. Proceeding..."
+    logging "INFO" "No user currently assigned to computer. Proceeding..."
 else
-  logging "INFO" "There is already a user assigned to this computer. Nothing to do!"
-  exit 0
+    logging "INFO" "There is already a user assigned to this computer. Nothing to do!"
+    exit 0
 fi
 
 ################################################
@@ -234,61 +234,61 @@ max_attempts=3
 email_valid=false
 
 while [[ ${attempt_counter} -lt ${max_attempts} ]] && [[ ${email_valid} == false ]]; do
-  
-  # Check if user pressed Cancel
-  if [[ -z "${user_response}" ]]; then
-    logging "ERROR" "User canceled the dialog. No email address submitted..."
-    logging "ERROR" "Exiting."
-    exit 1
-  fi
-  
-  # Parse email address entered by the end user
-  user_email_input=$(echo "${user_response}" | /usr/bin/awk -F ":" '{print $NF}')
-  
-  # Modify user input to be lowercase
-  user_email="${user_email_input:l}"
-  
-  # Validate the user entered an email address
-  valid_email="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-  if [[ "${user_email}" =~ ${valid_email} ]]; then
-    logging "INFO" "User entered a valid email address. Proceeding..."
-    logging "INFO" "The user entered ${user_email}"
-    email_valid=true
-  else
-    logging "ERROR" "A valid email address was not entered."
-    logging "ERROR" "User entered ${user_email_input}"
-    attempt_counter=$((attempt_counter + 1))
-    if [[ $attempt_counter -lt $max_attempts ]]; then
-      logging "INFO" "Attempting again... Attempt ${attempt_counter} of ${max_attempts}."
-      user_response=$(/usr/bin/osascript -e 'display dialog "A valid email address was not entered. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
-    else
-      logging "ERROR" "Maximum attempts reached. Exiting."
-      exit 1
+
+    # Check if user pressed Cancel
+    if [[ -z "${user_response}" ]]; then
+        logging "ERROR" "User canceled the dialog. No email address submitted..."
+        logging "ERROR" "Exiting."
+        exit 1
     fi
-  fi
+
+    # Parse email address entered by the end user
+    user_email_input=$(echo "${user_response}" | /usr/bin/awk -F ":" '{print $NF}')
+
+    # Modify user input to be lowercase
+    user_email="${user_email_input:l}"
+
+    # Validate the user entered an email address
+    valid_email="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    if [[ "${user_email}" =~ ${valid_email} ]]; then
+        logging "INFO" "User entered a valid email address. Proceeding..."
+        logging "INFO" "The user entered ${user_email}"
+        email_valid=true
+    else
+        logging "ERROR" "A valid email address was not entered."
+        logging "ERROR" "User entered ${user_email_input}"
+        attempt_counter=$((attempt_counter + 1))
+        if [[ $attempt_counter -lt $max_attempts ]]; then
+            logging "INFO" "Attempting again... Attempt ${attempt_counter} of ${max_attempts}."
+            user_response=$(/usr/bin/osascript -e 'display dialog "A valid email address was not entered. Please enter your email address:" default answer "you@company.com" with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons {"Cancel", "Submit"} default button "Submit"' 2>/dev/null)
+        else
+            logging "ERROR" "Maximum attempts reached. Exiting."
+            exit 1
+        fi
+    fi
 done
 
 # Make the API call to get the user ID
 user_response=$(/usr/bin/curl --silent --location --url "${BASE_URL}/v1/users?email=${user_email}&integration_id=${INTEGRATION_ID}" \
---header "Authorization: Bearer ${TOKEN}")
+    --header "Authorization: Bearer ${TOKEN}")
 
 # Check if curl command was successful
 if [[ $? -ne 0 ]]; then
-  logging "ERROR" "Failed to make the API call to get the user ID."
-  exit 1
+    logging "ERROR" "Failed to make the API call to get the user ID."
+    exit 1
 fi
 
 # Extract the number of results
 result_count=$(echo "${user_response}" | "${jq_binary}" '.results | length')
 
 # Make sure that we only received 1 result
-if [[  "${result_count}" -eq 0 ]]; then
-  logging "ERROR" "No Kandji users returned for ${user_email}. Please check your directory and try again."
-  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
+if [[ "${result_count}" -eq 0 ]]; then
+    logging "ERROR" "No Kandji users returned for ${user_email}. Please check your directory and try again."
+    /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+    exit 1
 elif [[ "${result_count}" -gt 1 ]]; then
-  /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
+    /usr/bin/osascript -e 'display dialog "An error has occured. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+    exit 1
 fi
 
 # Parse the response for the user ID (and generate user_id variable)
@@ -308,14 +308,14 @@ logging "INFO" "Device ID: ${device_id}"
 
 # Update Device Record in Kandji
 update_device_response=$(/usr/bin/curl --silent --request PATCH --url "${BASE_URL}/v1/devices/${device_id}" \
---header "Authorization: Bearer ${TOKEN}" \
---header "Content-Type: ${CONTENT_TYPE}" \
---data "{\"user\": \"${user_id}\"}")
+    --header "Authorization: Bearer ${TOKEN}" \
+    --header "Content-Type: ${CONTENT_TYPE}" \
+    --data "{\"user\": \"${user_id}\"}")
 
 if [[ "$update_device_response" == "400" ]]; then
-  logging "ERROR" "Bad request code ${update_device_response} ..."
-  /usr/bin/osascript -e 'display dialog "There was an issue assigning your computer in Kandji. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
-  exit 1
+    logging "ERROR" "Bad request code ${update_device_response} ..."
+    /usr/bin/osascript -e 'display dialog "There was an issue assigning your computer in Kandji. Your administrator will be notified that assignment was not successful." with title "Computer Assignment" with icon POSIX file "'"${KANDJI_ICON}"'" buttons ("OK") giving up after 180' 2>/dev/null
+    exit 1
 fi
 
 # Print response and alert the end user

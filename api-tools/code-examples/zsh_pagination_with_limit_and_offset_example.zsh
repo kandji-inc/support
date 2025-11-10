@@ -4,7 +4,7 @@
 # Created by Matt Wilson | support@kandji.io | Kandji, Inc.
 ################################################################################################
 # Created on 2022-11-28
-# Updated on 2023-06-16
+# Updated on 2025-11-10
 ################################################################################################
 # Tested macOS Versions
 ################################################################################################
@@ -90,7 +90,7 @@ function install_jq() {
     # Download and install jq
 
     # univeral install hosted by Kandji
-    universal_jq_release="https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.6-UNIVERSAL.pkg.tar.gz"
+    universal_jq_release="https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.1-UNIVERSAL.pkg.tar.gz"
 
     # jq temp download location
     jq_tmp="/private/tmp/jq.tar.gz"
