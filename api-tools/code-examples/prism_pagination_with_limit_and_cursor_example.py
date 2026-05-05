@@ -43,7 +43,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2026 Kandji, Inc.
+# Copyright 2026 Iru, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
