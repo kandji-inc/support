@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+		<key>Configuration</key>
+		<array>
+			<dict>
+				<key>ApplicationIdentifier</key>
+				<string>B7F62B65BN.com.okta.mobile.auth-service-extension</string>
+				<key>AssociatedDomains</key>
+				<array>
+					<!-- replace accuhive.okta.com with your tenant address -->
+					<string>authsrv:accuhive.okta.com</string>
+				</array>
+			</dict>
+			<dict>
+				<key>ApplicationIdentifier</key>
+				<string>B7F62B65BN.com.okta.mobile</string>
+				<key>AssociatedDomains</key>
+				<array>
+					<!-- replace accuhive.okta.com with your tenant address -->
+					<string>authsrv:accuhive.okta.com</string>
+				</array>
+			</dict>
+			</array>
+			<key>PayloadDisplayName</key>
+			<string>Associated Domains for Okta Verify</string>
+			<key>PayloadIdentifier</key>
+			<string>F65C9B21-13AD-4F46-86E5-C3352E7D97B6</string>
+			<key>PayloadOrganization</key>
+			<string>CUSTOMER NAME</string>
+			<key>PayloadType</key>
+			<string>com.apple.associated-domains</string>
+			<key>PayloadUUID</key>
+			<string>F65C9B21-13AD-4F46-86E5-C3352E7D97B6</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Okta Associated Domains for Okta Verify and Platform SSO</string>
+	<key>PayloadDisplayName</key>
+	<string>Okta Associated Domains</string>
+	<key>PayloadIdentifier</key>
+	<string>com.customer-name.profiles.ssoextension</string>
+	<key>PayloadOrganization</key>
+	<string>CUSTOMER NAME</string>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>D78FE406-0C61-4007-8C51-FFA5FDE5F54B</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
