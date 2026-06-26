@@ -1,26 +1,27 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@kandji.io | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 07/21/25
-# Updated on 07/23/25; Updated by Daniel Chapa
+# Updated on 06/25/26; Updated by Daniel Chapa
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.0.1
 #
 # Custom script to add the following tamper protection exclusions to Microsoft Defender profiles:
-# - Kandji signing ID
-# - Kandji team ID
-# - Kandji binary paths  
+# - Iru signing ID
+# - Iru team ID
+# - Iru binary paths  
 # NOTE:
-# If exclusions are already present, the script will ensure all values are valid
+# If exclusions are already present, the script will ensure all values are valid. If legacy Kandji
+# exclusions are present, the script will remove them and add the current Iru exclusions
 #
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2025 Kandji, Inc.
+# Copyright 2026 Iru, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -39,9 +40,15 @@
 # DEALINGS IN THE SOFTWARE.
 ###################################################################################################
 
-declare -A id_path
+declare -A id_path legacy_id_path
 
 id_path=(
+    "iru-cli" "/Library/Iru/Iru Agent.app/Contents/Helpers/Iru CLI.app/Contents/MacOS/iru-cli"
+    "kandji-daemon" "/Library/Iru/Iru Agent.app/Contents/Helpers/Iru Daemon.app/Contents/MacOS/kandji-daemon"
+    "kandji-library-manager" "/Library/Iru/Iru Agent.app/Contents/Helpers/Iru Library Manager.app/Contents/MacOS/kandji-library-manager"
+)
+
+legacy_id_path=(
     "kandji-cli" "/Library/Kandji/Kandji Agent.app/Contents/Helpers/Kandji CLI.app/Contents/MacOS/kandji-cli"
     "kandji-daemon" "/Library/Kandji/Kandji Agent.app/Contents/Helpers/Kandji Daemon.app/Contents/MacOS/kandji-daemon"
     "kandji-library-manager" "/Library/Kandji/Kandji Agent.app/Contents/Helpers/Kandji Library Manager.app/Contents/MacOS/kandji-library-manager"
@@ -95,7 +102,7 @@ function profile_prompt_check() {
         # Prompt for .mobileconfig path
         # Disable beautysh read formatting (indents)
         # @formatter:off
-        read "provided_profile_path?Drag 'n' drop a .mobileconfig to insert Kandji exclusions (this action will create a backup, then update the profile in place):
+        read "provided_profile_path?Drag 'n' drop a .mobileconfig to insert Iru exclusions (this action will create a backup, then update the profile in place):
 "
         # @formatter:on
     else
@@ -107,14 +114,14 @@ function profile_prompt_check() {
         profile_prompt_check
         return
     fi
-    echo "Updating ${provided_profile_path:t} with Kandji exclusions..."
+    echo "Updating ${provided_profile_path:t} with Iru exclusions..."
 }
 
 ##############################################
-# Checks if a Kandji exclusion already exists 
+# Checks if an Iru exclusion already exists 
 # in the existing exclusions array.
 # Globals:
-#   team_id; Kandji team identifier
+#   team_id; Iru team identifier
 # Arguments:
 #   ${1}; Signing ID to check
 #   ${2}; App path to check
@@ -150,10 +157,10 @@ function check_exclusion_exists() {
 }
 
 ##############################################
-# Checks for partial matches of a Kandji 
+# Checks for partial matches of an Iru 
 # exclusion in the existing exclusions array.
 # Globals:
-#   team_id; Kandji team identifier
+#   team_id; Iru team identifier
 # Arguments:
 #   ${1}; Signing ID to check
 #   ${2}; App path to check
@@ -225,7 +232,46 @@ function add_exclusion_to_plist() {
 }
 
 ##############################################
-# Creates a timestamped backup of the provided 
+# Removes legacy Kandji exclusions from the
+# mobileconfig file using PlistBuddy.
+# Globals:
+#   legacy_id_path; Associative array of
+#                   legacy signing IDs and
+#                   their binary paths
+# Arguments:
+#   ${1}; Path to mobileconfig file
+# Outputs:
+#   Removal status to stdout, warnings to
+#   stderr. Returns 0 on success.
+##############################################
+function remove_legacy_exclusions_from_plist() {
+    local mobileconfig_path existing_path existing_signing_id legacy_sign_id legacy_app_path current_count exclusion_index
+
+    mobileconfig_path="${1}"
+    current_count=0
+
+    until ! /usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${current_count}" "${mobileconfig_path}" >/dev/null 2>&1; do
+        ((current_count++))
+    done
+
+    for (( exclusion_index = current_count - 1; exclusion_index >= 0; exclusion_index-- )); do
+        existing_path=$(/usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${exclusion_index}:path" "${mobileconfig_path}" 2>/dev/null)
+        existing_signing_id=$(/usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${exclusion_index}:signingId" "${mobileconfig_path}" 2>/dev/null)
+
+        for legacy_sign_id legacy_app_path in ${(kv)legacy_id_path}; do
+            if [[ "${existing_signing_id}" == "${legacy_sign_id}" && "${existing_path}" == "${legacy_app_path}" ]]; then
+                echo "Removing legacy exclusion for '${existing_signing_id}':'${existing_path}'"
+                if ! /usr/libexec/PlistBuddy -c "Delete :PayloadContent:0:tamperProtection:exclusions:${exclusion_index}" "${mobileconfig_path}"; then
+                    echo "Warning: Failed to remove legacy exclusion for '${existing_signing_id}'" >&2
+                fi
+                break
+            fi
+        done
+    done
+}
+
+##############################################
+# Creates a timestamped backup of the provided
 # .mobileconfig file before modification.
 # Globals:
 #   None
@@ -250,13 +296,13 @@ function backup_mobileconfig() {
 }
 
 ##############################################
-# Main execution function for adding Kandji 
+# Main execution function for adding Iru 
 # exclusions to Microsoft Defender profiles.
 # Globals:
-#   id_path; Associative array of Kandji 
+#   id_path; Associative array of Iru 
 #            signing IDs and their binary 
 #            paths
-#   team_id; Kandji team identifier
+#   team_id; Iru team identifier
 #   expected_payload_id; Expected Microsoft 
 #            Defender payload type
 # 
@@ -281,7 +327,7 @@ function main() {
         /usr/libexec/PlistBuddy -c "Add :PayloadContent:0:tamperProtection:exclusions array"  "${provided_profile_path}"
     fi
 
-    format_stdout "Inserting Kandji Exclusions"
+    format_stdout "Inserting Iru Exclusions"
     count=0
     until ! /usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${count}" "${provided_profile_path}" >/dev/null 2>&1; do
         ((count++))
@@ -309,15 +355,28 @@ function main() {
         fi
     done
 
+    remove_legacy_exclusions_from_plist "${provided_profile_path}"
+
+    # Rebuild existing_exclusions and count after legacy removal
+    count=0
+    existing_exclusions=()
+    until ! /usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${count}" "${provided_profile_path}" >/dev/null 2>&1; do
+        existing_path=$(/usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${count}:path" "${provided_profile_path}" 2>/dev/null)
+        existing_signing_id=$(/usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${count}:signingId" "${provided_profile_path}" 2>/dev/null)
+        existing_team_id=$(/usr/libexec/PlistBuddy -c "Print :PayloadContent:0:tamperProtection:exclusions:${count}:teamId" "${provided_profile_path}" 2>/dev/null)
+        existing_exclusions+=("${existing_signing_id}:${existing_path}:${existing_team_id}")
+        ((count++))
+    done
+
     # Then process to add new exclusions
     success_count=0
     mismatch_count=0
-    kandji_exclusions_found=0
+    iru_exclusions_found=0
     for sign_id app_path in ${(kv)id_path}; do
         # Check if exclusion already exists
         if check_exclusion_exists "${sign_id}" "${app_path}" "${existing_exclusions[@]}"; then
             echo "Exclusion for '${sign_id}' already exists, skipping..."
-            ((kandji_exclusions_found++))
+            ((iru_exclusions_found++))
         elif check_partial_match "${sign_id}" "${app_path}" "${existing_exclusions[@]}"; then
             echo "Exclusion for '${sign_id}' has partial match (mismatched path/team_id), adding new entry..."
             ((mismatch_count++))
@@ -326,7 +385,7 @@ function main() {
             # Add exclusion with success tracking
             if add_exclusion_to_plist "${provided_profile_path}" "${count}" "${app_path}" "${sign_id}" "${team_id}"; then
                 ((success_count++))
-                ((kandji_exclusions_found++))
+                ((iru_exclusions_found++))
             else
                 echo "Warning: Failed to add exclusion for ${sign_id}" >&2
             fi
@@ -337,7 +396,7 @@ function main() {
             # Add exclusion with success tracking
             if add_exclusion_to_plist "${provided_profile_path}" "${count}" "${app_path}" "${sign_id}" "${team_id}"; then
                 ((success_count++))
-                ((kandji_exclusions_found++))
+                ((iru_exclusions_found++))
             else
                 echo "Warning: Failed to add exclusion for ${sign_id}" >&2
             fi
@@ -349,13 +408,13 @@ function main() {
     total_expected=${#id_path[@]}
     total_existing=${#existing_exclusions[@]}
     if [[ ${success_count} -eq ${total_expected} ]]; then
-        format_stdout "Successfully Added All Kandji Exclusions"
+        format_stdout "Successfully Added All Iru Exclusions"
         echo "Added ${success_count} exclusions to ${provided_profile_path}"
-    elif [[ ${kandji_exclusions_found} -eq ${total_expected} ]] && [[ ${success_count} -eq 0 ]]; then
-        format_stdout "All Kandji Exclusions Already Exist"
+    elif [[ ${iru_exclusions_found} -eq ${total_expected} ]] && [[ ${success_count} -eq 0 ]]; then
+        format_stdout "All Iru Exclusions Already Exist"
         echo "All ${total_expected} exclusions were already present in ${provided_profile_path}"
     else
-        format_stdout "Partially Added Kandji Exclusions"
+        format_stdout "Partially Added Iru Exclusions"
         if [[ ${mismatch_count} -gt 0 ]]; then
             echo "Added ${success_count} new exclusions, ${total_existing} were already present, ${mismatch_count} had partial matches (mismatched path/team_id)"
         else
