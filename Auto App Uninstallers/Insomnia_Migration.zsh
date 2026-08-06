@@ -1,24 +1,25 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@kandji.io | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 06/07/2024
+# Updated on 07/30/2026
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.1.0
 #
-# Script to migrate existing Insomnia 2020-2023 installs to Insomnia 8/9+ via Kandji
+# Script to migrate existing Insomnia 2020-2023 installs to Insomnia 8/9+ via Iru
 # An upgrade cannot occur without intervention due to a violation in semantic versioning practices
 # Runs on macOS and detects/modifies an existing Insomnia bundle, allowing an upgrade in-place
-# Once the .app is altered, script calls Kandji binary to trigger install of Kong Insomnia Auto App 
-# NOTE: Ensure Auto App 'Kong Insomnia' is scoped to Kandji devices before running
+# Once the .app is altered, script calls Iru binary to trigger install of Kong Insomnia Auto App
+# NOTE: Ensure Auto App 'Kong Insomnia' is scoped to Iru devices before running
 #
 ###################################################################################################
 # License Information
 ###################################################################################################
-# Copyright 2024 Kandji, Inc.
+# Copyright 2026 Iru, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -45,7 +46,7 @@
 ########## VARIABLES #########
 ##############################
 
-kandji_bin="/usr/local/bin/kandji"
+iru_bin="/usr/local/bin/iru"
 insomnia_path="/Applications/Insomnia.app"
 insomnia_info_plist="${insomnia_path}/Contents/Info.plist"
 insomnia_old_floor="2020.0.0"
@@ -83,22 +84,22 @@ function downgrade_vers_fix_perms() {
 }
 
 ##############################################
-# Invokes Kandji binary to trigger install of
+# Invokes Iru binary to trigger install of
 # Kong Insomnia;  gets stdin from and redirects
 # to /dev/null in bg to allow parallel
-# execution without hanging Kandji binary
+# execution without hanging Iru binary
 # Outputs:
 #   Triggers Kong Insomnia install to disk
 ##############################################
-function kandji_self_call() {
+function iru_self_call() {
 
     echo "Triggering Auto App install of Kong Insomnia..."
 
-    # Redirecting stderr/out to /dev/null and bg'ing the Kandji proc
+    # Redirecting stderr/out to /dev/null and bg'ing the Iru proc
     # This allows the agent to end its run without waiting for our script exec
     # We also provide stdin from /dev/null as well, allowing us to detach from any active TTY connections
     # Serves to inform our program any input will not be coming from a terminal session
-    "${kandji_bin}" library --item "${insomnia_new_aa_name}" -F < /dev/null > /dev/null 2>&1 &
+    "${iru_bin}" library --item "${insomnia_new_aa_name}" -F </dev/null >/dev/null 2>&1 &
 }
 
 ##############################################
@@ -109,7 +110,7 @@ function kandji_self_call() {
 # If found, ensures Kong Insomnia is scoped
 # Checks existing version; if higher than old
 # major version floor, updates to new floor
-# Calls Kandji binary to install new Kong
+# Calls Iru binary to install new Kong
 # Insomnia in-place over existing Auto App
 # Globals:
 #  EUID
@@ -118,7 +119,7 @@ function kandji_self_call() {
 #  insomnia_new_floor
 #  insomnia_old_floor
 #  insomnia_path
-#  kandji_bin
+#  iru_bin
 # Returns:
 #  Exit 0 on successful completion
 #  Exit 1 if non-root exec or AA not in scope
@@ -142,29 +143,28 @@ function main() {
 
         if ${upgrade_needed}; then
             echo "Insomnia version ${insomnia_vers} is greater than ${insomnia_old_floor}... Proceeding with downgrade"
-            kandji_lib_items=$(${kandji_bin} library --list)
-            if [[ -z $(grep -o "${insomnia_new_aa_name}" <<< "${kandji_lib_items}") ]]; then
+            iru_lib_items=$(${iru_bin} library --list)
+            if [[ -z $(grep -o "${insomnia_new_aa_name}" <<<"${iru_lib_items}") ]]; then
                 echo "${insomnia_new_aa_name} not scoped to Mac! Cannot complete cutover..."
                 exit 1
             fi
             echo "Downgrading Insomnia CFBundleShortVersionString from ${insomnia_vers} to ${insomnia_new_floor}"
             downgrade_vers_fix_perms
-            kandji_self_call
+            iru_self_call
         else
             echo "Insomnia already on new major version ${insomnia_vers}... Nothing to do"
-        fi
+        f
     else
         echo "Insomnia not installed..."
-        kandji_lib_items=$(${kandji_bin} library --list)
-        if [[ -z $(grep -o "${insomnia_new_aa_name}" <<< "${kandji_lib_items}") ]]; then
+        iru_lib_items=$(${iru_bin} library --list)
+        if [[ -z $(grep -o "${insomnia_new_aa_name}" <<<"${iru_lib_items}") ]]; then
             echo "${insomnia_new_aa_name} not scoped to Mac! Cannot complete install..."
             exit 1
         fi
-        kandji_self_call
+        iru_self_call
     fi
     exit 0
 }
-
 
 ###############
 ##### MAIN ####
