@@ -273,6 +273,8 @@
                 <true/>
             </dict>
             <dict>
+                <key>AutoUpdate</key>
+			    <false/>
                 <key>PayloadDisplayName</key>
                 <string>Slack Update Suppression</string>
                 <key>PayloadIdentifier</key>
@@ -283,8 +285,6 @@
                 <string>C33EFC3F-E92C-4C93-8E72-972E5C8343DE</string>
                 <key>PayloadVersion</key>
                 <integer>1</integer>
-                <key>SlackNoAutoUpdates</key>
-                <true/>
             </dict>
             <dict>
                 <key>PayloadDisplayName</key>
