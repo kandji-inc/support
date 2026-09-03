@@ -57,7 +57,6 @@ successTest() {
 	# Test if last run command was successful
 	if [ $? -ne 0 ]; then
     echo "$1"
-    killall caffeinate
 		exit 1
 	fi
 }
@@ -70,7 +69,6 @@ downloadFile() {
     (( dlTries++ ))
     if [ "$dlTries" == 11 ]; then
       echo "Download has failed 10 times, exiting"
-      killall caffeinate
       exit 1
     fi
     /usr/bin/curl -Ls "$finalURL" -o "$pathToFile"
@@ -121,8 +119,9 @@ else
 	/bin/mkdir "$tmpDir"
 fi
 
-# Keep machine awake, as if user is active. 
-/usr/bin/caffeinate -disu &
+# Keep machine awake, as if user is active.
+# Clear caffeinate automatically upon script termination.
+/usr/bin/caffeinate -disu -w $$ &
 
 # Download & Validate File
 dlSize=$(getDownloadSize)
@@ -132,7 +131,6 @@ while [ "$fileChecksum" != "$dlSUM" ]; do
   (( vfTries++ ))
   if [ $vfTries == 4 ]; then
   echo "Download and Verification has failed 3 times, exiting..."
-  killall caffeinate
   exit 1
   fi
   downloadFile &
@@ -158,7 +156,6 @@ installPKG
 
 # Cleanup
 echo "Cleaning up files and processes..."
-killall caffeinate
 sleep 10
 /bin/rm -R "$tmpDir"
 
