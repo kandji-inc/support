@@ -6,3 +6,4 @@ pathlib>=1.0.1
 pre-commit
 requests>=2.27.1
 toml
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
