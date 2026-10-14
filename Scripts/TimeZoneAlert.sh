@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Nicholas McDonald | nick.mcdonald@kandji.io | Kandji, Inc. | Solutions Engineering
+# Created by Nicholas McDonald | nick.mcdonald@iru.com | Iru, Inc. | Solutions Engineering
 ################################################################################################
 # Created on 10/30/2020
 ################################################################################################

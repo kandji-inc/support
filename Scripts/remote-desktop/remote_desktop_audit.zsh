@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Mike Boylan | support@kandji.io | Kandji, Inc. | Product Engineering
+# Created by Mike Boylan | support@iru.com | Iru, Inc. | Product Engineering
 ################################################################################################
 #
 # Created on 1/4/2023

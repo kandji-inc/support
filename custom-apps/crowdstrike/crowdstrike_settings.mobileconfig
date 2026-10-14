@@ -170,7 +170,7 @@
         <key>PayloadIdentifier</key>
         <string>io.kandji.profile.custom.9e5ce1bc-8ddb-4d1f-9567-5647e60cbb0d</string>
         <key>PayloadOrganization</key>
-        <string>Kandji, Inc.</string>
+        <string>Iru, Inc.</string>
         <key>PayloadRemovalDisallowed</key>
         <false/>
         <key>PayloadScope</key>

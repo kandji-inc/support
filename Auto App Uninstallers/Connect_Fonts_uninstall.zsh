@@ -4,7 +4,7 @@
 ###################################################################################################
 #
 # Uninstaller script for Connect Fonts
-# Designed for Kandji Auto Apps
+# Designed for Iru Auto Apps
 #
 ###################################################################################################
 # License Information
@@ -265,7 +265,7 @@ function main() {
         echo "Located ${app_friendly_name} installed at ${app_path}..."
 
         # Remove App from Dock
-        /usr/local/bin/kandji dock --remove ${app_bundle_id}
+        /usr/local/bin/iru dock --remove ${app_bundle_id}
         kill_app
         bootout_remove_launch_services
         remove_user_app_files

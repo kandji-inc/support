@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Matt Wilson, Noah Anderson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson, Noah Anderson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created on 2021-08-09
 # Updated on 2024-04-25

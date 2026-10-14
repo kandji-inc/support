@@ -1,43 +1,42 @@
-# Blueprint Switcher <img src="images/blueprint_switcher.png" width="200"> 
+# Blueprint Switcher
 
-This script is designed to move Mac computers already enrolled into Kandji from one Blueprint to another.
+This script is designed to move Mac computers already enrolled in Iru from one Blueprint to another.
 
 ## Requirements
 * This script ([`blueprint_switcher.zsh`](blueprint_switcher.zsh))
 * An API token with the following permissions:
-  * List Blueprints
-  * Get Blueprint
-  * Update a Device
-  * Device details
-  * Device List
-  ![api permissions](images/api_permissions.png)
+  * **List Blueprints** (`GET /blueprints`): Get a list of all Blueprints.
+  * **Get Blueprint** (`GET /blueprints/{blueprint_id}`): Get a Blueprint by ID.
+  * **Update a device** (`PATCH /devices/{device_id}`): Update the assigned user, Blueprint, or asset tag for the device.
+  * **Device details** (`GET /devices/{device_id}/details`): Get the full details for a specific device.
+  * **Device list** (`GET /devices`): Get a list of all devices.
 
 This script does not require any additional script libraries or dependencies.
   
 ## Instructions
-1. Generate an API token for this automation in the Kandji tenant with the following privileges:
+1. Generate an API token for this automation in the Iru tenant with the following privileges:
   * List Blueprints
   * Get Blueprint
   * Update a Device
   * Device details
   * Device List
 
-2. Download the [`blueprint_switcher.zsh`](blueprint_switcher.zsh) script. Edit the script and add your **kandji subdomain**, the **API token** you generated in step 1, and the **blueprint name or UUID** you want the Mac assigned to in the `USER INPUT` section of the script.
+2. Download the [`blueprint_switcher.zsh`](blueprint_switcher.zsh) script. Edit the script and add your **Iru subdomain**, the **API token** you generated in step 1, and the **blueprint name or UUID** you want the Mac assigned to in the `USER INPUT` section of the script.
 ```shell
 ##############################################################
 # USER INPUT 
 ##############################################################
 
-# Kandji Subdomain
+# Iru subdomain
 subdomain="mycompany"
 
-# Region (us and eu) - this can be found in the Kandji settings on the Access tab
+# Region (us and eu) - this can be found in Iru under Account Menu > Access
 region="us"
 
 # API Bearer Token
 token="your-token-here"
 
-# Blueprint name/UUID (This is the name of the Blueprint as it exists in Kandji that you want to assign devices to).
+# Blueprint name/UUID (This is the name of the Blueprint as it exists in Iru that you want to assign devices to).
 assignBlueprint="MyBlueprint"
 ```
 
@@ -46,9 +45,7 @@ assignBlueprint="MyBlueprint"
 4. Test and Validate before deploying to production.
 
 ## Icon
-Here's an icon you can use if you'd like:
-
-![blueprint_reassign](images/blueprint_switcher.png)
+You can add your own image as the Library Item icon. Use an image that fits how you present this script in Self Service.
 
 ## Usage Examples
 
@@ -58,15 +55,11 @@ In a situation where someone wants to assign all Mac computers to a default Blue
 This is also helpful for depot/warehouse scenarios where technicians may need to choose the intended purpose of a device (i.e. Kiosk Mac vs Caching Server) before shipping it to its final destination.
 
 Create a Custom Script Library Item and enable it for Self Service, allowing the end-user or the IT admin configuring the Mac to click on the appropriate Department/Blueprint in Self Service to switch the enrolled Mac to that Blueprint.
-![blueprint switching via Self Service app](images/bpswitcher_selfservice.png)
 
-### Blueprint Switching via Assignment Rules
-Leverage Assignment Rules to automate switching of a Mac to a Blueprint based on IDP User Group, Department, or Job Title.
-1. Add this script to a Custom Script Library item.
-2. Assign it a Blueprint your Mac computers enroll into.
-3. Edit the User Input section of the script with the appropriate details for the Blueprint you want the Mac switched to.
+### Dynamic Blueprint assignment
+To assign a Mac to a Blueprint based on user group, department, job title, or another attribute, use conditional logic in the advanced Blueprint view.
 
-![blueprintswitcher - assignmentrules](images/blueprint_assignmentrules.png)
+See [Using Conditional Logic in Blueprints](https://docs.iru.com/en/endpoint/blueprints/assignment-maps/using-conditional-logic-in-blueprints) and [Advanced view](https://docs.iru.com/en/endpoint/blueprints/assignment-maps/creating-a-blueprint#advanced-view).
 
 ### Other
 Any other scenario where you want to automate the switching of an enrolled Mac from one Blueprint to another. You can use it in a Library Item like in the examples above, where it will run locally on the Mac, or you can use the script on a VM for automation.
@@ -78,18 +71,5 @@ If you’d like to switch Blueprints after a device initially enrolls into a def
 
 ## Troubleshooting
 * **I'm getting an error**
-  * Double-check that you're using a valid API token with the correction permissions and that your Kandji subdomain is correct.
-  * Check the output logs in the library item in Kandji, or run `log show --style compact --process "logger" | grep "bp_switcher"` on the device that is running the script to view the logs.
-  
-<!---
-=================================================================
-       (      (               (                     )       (     
-   (   )\ )   )\ )  (  (      )\ )  *   )   (    ( /(       )\ )  
- ( )\ (()/(  (()/(  )\))(   '(()/(` )  /(   )\   )\()) (   (()/(  
- )((_) /(_))  /(_))((_)()\ )  /(_))( )(_))(((_) ((_)\  )\   /(_)) 
-((_)_ (_))   (_))  _(())\_)()(_)) (_(_()) )\___  _((_)((_) (_))   
- | _ )| _ \  / __| \ \((_)/ /|_ _||_   _|((/ __|| || || __|| _ \  
- | _ \|  _/  \__ \  \ \/\/ /  | |   | |   | (__ | __ || _| |   /  
- |___/|_|    |___/   \_/\_/  |___|  |_|    \___||_||_||___||_|_\  
-================================================================= 
--->
+  * Double-check that you're using a valid API token with the correction permissions and that your Iru subdomain is correct.
+  * Check the output logs in the library item in Iru, or run `log show --style compact --process "logger" | grep "bp_switcher"` on the device that is running the script to view the logs.

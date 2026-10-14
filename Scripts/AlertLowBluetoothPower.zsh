@@ -1,12 +1,11 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Nicholas McDonald, Kandji Fellow | support@kandji.io | Kandji, Inc.
+# Created by Nicholas McDonald, Iru Fellow | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 09/11/2025
-#   Updated -
-# 	Version - 1
+# 	Version - 1.0.1
 #
 ################################################################################################
 # Tested macOS Versions
@@ -20,11 +19,11 @@
 #
 # This script checks the battery levels of connected Bluetooth HID devices on macOS by parsing
 # output from `ioreg`. If any device reports a `BatteryPercent` value below a configurable
-# threshold (default: 25%), the script will list those devices and trigger a Kandji display alert
+# threshold (default: 25%), the script will list those devices and trigger an Iru display alert
 # to notify the user. The alert includes a title, icon, and a message containing the names and
 # battery percentages of all low-battery devices.
 #
-# When devices fall below the threshold, it prints their status, triggers the Kandji alert,
+# When devices fall below the threshold, it prints their status, triggers the Iru alert,
 # and exits with status code 0.
 #
 # The threshold can be adjusted by modifying the `THRESHOLD` variable at the top of the script.
@@ -120,8 +119,8 @@ if [[ -n "$low_devices" ]]; then
   # Build a readable alert message with the list
   alert_message=$'The following devices have low battery. Please plug them in:\n\n'"$low_devices"
 
-  # trigger Kandji alert
-   /usr/local/bin/kandji display-alert \
+  # trigger Iru alert
+   /usr/local/bin/iru display-alert \
     --title "Bluetooth Low Battery" \
     --message "$alert_message" \
     --icon /System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/ToolbarInfo.icns \

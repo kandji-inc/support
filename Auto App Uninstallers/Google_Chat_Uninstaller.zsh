@@ -1,7 +1,7 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
-# Modified by Sean Burke | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
+# Modified by Sean Burke | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 05/18/2022
 # Updated on 08/29/2023
@@ -13,7 +13,7 @@
 #
 # Uninstaller script for Google Chat
 # NOTE: It is recommended you remove Chat from any Blueprints where this uninstaller is added
-# NOTE: Failure to do so may result in Chat being reinstalled upon next Kandji agent check-in
+# NOTE: Failure to do so may result in Chat being reinstalled upon next Iru Agent check-in
 # Code will first kill any active Chat processes
 # Next, if Chat application bundle exists in /Applications, it will be deleted
 # Finally, iterates over all users with UID ≥ 500, populates their home directory paths,

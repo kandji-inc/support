@@ -2,7 +2,7 @@
 
 ### About
 
-This script is designed to be run from Kandji Self Service.
+This script is designed to be run from Iru Self Service.
 
 ### API Permissions
 
@@ -18,12 +18,12 @@ Update the variables below to meet your needs
 ###################################### VARIABLES ##################################################
 ###################################################################################################
 
-# Kandji tenant subdomain
+# Iru tenant subdomain
 SUBDOMAIN="accuhive" # accuhive
 
 # tenant region
 REGION="us" # us, eu
 
-# Kandji Bearer Token
+# Iru API token
 TOKEN="your_api_key_here"
 ```

@@ -1,6 +1,6 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Iru, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 06/07/2024
 # Updated on 07/30/2026

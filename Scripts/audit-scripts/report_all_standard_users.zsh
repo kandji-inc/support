@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 ################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Updated - 2023-01-27 - Matt Wilson

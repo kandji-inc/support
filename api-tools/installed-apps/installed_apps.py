@@ -71,8 +71,8 @@ from requests.adapters import HTTPAdapter
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
-# us("") and eu - this can be found in the Kandji settings on the Access tab
-REGION = ""  # us and eu - this can be found in the Kandji settings on the Access tab
+# us("") and eu - this can be found in Account Menu > Access > API tokens
+REGION = ""  # us and eu - this can be found in Account Menu > Access > API tokens
 
 # Kandji Bearer Token
 TOKEN = ""

@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################################
-# Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
+# Created by Nicholas McDonald | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 # Created - 03/29/2021
@@ -10,10 +10,10 @@
 # Software Information
 ################################################################################################
 #
-# Example script reading in Kandji global variables from the global variables custom profile.
+# Example script reading in Iru global variables from the global variables custom profile.
 #
-# For more information about Global Variables, please refer to the Kandji Knowledge Base
-# https://support.kandji.io/kb/global-variables
+# For more information about Global Variables, please refer to the Iru documentation
+# https://docs.iru.com/en/endpoint/library/library-items-profiles/global-variables
 #
 ################################################################################################
 # License Information

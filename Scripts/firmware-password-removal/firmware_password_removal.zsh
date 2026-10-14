@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Nicholas McDonald | support@kandji.io | Kandji, Inc.
+# Created by Nicholas McDonald | support@iru.com | Iru, Inc.
 ###################################################################################################
 #
 #   Created - 2020-08-14
@@ -53,7 +53,7 @@
 FIRMWARE_PASSWORD="Firmware_password_here"
 
 # Specify the number of seconds before the end user will be forced to restart (This interaction
-# occurs via the Kandji menu bar app similar to other forced restarts)
+# occurs via the Iru menu bar app similar to other forced restarts)
 REBOOT_DELAY_SECONDS="1800"
 
 ###################################################################################################
@@ -109,7 +109,7 @@ EOF
 
 if [[ "${remove_command}" = *"Must restart before changes will take effect"* ]]; then
     echo "Firmware Password Removed... changes will take affect after reboot"
-    /usr/local/bin/kandji reboot --delaySeconds ${REBOOT_DELAY_SECONDS}
+    /usr/local/bin/iru reboot --delaySeconds ${REBOOT_DELAY_SECONDS}
     exit 0
 else
     echo "Firmware password was not removed... an unknown error occured"

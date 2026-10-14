@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Matt Wilson, Noah Anderson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson, Noah Anderson | support@iru.com | Iru, Inc.
 ###################################################################################################
 # Created on 2021-08-01
 # Updated on 2022-04-13
@@ -19,7 +19,7 @@
 #
 #   This Audit script is designed to check if an application is present and if the app is present
 #   the script will check if the app matches an enforced version, if not the script will exit
-#   triggering an Alert in the Kandji Web app.
+#   triggering an alert in Iru.
 #
 ###################################################################################################
 # License Information
@@ -76,7 +76,7 @@ installed_path="$(/usr/bin/find /Applications /System/Applications /Library/ -ma
 
 # Validate the path returned in installed_path
 if [[ ! -e $installed_path ]] || [[ $APP_NAME != "$(/usr/bin/basename $installed_path)" ]]; then
-    /bin/echo "$APP_NAME not installed. Reporting to Kandji..."
+    /bin/echo "$APP_NAME not installed. Reporting to Iru..."
     exit 1
 else
     /bin/echo "$APP_NAME installed at $installed_path"
@@ -94,7 +94,7 @@ installed_version=$(/usr/bin/defaults read "$installed_path/Contents/Info.plist"
 
 # make sure we got a version number back
 if [[ $? -ne 0 ]]; then
-    /bin/echo "App version could not be determined. Reporting to Kandji..."
+    /bin/echo "App version could not be determined. Reporting to Iru..."
     exit 1
 fi
 
@@ -103,7 +103,7 @@ version_check="$(is-at-least "$MINIMUM_ENFORCED_VERSION" "$installed_version" &&
 
 if [[ $version_check == *"less"* ]]; then
     /bin/echo "Installed version \"$installed_version\" is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."
-    /bin/echo "Reporting to Kandji"
+    /bin/echo "Reporting to Iru"
     exit 1
 else
     /bin/echo "Installed version \"$installed_version\" is $version_check min enforced version \"$MINIMUM_ENFORCED_VERSION\" ..."

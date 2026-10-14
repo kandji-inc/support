@@ -1,8 +1,6 @@
 # CrowdStrike README
 
-<img src="_Images/CrowdStrike.png" alt="drawing" width="128"/>
-
-For information about deploying Crowdstrike, please see our [Deploying CrowdStrike as a Custom App](https://support.kandji.io/kb/deploying-crowdstrike-as-a-custom-app) article.
+For information about deploying Crowdstrike, please see our [Deploying CrowdStrike as a Custom App](https://docs.iru.com/en/endpoint/library/deployment-guides/apple/deploy-crowdstrike-as-a-custom-app) article.
 
 ## Resources
 

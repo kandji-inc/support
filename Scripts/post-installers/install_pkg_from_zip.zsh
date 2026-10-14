@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ###################################################################################################
 #
 #   Created - 10/29/2021
@@ -53,8 +53,8 @@ VERSION="1.0.2"
 # This is the name of the package that is contained in the zip file
 PKG_NAME="antivirus_for_mac.pkg"
 
-# Kandji unzip path
-# This should reflect the unzip file path defined in the custom app in Kandji
+# Iru unzip path
+# This should reflect the unzip file path defined in the Custom App in Iru
 UNZIP_PATH="/var/tmp"
 
 ###################################################################################################

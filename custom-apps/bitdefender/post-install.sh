@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 ################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created - 2022-02-09
 # Updated - 2025-05-08
@@ -53,7 +53,7 @@
 PKG_NAME="antivirus_for_mac.pkg"        # Intel package name
 AS_PKG_NAME="antivirus_for_mac_arm.pkg" # Apple Silicon package name
 
-# Kandji unzip path
+# Iru unzip path
 # This should reflect the unzip file path defined in the custom app library item
 UNZIP_PATH="/var/tmp"
 

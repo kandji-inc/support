@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################
-# Created by Jan Rosenfeld | Solutions Engineering | Kandji, Inc.
+# Created by Jan Rosenfeld | Solutions Engineering | Iru, Inc.
 ################################################################################
 #
 # Created on 2023/05/22
@@ -53,11 +53,11 @@ VERSION="2.0.0"
 ############################# USER INPUT #####################################
 ##############################################################################
 
-# Kandji Subdomain
+# Iru subdomain
 subdomain="mycompany"
 
-# Region (us and eu) - this can be found in the Kandji settings on the
-# Access tab
+# Region (us and eu). In Iru, select the Account Menu, then Access.
+# US tenants can leave this blank.
 region=""
 
 # API Bearer Token
@@ -71,7 +71,7 @@ token="your-token-here"
 # Ensure region variable is lowercase
 region="${region:l}"
 
-# Kandji API base URL
+# Iru API base URL
 if [[ -z $region || $region == "us" ]]; then
   base_url="https://${subdomain}.api.kandji.io/api"
 elif [[ $region == "eu" ]]; then

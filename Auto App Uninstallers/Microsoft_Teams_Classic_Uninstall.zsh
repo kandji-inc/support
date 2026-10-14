@@ -1,7 +1,7 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
-# Modified by Daniel Chapa | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
+# Modified by Daniel Chapa | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 05/18/2022
 # Updated on 05/07/2024
@@ -10,11 +10,11 @@
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.2
+# Version 1.0.3
 #
 # Uninstaller script for Microsoft Teams (Classic)
 # NOTE: It is recommended you remove Microsoft Teams (Classic) from any Blueprints where this uninstaller is added
-# NOTE: Failure to do so may result in Microsoft Teams (Classic) being reinstalled upon next Kandji agent check-in
+# NOTE: Failure to do so may result in Microsoft Teams (Classic) being reinstalled upon next Iru Agent check-in
 # Code will first locate install(s) of Microsoft Teams (Classic) by bundle identifier
 # Kills any active Microsoft Teams (Classic) processes
 # Next, if Microsoft Teams (Classic) application bundle exists in /Applications, it will be deleted
@@ -83,7 +83,7 @@ if [[ -d "${application_path}" ]]; then
     /usr/bin/lsappinfo info $(/usr/bin/lsappinfo find bundleid=${application_bundle_id}) -only pid | /usr/bin/cut -d '=' -f2 | /usr/bin/xargs kill -9
 
     # Remove App from Dock
-    /usr/local/bin/kandji dock --remove ${application_bundle_id}
+    /usr/local/bin/iru dock --remove ${application_bundle_id}
 
     /bin/echo "Deleting application bundle for ${app_friendly_name}..."
     /bin/rm -f -R "${application_path}"

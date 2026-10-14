@@ -10,5 +10,5 @@ For example you can wait for Self Service to be installed and then try to open i
 TOTAL_CHECKS=300
 
 # The app that you are looking for
-APP_NAME="Kandji Self Service.app"
+APP_NAME="Iru Self Service.app"
 ```

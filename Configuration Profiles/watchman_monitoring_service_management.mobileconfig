@@ -21,7 +21,7 @@
 				<key>PayloadDisplayName</key>
 				<string>Watchman Monitoring - Background items</string>
 				<key>PayloadOrganization</key>
-				<string>Kandji</string>
+				<string>Iru</string>
 				<key>PayloadIdentifier</key>
 				<string>io.kandji.watchman-monitoring.service-management.5EB7AC41-7EC2-40D4-918E-E47E3FBE7B77</string>
 				<key>PayloadUUID</key>

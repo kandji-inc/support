@@ -1,20 +1,12 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Brian Goldstein | support@kandji.io | Kandji, Inc.
+# Created by Brian Goldstein | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 09/13/2022
-#   Updated - 02/14/2025
+#   Updated - 10/12/2026
 #
-################################################################################################
-# Tested macOS Versions
-################################################################################################
-#
-#   - 15.3.1
-#   - 14.5
-#   - 13.6.7
-#   - 12.7.5
 #
 ################################################################################################
 # Software Information
@@ -24,14 +16,14 @@
 #   the variables section. The script supports http, https, smb, ftp, and vnc URIs. If the ICON 
 #   variable is left blank, the script will use a generic icon.
 #
-#   To avoid user prompts, please create a Privacy Profile granting the Kandji Agent access to
+#   To avoid user prompts, please create a Privacy Profile granting the Iru Agent access to
 #   Finder Apple Events.
 #
 ################################################################################################
 # License Information
 ################################################################################################
 #
-# Copyright 2025 Kandji, Inc.
+# Copyright 2026 Iru, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -52,21 +44,21 @@
 ################################################################################################
 
 # Script version
-VERSION="1.0.3"
+VERSION="1.0.4"
 
 ################################################################################################
 ########################################## VARIABLES ###########################################
 ################################################################################################
 
 # The address that you want the shortcut to open.
-HOSTNAME="https://kandji.io"
+HOSTNAME="https://www.iru.com"
 
 # The name that will display to users.
-DISPLAYNAME="My Favorite MDM"
+DISPLAYNAME="Iru Website"
 
-# Full path to the icon to be used for the shortcut.  A blank variable will use the default icon
-# for the URI type.
-# example: ICON="/Library/Kandji/Kandji Agent.app/Contents/Resources/AppIcon.icns"
+# Full local path to the image to be used for the shortcut. The image must already exist
+# on the Mac. A blank variable will use the default icon for the URI type.
+# Example: ICON="/Users/Shared/ShortcutIcons/Iru.png"
 ICON=""
 
 ################################################################################################

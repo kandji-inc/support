@@ -2,20 +2,19 @@
 
 
 ## Overview
-This repository contains a number of uninstallers for Kandji Auto Apps.  Uninstallers for applications such as Parallels Desktop and VMware Fusion offer the ability to remove multiple versions.
+This repository contains a number of uninstallers for Iru Auto Apps. Uninstallers for applications such as Parallels Desktop and VMware Fusion offer the ability to remove multiple versions.
 
 **NOTE:** If multiple versions of an application are present, running the uninstaller may adversely affect other versions.
 
 ## Recommended Usage
 When using the scripts in this repository, copy the entire script, including the first line with the #!, to ensure the code runs with the correct interpreter.
 
-The easiest way to do this is:
+Follow [GitHub's steps for viewing or copying the raw file content](https://docs.github.com/en/repositories/working-with-files/using-files/viewing-and-understanding-files#viewing-or-copying-the-raw-file-content):
 
-1. Navigate to the script you would like to use.
-2. Select the **Raw** button.
-3. On the page that appears, copy all of the text.
-
-![](../Scripts/images/copy_raw.gif)
+1. On GitHub, navigate to the main page of the repository.
+2. Click the script you want to use.
+3. In the upper-right corner of the file view, click **Raw**.
+4. In the upper-right corner of the raw file view, click the copy button.
 
 **NOTE:** To modify which versions get uninstalled for applications such as Parallels or VMware, adjust the `versions_to_remove` array (located below the License information section) accordingly.  The array expects integer values, separated by a space if there are multiple values ex:`versions_to_remove=(15 17 18)`.
 

@@ -2,9 +2,9 @@
 
 ################################################################################################
 # Created by Brian Van Peski, Jan Rosenfeld & Matt Wilson
-# support@kandji.io | Kandji, Inc. | Solutions Engineering
+# support@iru.com | Iru, Inc. | Solutions Engineering
 ################################################################################################
-#  v. 2.1
+#  v. 2.2
 #
 #  Created - 2023-07-13
 #  Updated - 2025-02-14
@@ -21,7 +21,7 @@
 # Software Information
 ################################################################################################
 # 
-#  Move an enrolled device to another blueprint via the Kandji API.
+#  Move an enrolled device to another blueprint via the Iru API.
 # 
 ################################################################################################
 # License Information
@@ -58,17 +58,17 @@ LOGGING(){
 # USER INPUT 
 ##############################################################
 
-# Kandji Subdomain
+# Iru subdomain
 subdomain="mycompany"
 
-# Region (us and eu) - this can be found in the Kandji settings on the Access tab
+# Region (us and eu) - this can be found in Iru under Account Menu > Access
 region=""
 
 # API Bearer Token
 # The API token must have permissions for: List Blueprints, Get Blueprint, Update a Device, Device List, Device Details.
 token="your-token-here"
 
-# Blueprint name (This is the name of the blueprint as it exists in Kandji that you want to assign devices to).
+# Blueprint name (This is the name of the blueprint as it exists in Iru that you want to assign devices to).
 # You can also use a Blueprint UUID (useful if your Blueprint has emojis or other special characters).
 assignBlueprint="BlueprintName"
 
@@ -95,7 +95,7 @@ content_type="application/json"
 # Ensure region variable is lowercase
 region="${region:l}"
 
-# Kandji API base URL
+# Iru API base URL
 if [[ -z $region || $region == "us" ]]; then
   base_url="https://${subdomain}.api.kandji.io/api"
 elif [[ $region == "eu" ]]; then
@@ -145,17 +145,17 @@ api_blueprint_record(){
   fi
 
   if [[ -z "$blueprint_record" || $bp_count = 0 ]]; then
-    LOGGING "Had an issue pulling blueprint id from Kandji..."
+    LOGGING "Had an issue pulling blueprint id from Iru..."
     LOGGING "Double-check that the provided Blueprint name is correct."
       if [[ $notifyUsers == true ]]; then
-      /usr/local/bin/kandji display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
+      /usr/local/bin/iru display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
       fi
     exit 1
   elif [[ $bp_count > 1 ]]; then
-    LOGGING "Had an issue pulling blueprint id from Kandji..."
+    LOGGING "Had an issue pulling blueprint id from Iru..."
     LOGGING "Found multiple blueprints that match '$assignBlueprint.'"
       if [[ $notifyUsers == true ]]; then
-      /usr/local/bin/kandji display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
+      /usr/local/bin/iru display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
       fi
     exit 1
   else
@@ -181,7 +181,7 @@ api_blueprint_uuid_record(){
     bp_detail=$(/usr/libexec/PlistBuddy -c "Print detail" /dev/stdin <<< "$blueprintUUID_record_xml")
   fi
   if [[ -z "$blueprintUUID_record" || "$bp_detail" == "Not found"* ]]; then
-    LOGGING "Had an issue pulling blueprint from Kandji..."
+    LOGGING "Had an issue pulling blueprint from Iru..."
     LOGGING "Double-check that the provided Blueprint UUID is correct...."
     exit 1
   fi
@@ -255,13 +255,13 @@ blueprint_validator() {
   if [[ "$device_blueprint" != "$assignBlueprint" ]]; then
     LOGGING "Had an issue re-assigning device to blueprint. Exiting..."
       if [[ $notifyUsers == true ]]; then
-      /usr/local/bin/kandji display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
+      /usr/local/bin/iru display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
       fi
     exit 1
     else
     LOGGING "CONFIRMED! Device is now assigned to blueprint: $device_blueprint_name ($device_blueprint)"
       if [[ $notifyUsers == true ]]; then
-      /usr/local/bin/kandji display-alert --title 'BLUEPRINT CHANGED!' --message 'This computer is now assigned to the '$device_blueprint_name' blueprint.' --no-wait
+      /usr/local/bin/iru display-alert --title 'BLUEPRINT CHANGED!' --message 'This computer is now assigned to the '$device_blueprint_name' blueprint.' --no-wait
       fi
     exit 0
   fi
@@ -285,9 +285,9 @@ api_device_record
 
 # Error check to make sure we received device record from API call..
 if [[ -z "$device_record" ]] || [[ "$device_record" == "[]" ]]; then
-  LOGGING "--- Had an issue pulling device record from Kandji. Exiting..."
+  LOGGING "--- Had an issue pulling device record from Iru. Exiting..."
     if [[ $notifyUsers == true ]]; then
-    /usr/local/bin/kandji display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
+    /usr/local/bin/iru display-alert --title 'ERROR!' --message 'We had an issue assigning this computer to the'$device_blueprint_name' blueprint. Please contact IT for additional support.' --no-wait
     fi
   exit 1
   else
@@ -320,7 +320,7 @@ fi
 if [[ "$device_blueprint" == "$assignBlueprint" ]]; then
   LOGGING "Device is already assigned to blueprint $device_blueprint_name ($device_blueprint)!  Exiting..."
     if [[ $notifyUsers == true ]]; then
-    /usr/local/bin/kandji display-alert --title 'Already Assigned' --message 'This computer is already assigned to the '$device_blueprint_name' blueprint.' --no-wait
+    /usr/local/bin/iru display-alert --title 'Already Assigned' --message 'This computer is already assigned to the '$device_blueprint_name' blueprint.' --no-wait
     fi
   exit 0
 else

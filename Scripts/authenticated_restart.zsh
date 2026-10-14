@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Jan Rosenfeld & Noah Anderson | support@kandji.io | Kandji, Inc.
+# Created by Jan Rosenfeld & Noah Anderson | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 2024.11.15
@@ -17,7 +17,7 @@
 # Software Information
 ################################################################################################
 #
-# This script is designed to be run via Kandji Self Service. It prompts the
+# This script is designed to be run via Iru Self Service. It prompts the
 # current user for their password, then performs a FileVault authenticated
 # reboot. This is useful for when a user is remotely connected to an encrypted
 # macOS device but needs to reboot it and get past the encryption screen.

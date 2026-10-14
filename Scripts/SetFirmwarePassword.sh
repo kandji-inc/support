@@ -1,6 +1,6 @@
 #!/bin/zsh
 ################################################################################################
-# Created by Nicholas McDonald | se@kandji.io | Kandji, Inc. | Product Engineering
+# Created by Nicholas McDonald | se@iru.com | Iru, Inc. | Product Engineering
 ################################################################################################
 # Created on 03/08/2022
 ################################################################################################
@@ -33,7 +33,7 @@
 #Specify your desired firmware password
 firmwarePasswd="FirmwarePasswordHere"
 
-#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Kandji menu bar app similar to other forced restarts) 
+#Specify the number of seconds before the end user will be forced to restart (This interaction occurs via the Iru menu bar app similar to other forced restarts) 
 rebootDelayInSeconds="1800"
 
 #Do not modify below this line
@@ -65,7 +65,7 @@ EOF
 
 if [[ "${setCommand}" = *"Must restart before changes will take effect"* ]]; then 
 	echo "Firmware Password set changes will take affect after reboot"
-	/usr/local/bin/kandji reboot --delaySeconds ${rebootDelayInSeconds}
+	/usr/local/bin/iru reboot --delaySeconds ${rebootDelayInSeconds}
 	exit 0
 else
 	echo "Firmware password was not set... an unknown error occured"

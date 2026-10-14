@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Brian Goldstein | support@kandji.io | Kandji, Inc.
+# Created by Brian Goldstein | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 05/07/2022
@@ -50,7 +50,7 @@
 #
 ################################################################################################
 # Script version
-VERSION="2.0.3"
+VERSION="2.0.4"
 
 ################################################################################################
 ########################################## VARIABLES ###########################################
@@ -97,7 +97,7 @@ fi
 nl=$'\n'
 executeLibraryItems=()
 for libraryItem in "${libraryItemList[@]}"; do
-    line="/usr/local/bin/kandji library --item \"${libraryItem}\" -F"
+    line="/usr/local/bin/iru library --item \"${libraryItem}\" -F"
     executeLibraryItems+=("${line}${nl}")
 done
 

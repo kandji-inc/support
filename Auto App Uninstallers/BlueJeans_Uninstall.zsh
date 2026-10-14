@@ -1,13 +1,13 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 06/07/2024
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.0.1
 #
 # Uninstaller script for BlueJeans
 # Code will first locate install(s) of BlueJeans by bundle identifier
@@ -78,7 +78,7 @@ if [[ -d "${application_path}" ]]; then
     /usr/bin/lsappinfo info $(/usr/bin/lsappinfo find bundleid=${application_bundle_id}) -only pid | /usr/bin/cut -d '=' -f2 | /usr/bin/xargs kill -9
 
     # Remove App from Dock
-    /usr/local/bin/kandji dock --remove ${application_bundle_id}
+    /usr/local/bin/iru dock --remove ${application_bundle_id}
 
     echo "Deleting application bundle for ${app_friendly_name}..."
     /bin/rm -f -R "${application_path}"

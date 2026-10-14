@@ -1,8 +1,6 @@
 # Bitdefender README
 
-<img src="bitdefender_icon.png" alt="drawing" width="128"/>
-
-For information about deploying Bitdefender, please see our [Deploying Bitdefender Endpoint Security Tool as a Custom App](https://support.kandji.io/kb/deploying-bitdefender-endpoint-security-tool-as-a-custom-app) article.
+For information about deploying Bitdefender, please see our [Deploying Bitdefender Endpoint Security Tool as a Custom App](https://docs.iru.com/en/endpoint/library/deployment-guides/apple/deploy-bitdefender-endpoint-security-tool-as-a-custom-app) article.
 
 ## Resources
 

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Brian Goldstein | support@kandji.io | Kandji, Inc.
+# Created by Brian Goldstein | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 2023/07/13
@@ -20,7 +20,7 @@
 ################################################################################################
 #
 # This script is designed to automatically look for the IdP user who signed in with Passport and
-# assign that user to the device record in Kandji.
+# assign that user to the device record in Iru.
 #
 # By default, the script searches across all user directory integrations. To limit the search to
 # a specific integration, please set the INTEGRATION_ID variable.
@@ -52,21 +52,21 @@
 ################################################################################################
 
 # Script version
-VERSION="2.0.0"
+VERSION="2.0.1"
 
 ################################################################################################
 ###################################### USER INPUT ##############################################
 ################################################################################################
 
-# Set your Kandji subdomain (example: for "beekeepr.kandji.io", enter "beekeepr")
+# Set SUBDOMAIN to the first part of your API URL. Example: for "accuhive.api.kandji.io", enter "accuhive".
 SUBDOMAIN="subdomain"
 
 # Set your region (example: "us" or "eu")
 REGION="us"
 
-# Kandji Enterprise API token
+# Iru Enterprise API token
 # Requires the following permissions: List Users, Update a device, and Device List
-TOKEN="Kandji API Token Here"
+TOKEN="Iru API Token Here"
 
 # User Directory Integration UUID (leave blank to search all integrations)
 INTEGRATION_ID=""
@@ -86,7 +86,7 @@ logging() {
     /usr/bin/logger "${script_id}: [${1}] ${2}"
 }
 
-# Check if jq is installed. If not found will install Kandji provided jq
+# Check if jq is installed. If not found will install Iru provided jq
 # Usage: check_jq "CHECK_TYPE"
 # CHECK_TYPE should be either "install" or "remove"
 check_jq() {
@@ -95,7 +95,7 @@ check_jq() {
 
     if [[ "${check_type}" == "install" ]]; then
         if ! /usr/bin/command -v jq &>/dev/null; then
-            logging "INFO" "jq is not installed. Installing Kandji provided jq..."
+            logging "INFO" "jq is not installed. Installing Iru provided jq..."
 
             # Create KandjiSE directory if needed
             if [[ ! -d "/Library/KandjiSE" ]]; then
@@ -103,10 +103,10 @@ check_jq() {
             fi
 
             if [[ -f "/Library/KandjiSE/jq" ]]; then
-                logging "INFO" "Kandji jq already installed..."
+                logging "INFO" "Iru jq already installed..."
                 jq_binary="/Library/KandjiSE/jq"
             else
-                # Install Kandji provided jq
+                # Install Iru provided jq
                 cd /Library/KandjiSE/ || exit
                 /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.1-UNIVERSAL.pkg.tar.gz"
                 /usr/bin/tar -xf JQ-1.8.1-UNIVERSAL.pkg.tar.gz
@@ -121,16 +121,16 @@ check_jq() {
                 exit 1
             fi
 
-            # Set flag for Kandji jq uninstall
-            kandji_jq_install="true"
+            # Set flag for Iru jq uninstall
+            iru_jq_install="true"
         else
             logging "INFO" "jq is already installed."
             jq_binary=$(/usr/bin/which jq)
         fi
     elif [[ "${check_type}" == "remove" ]]; then
-        # Check if Kandji installed jq was used
-        if [[ "${kandji_jq_install}" == "true" ]]; then
-            logging "INFO" "Removing Kandji jq files."
+        # Check if Iru installed jq was used
+        if [[ "${iru_jq_install}" == "true" ]]; then
+            logging "INFO" "Removing Iru jq files."
             if [[ $(/bin/ls /Library/KandjiSE | /usr/bin/wc -l) == "       3" ]]; then
                 /bin/rm -rf /Library/KandjiSE
             else
@@ -139,7 +139,7 @@ check_jq() {
                 /bin/rm /Library/KandjiSE/JQ-1.8.1-UNIVERSAL.pkg
             fi
         else
-            logging "INFO" "Kandji provided jq was not used. Nothing to do..."
+            logging "INFO" "Iru provided jq was not used. Nothing to do..."
         fi
     else
         logging "ERROR" "Invalid check_type value specified..."
@@ -170,7 +170,7 @@ current_user() {
 ################################################################################################
 
 # Set language environment variable
-# This is not set in the shell session Kandji scripts run in.
+# This is not set in the shell session Iru scripts run in.
 # A value is needed to correctly parse characters with diacritical marks.
 export LANG=en_US.UTF-8
 
@@ -180,7 +180,7 @@ SERIAL_NUMBER=$(/usr/sbin/ioreg -c IOPlatformExpertDevice -d 2 | /usr/bin/awk -F
 # Content Type
 CONTENT_TYPE="application/json"
 
-# Kandji API base URL
+# Iru API base URL
 if [[ -z $REGION || $REGION == "us" ]]; then
     BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
 elif [[ $REGION == "eu" ]]; then
@@ -244,7 +244,7 @@ else
 fi
 
 ################################################
-## Find the user in the Kandji user directory ##
+## Find the user in the Iru user directory ##
 ################################################
 
 # Make the API call to get the user ID
@@ -262,10 +262,10 @@ result_count=$(echo "${user_response}" | "${jq_binary}" '.results | length')
 
 # Make sure that we only received 1 result
 if [[ "${result_count}" -eq 0 ]]; then
-    logging "ERROR" "No Kandji users returned for ${passport_email}. Please check your directory and try again."
+    logging "ERROR" "No Iru users returned for ${passport_email}. Please check your directory and try again."
     exit 1
 elif [[ "${result_count}" -gt 1 ]]; then
-    logging "ERROR" "Multiple Kandji users returned for ${passport_email}. Please check your directory or include an Integration ID to limit the search and try again."
+    logging "ERROR" "Multiple Iru users returned for ${passport_email}. Please check your directory or include an Integration ID to limit the search and try again."
     exit 1
 fi
 
@@ -283,7 +283,7 @@ device_id=$(echo "${device_record}" | "${jq_binary}" -r '.[0].device_id')
 # Print the device ID
 logging "INFO" "Device ID: ${device_id}"
 
-# Update Device Record in Kandji
+# Update Device Record in Iru
 update_device_response=$(/usr/bin/curl --silent --request PATCH --url "${BASE_URL}/v1/devices/${device_id}" \
     --header "Authorization: Bearer ${TOKEN}" \
     --header "Content-Type: ${CONTENT_TYPE}" \
@@ -296,7 +296,7 @@ else
     logging "INFO" "User has been successfully assigned to the device record."
 fi
 
-# Clean up Kandji jq if used
+# Clean up Iru jq if used
 check_jq "remove"
 
 exit 0

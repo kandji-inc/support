@@ -58,7 +58,7 @@
 			<key>PayloadIdentifier</key>
 			<string>8B5B11F3-A0D9-4622-8831-AC32814651CD</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.system-extension-policy</string>
 			<key>PayloadUUID</key>
@@ -74,7 +74,7 @@
 			<key>PayloadIdentifier</key>
 			<string>DBD2AA99-C3DF-420F-98A8-3332651328AE</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
@@ -193,7 +193,7 @@
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.bitdefender.171C736A-CA59-4EBB-B411-3035422499BF</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
@@ -213,7 +213,7 @@
 	<key>PayloadIdentifier</key>
 	<string>com.kandji.profile.custom.E3D409CC-D789-4934-8D48-EECE678F8508</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji, Inc.</string>
+	<string>Iru, Inc.</string>
 	<key>PayloadRemovalDisallowed</key>
 	<true/>
 	<key>PayloadScope</key>

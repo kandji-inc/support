@@ -1,10 +1,11 @@
 #!/usr/bin/env zsh
 
 ################################################################################################
-# Created by Noah Anderson | support@kandji.io | Kandji, Inc.
+# Created by Noah Anderson | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 2023-02-01 
+# 	Version - 1.0.1
 #
 ################################################################################################
 # Tested macOS Versions
@@ -22,10 +23,10 @@
 ################################################################################################
 #
 # Script looks for an install of Atom with a revoked certificate (newer than minor version 60)
-# If found, validates reinstall is scoped and available from Kandji (exit 1 if not)
+# If found, validates reinstall is scoped and available from Iru (exit 1 if not)
 # NOTE: Atom Auto App must be scoped for Continuous Enforcement or available in Self Service 
 # Creates temporary file and writes heredoc to force reinstall Atom
-# Calls script which will pause 10 seconds, run kandji library, and then self destruct + exit
+# Calls script which will pause 10 seconds, run iru library, and then self destruct + exit
 #
 ################################################################################################
 # License Information
@@ -55,8 +56,8 @@
 ##########VARIABLES#########
 ############################
 
-#Assign path to kandji binary for invocation
-path_to_kagent="/usr/local/bin/kandji"
+#Assign path to iru binary for invocation
+path_to_iru="/usr/local/bin/iru"
 #Assign expected path to Atom Info.plist
 path_to_atom_info="/Applications/Atom.app/Contents/Info.plist"
 #Get full and minor versions of Atom
@@ -71,7 +72,7 @@ atom_minor=$(/usr/bin/cut -d "." -f2 <<< "${atom_version}")
 # Conducts prechecks to validate if Atom is
 # 1. Installed
 # 2. Newer than minor version 60
-# 3. Eligible for reinstall via Kandji
+# 3. Eligible for reinstall via Iru
 # Returns:
 #   exit 0 if Atom not installed
 #   exit 0 if Atom installed and valid version
@@ -94,7 +95,7 @@ function prechecks() {
     fi
 
     #Confirm Atom install is in-scope for this Mac
-    atom_check=$("${path_to_kagent}" library --list | /usr/bin/grep "Atom")
+    atom_check=$("${path_to_iru}" library --list | /usr/bin/grep "Atom")
 
     if [[ ! "${atom_check}" ]]; then
         echo "Atom version has expired certificate, but Auto App not scoped for install"
@@ -107,8 +108,8 @@ function prechecks() {
 # Generates a temporary file using mktemp
 # Writes a heredoc to above temp file
 # Contents of file are to sleep 10 and then
-# run kandji library to force install Atom
-# Kandji library is sent to bg & disowned
+# run iru library to force install Atom
+# Iru library is sent to bg & disowned
 # Temp file deletes itself and exits 0
 # Outputs:
 #   Creates and writes heredoc to temp file
@@ -123,7 +124,7 @@ function create_tmp_exec() {
     #!/bin/zsh
     sleep 10
 
-    "${path_to_kagent}" library --item "Atom" -F & disown
+    "${path_to_iru}" library --item "Atom" -F & disown
 EOF
     /bin/cat >> "${tmp_file}" <<"EOF"
 
@@ -140,16 +141,16 @@ EOF
 # func create_tmp_exec
 # Script execution gets stdin from/redirects
 # to /dev/null in bg to allow parallel 
-# execution without hanging the kandji binary
+# execution without hanging the iru binary
 # Outputs:
 #   Reinstalls Atom after 10 second delay
 ##############################################
-function kandji_self_call() {
+function iru_self_call() {
 
     echo "Triggering force reinstall of Atom..."
 
     #Redirecting stderr/out to /dev/null and bg'ing the proc that calls our script
-    #This allows the kandji agent to end its run without waiting for our script exec
+    #This allows the iru agent to end its run without waiting for our script exec
     #We also provide stdin from /dev/null as well, allowing us to detach from any active TTY connections 
     #Also serves to inform our program any input is not coming from a terminal session
     /bin/zsh "${tmp_file}" < /dev/null > /dev/null 2>&1 &
@@ -166,7 +167,7 @@ function main() {
 
     create_tmp_exec
 
-    kandji_self_call
+    iru_self_call
 
     exit 0
 }

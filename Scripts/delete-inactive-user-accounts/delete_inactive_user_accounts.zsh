@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ###################################################################################################
 # Created - 12/10/2021
 ###################################################################################################
@@ -15,7 +15,7 @@
 # Software Information
 ###################################################################################################
 #
-# This script is designed to be run from Kandji as a customer script library item. The script will
+# This script is designed to be run from Iru as a Custom Script Library Item. The script will
 # look for and remove any user accounts that are older than the number of days specified in the
 # `AGE` varialbe and do not appear in the `KEEP` list.
 #

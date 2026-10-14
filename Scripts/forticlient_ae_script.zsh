@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ###################################################################################################
 #
 #   Created - 2021-10-12
@@ -23,7 +23,7 @@
 # profile is installed and ensure that FortiClient is running properly after installation.
 #
 # A Settings Configuration profiles is included with the FortiClient deployment instructions found
-# in the Kandji Knowledge Base.
+# in the Iru documentation.
 #
 ###################################################################################################
 # License Information
@@ -53,7 +53,7 @@
 
 # Change the PROFILE_ID_PREFIX variable to the profile prefix you want to wait on before
 # running the installer. The profile prefix below is associated with the Notifications payload in
-# the Kandji provided configuration profile.
+# the Iru configuration profile.
 PROFILE_ID_PREFIX="io.kandji.forticlient.E23F522E-D2FF"
 
 # Make sure that the app name matches the name of the app that will be installed. This script will
@@ -73,7 +73,7 @@ profiles=($(/usr/bin/profiles show | grep "$PROFILE_ID_PREFIX" | sed 's/.*\ //')
 # If matching profiles are found exit 1 so the installer will run, else exit 0 to wait
 if [[ ${#profiles[@]} -eq 0 ]]; then
     echo "No profiles with ID $PROFILE_ID_PREFIX were found ..."
-    echo "Will check again at the next Kandji agent check in before moving on ..."
+    echo "Will check again at the next Iru Agent check in before moving on ..."
     exit 0
 fi
 

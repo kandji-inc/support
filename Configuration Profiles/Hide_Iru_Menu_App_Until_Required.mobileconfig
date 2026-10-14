@@ -6,13 +6,13 @@
 	<array>
 		<dict>
 			<key>PayloadDescription</key>
-			<string>io.kandji.Kandji</string>
+			<string>Hide the Iru menu app until it is required.</string>
 			<key>PayloadDisplayName</key>
-			<string>io.kandji.Kandji</string>
+			<string>Hide Iru Menu App Until Required</string>
 			<key>PayloadIdentifier</key>
 			<string>io.se.kandji.C02A0195-A9EF-4E23-95A5-675B229F90A0</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>io.kandji.Kandji</string>
 			<key>PayloadUUID</key>
@@ -24,13 +24,13 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>io.kandji.Kandji</string>
+	<string>Hide the Iru menu app until it is required.</string>
 	<key>PayloadDisplayName</key>
-	<string>io.kandji.Kandji</string>
+	<string>Hide Iru Menu App Until Required</string>
 	<key>PayloadIdentifier</key>
 	<string>io.kandji.customprofile.F86E74C5-0441-4D63-8889-C6DB55DD5CD2</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji, Inc.</string>
+	<string>Iru, Inc.</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>

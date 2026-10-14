@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Nicholas McDonald (DTNB) | support@kandji.io | Kandji, Inc. | Solutions Engineering
+# Created by Nicholas McDonald (DTNB) | support@iru.com | Iru, Inc. | Solutions Engineering
 ################################################################################################
 # Created on 06/08/2020
 # Updated on 03/06/2023
@@ -69,7 +69,7 @@ mobileConfigOut="/Users/${currentUser}/Downloads/${prefDomain}.mobileconfig"
 	<key>PayloadIdentifier</key>
 	<string>io.se.kandji.${PayloadID}</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji, Inc.</string>
+	<string>Iru, Inc.</string>
 	<key>PayloadType</key>
 	<string>${prefDomain}</string>
 	<key>PayloadUUID</key>
@@ -85,7 +85,7 @@ mobileConfigOut="/Users/${currentUser}/Downloads/${prefDomain}.mobileconfig"
 	<key>PayloadIdentifier</key>
 	<string>io.kandji.customprofile.${ProfileID}</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji, Inc.</string>
+	<string>Iru, Inc.</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>

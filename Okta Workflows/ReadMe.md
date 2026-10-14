@@ -1,7 +1,10 @@
 # Kandji Connector Action Card Details
-You can use the Kandji connector to integrate Kandji device management with Okta Workflows to help automate critical components of the user lifecycle that are prone to friction or manual error.
+You can use the Kandji connector to integrate Iru Endpoint device management with Okta Workflows to help automate critical components of the user lifecycle that are prone to friction or manual error.
 
-The first step is to [Authorize your Kandji tenant for Okta Workflows](https://support.kandji.io/kb/authorize-your-kandji-tenant-for-okta-workflows).
+> [!NOTE]
+> In Okta Workflows, the connector is still listed as **Kandji**. The steps in this guide that create an API token and copy your domain are performed in **Iru Endpoint**. When you configure the connection in Okta Workflows, select **Kandji** and enter your Iru Endpoint API token and domain.
+
+The first step is to [Authorize your Iru tenant for Okta Workflows](https://docs.iru.com/en/endpoint/integrations/okta-workflows/authorize-your-iru-tenant-for-okta-workflows).
 
 After you set up a Kandji connection, you can use the following Kandji connector action cards in a Workflow.
 
@@ -54,9 +57,9 @@ The following actions are available, full details are provided further below.
 ---
 
 ### Custom API Action
-Make an authenticated HTTP request to the Kandji API.
+Make an authenticated HTTP request to the Iru API.
 
-> **Note**: This action is unlike other Kandji cards; refer to [Kandji's API documentation](https://api-docs.kandji.io/).
+> **Note**: This action is unlike other connector cards; refer to [Iru API documentation](https://api-docs.iru.com/).
 
 **Options**
 | Field | Definition | Type | Required |
@@ -103,7 +106,7 @@ Clear the iOS or iPadOS device passcode.
 **Input**
 | Field    | Description                                      | Type   | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of iOS/iPadOS device | String | TRUE     |
+| Device ID | Iru-specific device ID of iOS/iPadOS device | String | TRUE     |
 
 **Output**
 | Field       | Description                                                                               | Type   |
@@ -134,12 +137,12 @@ Create a Blueprint.
 ---
 
 ### Create Note
-Create a note in Kandji for the device.
+Create a note in Iru for the device.
 
 **Inputs**
 | Field     | Description                                                                 | Type   | Required |
 |-----------|-----------------------------------------------------------------------------|--------|----------|
-| Device ID | Kandji-specific device ID of iOS/iPadOS device to send MDM command | String | TRUE     |
+| Device ID | Iru-specific device ID of iOS/iPadOS device to send MDM command | String | TRUE     |
 | Note      | Text contents of the note                                                   | String | TRUE     |
 
 **Outputs**
@@ -172,7 +175,7 @@ Send Erase Device MDM command.
 **Inputs**
 | Field             | Description                                      | Type          | Required          |
 |-------------------|--------------------------------------------------|---------------|-------------------|
-| Device ID         | Kandji-specific device ID                        | String        | TRUE              |
+| Device ID         | Iru-specific device ID                        | String        | TRUE              |
 | PIN               | 6-digit unlock code (macOS only)                | Number        | TRUE (macOS)      |
 | PreserveDataPlan  | Maintain cellular plan (iOS/iPadOS only)         | Boolean       | TRUE (iOS/iPadOS) |
 | DisallowProximity | Block proximity setup (iOS/iPadOS only)          | Boolean       | TRUE (iOS/iPadOS) |
@@ -200,7 +203,7 @@ Get the Activation Lock Bypass Code for a Mac.
 **Input**
 | Field     | Description                          | Type   | Required |
 |-----------|--------------------------------------|--------|----------|
-| Device ID | Kandji-specific Mac device ID        | String | TRUE     |
+| Device ID | Iru-specific Mac device ID        | String | TRUE     |
 
 **Outputs**
 | Field                                   | Description                          | Type   |
@@ -226,7 +229,7 @@ Given an Automated Device Enrollment (ADE) integration token, return information
 | Default Blueprint Color        | Blueprint color code                 | String |
 | Default Blueprint Icon         | Blueprint icon code                  | String |
 | Access Token Expiry            | Token expiration date                | Date   |
-| Server Name                    | Kandji server name                   | String |
+| Server Name                    | Iru server name                   | String |
 | Server UUID                    | Server unique identifier             | String |
 | Organization Name              | Organization name                    | String |
 | Organization Email             | Organization contact email          | String |
@@ -286,7 +289,7 @@ Retrieve device information.
 **Input**
 | Field    | Definition                | Type   | Required |
 |----------|--------------------------|--------|----------|
-| Device ID | Kandji-specific device ID | String | TRUE     |
+| Device ID | Iru-specific device ID | String | TRUE     |
 
 **Outputs (Basic)**
 | Field               | Description                          | Type    |
@@ -345,7 +348,7 @@ Get the FileVault Recovery Key for a Mac.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of a Mac | String | TRUE |
+| Device ID | Iru-specific device ID of a Mac | String | TRUE |
 
 **Output**
 | Field | Description | Type | 
@@ -357,13 +360,13 @@ Get the FileVault Recovery Key for a Mac.
 ### Get Mac Recovery Lock Password
 This request returns the Recovery Lock password for a Mac with Apple Silicon, or the legacy EFI firmware password for an Intel-based Mac.
 <br><br>
-For more details on setting and managing Recovery passwords, see the [Configure the Recovery Password Library Item](https://support.kandji.io/support/solutions/articles/72000560472-configure-the-recovery-password-library-item) support article.
+For more details on setting and managing Recovery passwords, see the [Configure the Recovery Password Library Item](https://docs.iru.com/en/endpoint/library/library-items-profiles/configure-the-recovery-password-library-item) support article.
 
 
 **Inputs**
 | Field             | Description                                      | Type          | Required          |
 |-------------------|--------------------------------------------------|---------------|-------------------|
-| Device ID         | Kandji-specific device ID                        | String        | TRUE              |
+| Device ID         | Iru-specific device ID                        | String        | TRUE              |
 
 **Outputs**
 | Field       | Description                          | Type   |
@@ -378,7 +381,7 @@ Get the PIN for a locked Mac.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of a Mac | String | TRUE |
+| Device ID | Iru-specific device ID of a Mac | String | TRUE |
 
 **Output**
 | Field | Description | Type | 
@@ -400,7 +403,7 @@ Return top-level information about the number of threats detected. Return status
 ---
 
 ### List ADE Devices in ADE Integration
-Return a list of all devices associated with an Automated Device Enrollment token, as well as their enrollment status. When the mdm_device key value is null, this indicates that the device is awaiting enrollment into Kandji.
+Return a list of all devices associated with an Automated Device Enrollment token, as well as their enrollment status. When the mdm_device key value is null, this indicates that the device is awaiting enrollment into Iru.
 
 **Options**
 | Field | Definition | Type | Required |
@@ -422,7 +425,7 @@ Return a list of all devices associated with an Automated Device Enrollment toke
 | Field | Definition | Type |
 |---|---|---|
 | Blueprint ID | ID of the Blueprint. <br>Appears when **First Record** is defined. | String |
-| Kandji User ID | Kandji user id. <br>Appears when **First Record** is defined. | String |
+| Kandji User ID | Iru user ID. <br>Appears when **First Record** is defined. | String |
 | ADE Token ID | ADE Integration id. <br>Appears when **First Record** is defined. | String |
 | Server Name | The name of the server. <br>Appears when **First Record** is defined. | String |
 | Asset Tag | The asset tag. <br>Appears when **First Record** is defined. | String |
@@ -528,7 +531,7 @@ Return a list of all Custom Apps.
 ---
 
 ### List Device Activity
-Given a Device ID, list Activity for the device (uses the Kandji Get Device Activity API call).
+Given a Device ID, list Activity for the device (uses the Iru Get Device Activity API call).
 
 **Options**
 | Field | Definition | Type | Required |
@@ -538,7 +541,7 @@ Given a Device ID, list Activity for the device (uses the Kandji Get Device Acti
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID | String | TRUE |
+| Device ID | Iru-specific device ID | String | TRUE |
 
 **Output**
 | Field | Definition | Type |
@@ -554,7 +557,7 @@ Given a Device ID, return a list of all installed apps for the device. For iOS, 
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID	| String | TRUE |
+| Device ID | Iru-specific device ID	| String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -569,7 +572,7 @@ Given a Device ID, return a list of all the Library Items and their statuses for
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID | String | TRUE |
+| Device ID | Iru-specific device ID | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -584,7 +587,7 @@ Given a Device ID, return a list of all the Notes for the device.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID | String | TRUE |
+| Device ID | Iru-specific device ID | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -606,10 +609,10 @@ Returns a list of enrolled devices. Optional query parameters can filter results
 |---|---|---|---|
 | Asset Tag | Asset tag | String | FALSE
 | Blueprint ID | ID of the Blueprint the device is assigned to | String | FALSE |
-| Device ID | Kandji-specific device ID | String | FALSE
+| Device ID | Iru-specific device ID | String | FALSE
 | Device Name | Device name | String | FALSE
 | FileVault Turned On | Whether FileVault is turned on | Boolean | FALSE |
-| Kandji User ID | Kandji-specific user ID of the user assigned to the device | Number | FALSE |
+| Kandji User ID | Iru-specific user ID of the user assigned to the device | Number | FALSE |
 | MAC Address | MAC Address of the primary network interface of the device | String | FALSE |
 | Model | Device model | String | FALSE |
 | OS Version | Version of the OS | String | FALSE |
@@ -627,24 +630,24 @@ Returns a list of enrolled devices. Optional query parameters can filter results
 | Field	| Definition | Type |
 |---|---|---|
 | The following appear when First Matching Record is selected from the Result Set field.|
-| Agent Installed | Whether the Kandji Agent is installed | Boolean |
-| Agent Version | Version of the Kandji Agent | String |
+| Agent Installed | Whether the Iru Agent is installed | Boolean |
+| Agent Version | Version of the Iru Agent | String |
 | Asset Tag | Asset tag | String |
 | Blueprint ID | Blueprint ID the device is assigned to | String |
 | Blueprint Name | Name of the Blueprint the device is assigned to | String |
-| Device ID | Kandji-specific device ID | String |
+| Device ID | Iru-specific device ID | String |
 | Device Name | Device name | String |
-| First Enrollment | When the device was first enrolled with Kandji | Date |
-| Is Missing | Whether the device is missing from Kandji | Boolean |
-| Is Removed | Whether the device was removed from Kandji | Boolean |
+| First Enrollment | When the device was first enrolled with Iru | Date |
+| Is Missing | Whether the device is missing from Iru | Boolean |
+| Is Removed | Whether the device was removed from Iru | Boolean |
 | Last Check-in | Date of last MDM check-in | Date |
-| Last Enrollment | When the device was last enrolled with Kandji | Date |
+| Last Enrollment | When the device was last enrolled with Iru | Date |
 | Model | Device model | String |
 | OS Version | Version of the OS | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |
 | Serial Number | Device serial number | String |
 | Tags | List of tags | List |
-| User | JSON object for assigned Kandji user | Object |
+| User | JSON object for assigned Iru user | Object |
 
 **Output for "First 300 Matching Records"**
 | Field | Definition | Type |
@@ -659,7 +662,7 @@ Returns a list of enrolled devices. Optional query parameters can filter results
 ---
 
 ### List Library Item Activity
-Given a Library Item ID, get a list of Activity for the Library Item (uses the Kandji Get Library Item Activity API call).
+Given a Library Item ID, get a list of Activity for the Library Item (uses the Iru Get Library Item Activity API call).
 
 **Options**
 | Field | Definition | Type | Required |
@@ -680,7 +683,7 @@ Given a Library Item ID, get a list of Activity for the Library Item (uses the K
 ---
 
 ### List Library Item Statuses
-Given a Library Item ID, get a list of Activity for the Library Item (uses the Kandji Get Library Item Activity API call).
+Given a Library Item ID, get a list of Activity for the Library Item (uses the Iru Get Library Item Activity API call).
 
 **Options**
 | Field | Definition | Type | Required |
@@ -753,7 +756,7 @@ Return a list of all users from directory integrations. Optional query parameter
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Archived | Return only users that are either archived (true) or not archived (false). Archived users are users that appear in the Kandji Users module under the Archived tab. | Boolean | FALSE |
+| Archived | Return only users that are either archived (true) or not archived (false). Archived users are users that appear in the Iru Users module under the Archived tab. | Boolean | FALSE |
 | Integration ID | Search for an integration matching the provided UUID value. | String | FALSE |
 | Kandji User ID | Returns a user matching the provided UUID value. | String | FALSE |
 | User Email | Returns users with email addresses containing the provided string. | FALSE |
@@ -792,19 +795,19 @@ Send an MDM command to lock a device. For a Mac computer, a 6-digit Lock PIN wil
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
 | Lock Message | Lock message to show on device lock screen | String | FALSE |
 | Phone Number | Phone number to show on device lock screen | String | FALSE |
 
 **Outputs**
 | Field | Description | Type |
 |---|---|---|
-| Device ID | Kandji-specific device ID of a Mac | String |
+| Device ID | Iru-specific device ID of a Mac | String |
 | Device Name | Device name	| String |
 | Serial Number	| Device serial number | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |
 | User Email | Email address of the user associated with the device | String |
-| Status Code | Result of the operation. The HTTP status code is returned by the connector and indicates whether the action taken by the card succeeded or failed. For example:<ul><li>200 OK</li><li>400 Bad Request: "Command already running" - The command may already be running in a Pending state waiting on the device.</li><li>401 Unauthorized: Invalid access token. This can happen if the token was revoked, the required permissions are missing, or the token has expired.</li><li>404 Not found: Unable to locate the resource in the Kandji tenant.</li</ul>For a full list of possible status codes, see [HTTP status codes](https://help.okta.com/wf/en-us/Content/Topics/Workflows/execute/http-status-codes.htm). | Number |
+| Status Code | Result of the operation. The HTTP status code is returned by the connector and indicates whether the action taken by the card succeeded or failed. For example:<ul><li>200 OK</li><li>400 Bad Request: "Command already running" - The command may already be running in a Pending state waiting on the device.</li><li>401 Unauthorized: Invalid access token. This can happen if the token was revoked, the required permissions are missing, or the token has expired.</li><li>404 Not found: Unable to locate the resource in the Iru tenant.</li</ul>For a full list of possible status codes, see [HTTP status codes](https://help.okta.com/wf/en-us/Content/Topics/Workflows/execute/http-status-codes.htm). | Number |
 | Message | Message | String |
 | Lock PIN | Lock PIN for Mac computer | String |
 
@@ -816,13 +819,13 @@ Use MDM to turn on or turn off Apple Remote Desktop for a Mac.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
 | Manage Remote Desktop | Send an MDM command to control the Remote Management status on a Mac. This MDM command turns Remote Management on or off with Observe and Control permissions given to all users. | Dropdown | TRUE |
 
 **Outputs**
 | Field | Description | Type |
 |---|---|---|
-| Status Code | Result of the operation. The HTTP status code is returned by the connector and indicates whether the action taken by the card succeeded or failed. For example:<br><ul><li>200 OK</li><li>400 Bad Request (See Body below)</li><li>401 Unauthorized: Invalid access token. This can happen if the token was revoked, the required permissions are missing, or the token has expired.</li><li>404 Not found": Unable to locate the resource in the Kandji tenant.</li></ul>For a full list of possible status codes, see [HTTP status codes](https://help.okta.com/wf/en-us/Content/Topics/Workflows/execute/http-status-codes.htm). | String |
+| Status Code | Result of the operation. The HTTP status code is returned by the connector and indicates whether the action taken by the card succeeded or failed. For example:<br><ul><li>200 OK</li><li>400 Bad Request (See Body below)</li><li>401 Unauthorized: Invalid access token. This can happen if the token was revoked, the required permissions are missing, or the token has expired.</li><li>404 Not found": Unable to locate the resource in the Iru tenant.</li></ul>For a full list of possible status codes, see [HTTP status codes](https://help.okta.com/wf/en-us/Content/Topics/Workflows/execute/http-status-codes.htm). | String |
 
 ---
 
@@ -832,12 +835,12 @@ Send the MDM command to an iOS or iPadOS device in Lost Mode to play the Lost Mo
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of a Mac | String | TRUE |
+| Device ID | Iru-specific device ID of a Mac | String | TRUE |
 
 **Outputs**
 | Field | Description | Type |
 |---|---|---|
-| Device ID | Kandji-specific device ID of a Mac | String |
+| Device ID | Iru-specific device ID of a Mac | String |
 | Device Name | Device name	| String |
 | Serial Number	| Device serial number | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |
@@ -848,12 +851,12 @@ Send the MDM command to an iOS or iPadOS device in Lost Mode to play the Lost Mo
 ---
 
 ### Reinstall Kandji Agent
-Reinstall the Kandji Agent. An MDM command will be triggered. This request is only applicable to Mac computers.
+Reinstall the Iru Agent. An MDM command will be triggered. This request is only applicable to Mac computers.
 
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -886,7 +889,7 @@ Restart a device. An MDM command will be triggered.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -901,7 +904,7 @@ Initiate a blank MDM push. An MDM command will be triggered.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -916,7 +919,7 @@ Send an MDM command to set the device name.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 | Device Name | Name to assign to the device | String | TRUE |
 
 **Output**
@@ -932,7 +935,7 @@ Shut down a device. An MDM command will be triggered.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -947,12 +950,12 @@ Turn off Managed Lost Mode for an iOS or iPadOS device.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
 |---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String |
 | Device Name | Device name | String |
 | Serial Number | Serial number | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |
@@ -968,7 +971,7 @@ Turn on Managed Lost Mode for an iOS or iPadOS device. In addition to providing 
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 | Lock Message | Lock message | String | FALSE |
 | Phone Number | Phone number | String | FALSE |
 | Footnote | Footnote | String | FALSE |
@@ -976,7 +979,7 @@ Turn on Managed Lost Mode for an iOS or iPadOS device. In addition to providing 
 **Output**
 | Field | Description | Type |
 |---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String |
 | Device Name | Device name | String |
 | Serial Number | Serial number | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |
@@ -992,7 +995,7 @@ Unlock a locked Mac user account. An MDM command will be triggered.
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the Mac computer to send the MDM command to | String | TRUE |
 | Username | User name of the local account to unlock | String | TRUE |
 
 **Output**
@@ -1019,8 +1022,8 @@ Following RESTful conventions, if you specify a device's Tags, you must include 
 |---|---|---|---|
 | Asset Tag | Asset tag to assign to the device |	String | FALSE |
 | Blueprint ID | Blueprint ID to assign the device to | String | FALSE |
-| Device ID | Kandji-specific device ID of the device to update | String | TRUE |
-| Kandji User ID | Kandji-specific user ID of the user to assign the device to | Number | FALSE |
+| Device ID | Iru-specific device ID of the device to update | String | TRUE |
+| Kandji User ID | Iru-specific user ID of the user to assign the device to | Number | FALSE |
 | Tags | Tag to assign to the device | String | FALSE |
 
 **Outputs**
@@ -1028,7 +1031,7 @@ Following RESTful conventions, if you specify a device's Tags, you must include 
 |---|---|---|
 | **Device** |
 | Status | Status of the request | Number |
-| Device ID | Kandji-specific device ID | String |
+| Device ID | Iru-specific device ID | String |
 | Device Name | Device name | String |
 | Model | Device model | String |
 | Serial Number | Device serial number | String |
@@ -1038,20 +1041,20 @@ Following RESTful conventions, if you specify a device's Tags, you must include 
 | Asset Tag | Asset tag | String |
 | Blueprint ID | Blueprint ID the device is assigned to | String |
 | MDM Enabled | Whether the device is enabled for MDM | Boolean |
-| Agent Installed | Whether the Kandji Agent is installed | Boolean |
-| Is Missing | Whether the device is missing from Kandji | Boolean |
-| Is Removed | Whether the device was removed from Kandji | Boolean |
-| Agent Version | Version of the Kandji Agent | String |
-| First Enrollment | When the device was first enrolled with Kandji | Date |
-| Last Enrollment | When the device was last enrolled with Kandji | Date |
+| Agent Installed | Whether the Iru Agent is installed | Boolean |
+| Is Missing | Whether the device is missing from Iru | Boolean |
+| Is Removed | Whether the device was removed from Iru | Boolean |
+| Agent Version | Version of the Iru Agent | String |
+| First Enrollment | When the device was first enrolled with Iru | Date |
+| Last Enrollment | When the device was last enrolled with Iru | Date |
 | Blueprint Name | Name of the Blueprint the device is assigned to | String |
 | Supplemental Build Version | The operating system’s build and Rapid Security Response versions in use on the device, for example (20A123a or 20F75c) | String |
 | Supplemental OS Version Extra | The operating system’s Rapid Security Response version in use on the device (for example, a) | String |
 | Tags | JSON object with a list of Tags | List |
 | **User** |
 | User Email | Email address of the user associated with the device | String |
-| User Name | Name in Kandji of the user assigned to the device | String |
-| User ID | Kandji-specific user ID of the user to assign the device to | Number |
+| User Name | Name in Iru of the user assigned to the device | String |
+| User ID | Iru-specific user ID of the user to assign the device to | Number |
 | User is Archived | Whether the user is archived | Boolean |
 
 ---
@@ -1062,7 +1065,7 @@ Start an MDM check-in for a device, initiating the daily MDM commands and MDM lo
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
@@ -1077,12 +1080,12 @@ Send the MDM command to an iOS or iPadOS device in Lost Mode to update the locat
 **Input**
 | Field | Description | Type | Required |
 |---|---|---|---|
-| Device ID | Kandji-specific device ID of the device to send the MDM command to | String | TRUE |
+| Device ID | Iru-specific device ID of the device to send the MDM command to | String | TRUE |
 
 **Output**
 | Field | Description | Type |
 |---|---|---|
-| Device ID | Kandji-specific device ID | String |
+| Device ID | Iru-specific device ID | String |
 | Device Name | Device name | String |
 | Serial Number | Device serial number | String |
 | Platform | Apple platform (such as Mac, iPhone, iPad, Apple TV) | String |

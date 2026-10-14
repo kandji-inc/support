@@ -120,10 +120,10 @@ from requests.adapters import HTTPAdapter
 
 SUBDOMAIN = ""  # bravewaffles, example, company_name
 
-# us("") and eu - this can be found in the Kandji settings on the Access tab
+# us("") and eu - this can be found in Account Menu > Access > API tokens
 REGION = ""
 
-# Kandji Bearer Token (API Key from your tenant settings)
+# Iru Bearer Token (API token from Account Menu > Access > API tokens)
 TOKEN = ""
 
 # The Prism category to export. See the list of categories above.

@@ -1,20 +1,20 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 03/14/2024
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.0.1
 #
 # Script to transition LastPass Auto App to Mac App Store (MAS) LastPass Password Manager
 # Runs on macOS and modifies an existing LastPass install to enable MAS installation/management 
 # A direct upgrade cannot occur without intervention due to differing Bundle IDs used for each app
 #     (Auto App: com.lastpass.lastpassmacdesktop; MAS: com.lastpass.LastPass)
-# Once existing LastPass is altered, script calls Kandji binary to trigger LastPass MAS install
-# NOTE: Ensure Mac App Store 'LastPass Password Manager' is scoped to Kandji devices before running
+# Once existing LastPass is altered, script calls Iru binary to trigger LastPass MAS install
+# NOTE: Ensure Mac App Store 'LastPass Password Manager' is scoped to devices in Iru before running
 #
 ###################################################################################################
 # License Information
@@ -46,7 +46,7 @@
 ########## VARIABLES #########
 ##############################
 
-kandji_bin="/usr/local/bin/kandji"
+iru_bin="/usr/local/bin/iru"
 lp_bundle_path="/Applications/LastPass.app"
 lp_info_plist="${lp_bundle_path}/Contents/Info.plist"
 lp_mas_bid="com.lastpass.LastPass"
@@ -97,22 +97,22 @@ function rename_bundle_id() {
 }
 
 ##############################################
-# Invokes Kandji binary to trigger install of
+# Invokes Iru binary to trigger install of
 # MAS LastPass;  gets stdin from and redirects
 # to /dev/null in bg to allow parallel
-# execution without hanging Kandji binary
+# execution without hanging Iru binary
 # Outputs:
 #   Triggers LastPass MAS install to disk
 ##############################################
-function kandji_self_call() {
+function iru_self_call() {
 
     echo "Triggering Mac App Store install of LastPass Password Manager..."
 
-    # Redirecting stderr/out to /dev/null and bg'ing the Kandji proc
+    # Redirecting stderr/out to /dev/null and bg'ing the Iru proc
     # This allows the agent to end its run without waiting for our script exec
     # We also provide stdin from /dev/null as well, allowing us to detach from any active TTY connections
     # Serves to inform our program any input will not be coming from a terminal session
-    "${kandji_bin}" library --item "LastPass Password Manager" -F < /dev/null > /dev/null 2>&1 &
+    "${iru_bin}" library --item "LastPass Password Manager" -F < /dev/null > /dev/null 2>&1 &
 }
 
 ##############################################
@@ -155,14 +155,14 @@ function create_migrate_defaults() {
 # If found, ensures MAS LastPass is scoped
 # Checks existing bundle ID and different from
 # MAS version, renames app bundle ID and calls
-# Kandji binary to install MAS LastPass
+# Iru binary to install MAS LastPass
 # in-place over existing Auto App LastPass
 # Globals:
 #  EUID
 #  lp_bundle_path
 #  lp_info_plist
 #  lp_mas_bid
-#  kandji_bin
+#  iru_bin
 ##############################################
 function main() {
     # Check invocation perms
@@ -175,21 +175,21 @@ function main() {
     if [[ -d ${lp_bundle_path} ]]; then
         existing_bid=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "${lp_info_plist}")
         if [[ "${existing_bid}" != "${lp_mas_bid}" ]]; then
-            kandji_lib_items=$(${kandji_bin} library --list)
-            if [[ -z $(grep -o "LastPass Password Manager" <<< "${kandji_lib_items}") ]]; then
+            iru_lib_items=$(${iru_bin} library --list)
+            if [[ -z $(grep -o "LastPass Password Manager" <<< "${iru_lib_items}") ]]; then
                 echo "LastPass Password Manager not scoped to Mac! Cannot complete cutover..."
                 exit 1
             fi
             echo "Changing LastPass Bundle ID from ${existing_bid} to ${lp_mas_bid}"
             rename_bundle_id
             create_migrate_defaults
-            kandji_self_call
+            iru_self_call
         else
             echo "LastPass Bundle ID already set to ${lp_mas_bid}... Nothing to do"
         fi
     else
         echo "LastPass not installed... Triggering Mac App Store install"
-        kandji_self_call
+        iru_self_call
     fi
     exit 0
 }

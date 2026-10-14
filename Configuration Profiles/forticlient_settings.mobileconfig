@@ -26,7 +26,7 @@
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.forticlient.E23F522E-D2FF-49CE-8C9C-F1B2DB821C65</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji.io, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.webcontent-filter</string>
 			<key>PayloadUUID</key>
@@ -191,7 +191,7 @@
 			<key>PayloadIdentifier</key>
 			<string>com.apple.notificationsettings.45D19457-08AC-4C14-A1BB-75AF40274615</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji.io, Inc.</string>
+			<string>Iru, Inc.</string>
 			<key>PayloadType</key>
 			<string>com.apple.notificationsettings</string>
 			<key>PayloadUUID</key>

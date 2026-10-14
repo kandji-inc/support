@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 ################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 #
 #   Created - 2022-04-28
@@ -24,7 +24,7 @@
 # is installed and running properly. This script is designed to be used as an Audit and
 # Enforce script in a Custom App Library item. No modification needed.
 #
-# Instructions and dependency files can be found in the Kandji knowledge base and
+# Instructions and dependency files can be found in the Iru documentation and
 # support github.
 #
 ################################################################################################
@@ -58,7 +58,7 @@
 # NOTE: this profile only contains managed backgroud settings for macOS 13+
 # Change the PROFILE_ID_PREFIX variable to the profile prefix you want to wait on before
 # running the installer. The profile prefix below is associated with the Notifications
-# payload in the Kandji provided configuration profile.
+# payload in the Iru configuration profile.
 PROFILE_ID_PREFIX="io.kandji.watchman-monitoring.service-management"
 
 # Make sure that the app name matches the name of the app that will be installed. This
@@ -84,7 +84,7 @@ if [[ "${build_year}" -ge 22 ]]; then
     # wait
     if [[ ${#profiles[@]} -eq 0 ]]; then
         /bin/echo "No profiles with ID $PROFILE_ID_PREFIX were found ..."
-        /bin/echo "Will check again at the next Kandji agent check in before moving on ..."
+        /bin/echo "Will check again at the next Iru Agent check in before moving on ..."
         exit 0
     fi
 

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Brian Van Peski | support@kandji.io | Kandji, Inc. | Solutions Engineering
+# Created by Brian Van Peski | support@iru.com | Iru, Inc. | Solutions Engineering
 ################################################################################################
 #
 # Created - 3/21/2023
@@ -28,7 +28,7 @@
 #
 # This script assumes two things:
 # 1. That the images have been pushed to the machine (via zip file in custom app payload) and
-# 2. A PPC profile has been deployed that gives the Kandji agent access to Finder.
+# 2. A PPC profile has been deployed that gives the Iru Agent access to Finder.
 #
 ################################################################################################
 # License Information
@@ -69,7 +69,7 @@ current_wallpaper=$(/usr/bin/osascript -e 'tell application "System Events" to g
 currentUser=$(/usr/bin/stat -f%Su /dev/console)
 currentUID=$(/usr/bin/id -u ${currentUser})
 
-# Check that Kandji agent has access to Finder Events
+# Check that Iru Agent has access to Finder Events
 pppc_status=$(/usr/libexec/PlistBuddy -c 'print "io.kandji.KandjiAgent:kTCCServiceAppleEvents:com.apple.finder:Allowed"' "/Library/Application Support/com.apple.TCC/MDMOverrides.plist")
 
 # Check that wallpaper is present and PPPC Profile is installed
@@ -85,7 +85,7 @@ if [[ -f "$wallpaper" && $pppc_status = true ]]; then
     exit 0
   fi
 elif [[ -f "$wallpaper" && $pppc_status != true ]]; then
-  echo "The Kandji agent does not have access to Finder events. Exiting... "
+  echo "The Iru Agent does not have access to Finder events. Exiting... "
   exit 1
 else
   echo "Wallpaper not found at $wallpaper. Exiting..."

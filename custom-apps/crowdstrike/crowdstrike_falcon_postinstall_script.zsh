@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by David Larrea & Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by David Larrea & Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created - 2021-08-26
 # Last modified - 2024-03-26 - Joe Borner
@@ -21,7 +21,8 @@
 # This script licenses the CrowdStrike Falcon agent
 #
 # Configuration profiles are included with the Crowdstrike deployment instructions
-# found in the Kandji Knowledge Base.
+# found in the Iru documentation.
+# https://docs.iru.com/en/endpoint/library/deployment-guides/apple/deploy-crowdstrike-as-a-custom-app
 #
 ################################################################################################
 # License Information

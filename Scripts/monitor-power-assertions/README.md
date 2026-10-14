@@ -16,8 +16,7 @@ By default, the script only reports offending processes. When configured to `kil
 
 ## Prerequisites
 
-- macOS 11 or later
-- A way to deploy and run this script regularly, Kandji Custom Script Library Item, Jamf Pro Policy, etc 
+- macOS 15 or later
 
 ## Configure the Script
 

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by David Larrea & Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by David Larrea & Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created - 2021-08-26
 # Last modified - 2023-03-31 - Matt Wilson
@@ -23,7 +23,8 @@
 # after installation.
 #
 # Configuration profiles are included with the Crowdstrike deployment instructions
-# found in the Kandji Knowledge Base.
+# found in the Iru documentation.
+# https://docs.iru.com/en/endpoint/library/deployment-guides/apple/deploy-crowdstrike-as-a-custom-app
 #
 ################################################################################################
 # License Information
@@ -115,7 +116,7 @@ profiles_list=($(profile_search "$PAYLOAD_ID_PREFIX"))
 if [[ ${#profiles_list[@]} -eq 0 ]]; then
     /bin/echo "Settings profile not found ..."
     /bin/echo "Waiting until the profile is installed before proceeding ..."
-    /bin/echo "Will check again at the next Kandji agent check-in ..."
+    /bin/echo "Will check again at the next Iru Agent check-in ..."
     exit 0
 fi
 
@@ -134,7 +135,7 @@ if [[ "${osvers_major}" -ge 13 ]]; then
     # wait
     if [[ ${#profiles[@]} -eq 0 ]]; then
         /bin/echo "No profiles with ID $SERVICE_MANAGEMENT_PREFIX were found ..."
-        /bin/echo "Will check again at the next Kandji agent check in before moving on ..."
+        /bin/echo "Will check again at the next Iru Agent check in before moving on ..."
         exit 0
     fi
 

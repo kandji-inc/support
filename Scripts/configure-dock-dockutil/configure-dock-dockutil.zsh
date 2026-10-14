@@ -1,16 +1,11 @@
 #!/bin/zsh
 
 ########################################################################################
-# Created by Danny Hanes | support@kandji.io | Kandji, Inc.
+# Created by Danny Hanes | support@iru.com | Iru, Inc.
 ########################################################################################
 #
 #   Created - 2023-06-27 [v1.0.0]
-#   Updated - 2023-10-13 [v1.0.1]
-#           - Tested on 13.4.1
-#   Updated - 2024-08-27 [v1.2.0]
-#           - Updated to run as the user instead of root
-#           - Tested on 14.5 & 14.6.1
-#           - New function for installAfterLiftoff support
+#   Updated - 2026-10-06 [v1.2.1]
 #
 ########################################################################################
 # Tested macOS Versions
@@ -55,14 +50,15 @@
 ################################################################################################
 
 # Script version
-# VERSION="1.2.0"
+# VERSION="1.2.1"
 
 ########################################################################################
 ######################## INSTALL AFTER LIFTOFF VARIABLES ###############################
 ########################################################################################
 
 # If you plan to use installAfterLiftoff.zsh, then set the variables below and skip
-# the "Audit Script Modification" step of the documentation. 
+# the "Audit Script Modification" step of the documentation.
+# https://github.com/kandji-inc/support/blob/main/Scripts/install-after-liftoff/README.md#audit-script-modification
 
 # Set INSTALL_AFTER_LIFTOFF to Y if you are using installAfterLiftoff.zsh
 INSTALL_AFTER_LIFTOFF="Y"
@@ -89,7 +85,7 @@ APPLICATION_LIST=(
         "/System/Applications/Music.app"
         "/System/Applications/Notes.app"
         "/System/Applications/Reminders.app"
-        "/Applications/Kandji Self Service.app"
+        "/Applications/Iru Self Service.app"
     )
 
 # If an application has not yet been installed, do you want to skip that application, or 

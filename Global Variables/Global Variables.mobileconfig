@@ -8,7 +8,7 @@
 			<key>PayloadDescription</key>
 			<string></string>
 			<key>PayloadDisplayName</key>
-			<string>Kandji Global Variables</string>
+			<string>Iru Global Variables</string>
 			<key>PayloadIdentifier</key>
 			<string>io.kandji.globalvariables.8AFB935E-EB53-448E-833C-822455FFB3D3</string>
 			<key>PayloadOrganization</key>
@@ -56,13 +56,13 @@
 		</dict>
 	</array>
 	<key>PayloadDescription</key>
-	<string>Kandji Global Variables</string>
+	<string>Iru Global Variables</string>
 	<key>PayloadDisplayName</key>
 	<string>Global Variables</string>
 	<key>PayloadIdentifier</key>
 	<string>io.kandji.globalvariables.265684E2-8DCC-464B-8C6A-606E89C630DA</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji, Inc.</string>
+	<string>Iru, Inc.</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>

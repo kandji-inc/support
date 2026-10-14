@@ -1,6 +1,6 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Iru, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 05/18/2022
 ###################################################################################################
@@ -11,7 +11,7 @@
 #
 # Uninstaller script for 1Password 7 (1PW7)
 # NOTE: It is recommended you remove 1PW7 from any Blueprints where this uninstaller is added
-# NOTE: Failure to do so may result in 1PW7 being reinstalled upon next Iru agent checkin
+# NOTE: Failure to do so may result in 1PW7 being reinstalled upon next Iru Agent checkin
 # Code will first kill any active 1PW7 processes
 # Next, if 1PW7 application bundle exists in /Applications, it will be deleted
 # Finally, iterates over all users with UID ≥ 500, populates their home directory paths,

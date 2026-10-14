@@ -21,7 +21,7 @@
 				<key>PayloadDisplayName</key>
 				<string>CrowdStrike - Background items</string>
 				<key>PayloadOrganization</key>
-				<string>Kandji</string>
+				<string>Iru</string>
 				<key>PayloadIdentifier</key>
 				<string>io.kandji.crowdstrike.service-management.719C69CC-98BA-4F4A-847C-62EAAFDA71E8</string>
 				<key>PayloadUUID</key>

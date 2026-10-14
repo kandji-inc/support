@@ -26,7 +26,7 @@ python3 -m pip install pathlib
 1. Open the script in a text editor such as BBEdit or VSCode.
 1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
 
-    - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+    - The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Iru, then go to `Account Menu > Access > API tokens`. From there, you can copy the information out of the API URL and generate API tokens.
     - For US-based tenants the `REGION` can either be `us` or left as an empty string (`""`)
 
         *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
@@ -38,7 +38,7 @@ python3 -m pip install pathlib
 
         SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
-        # us("") and eu - this can be found in the Kandji settings on the Access tab
+        # us("") and eu - this can be found in Account Menu > Access > API tokens
         REGION = ""
 
         # Kandji Bearer Token

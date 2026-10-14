@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ###################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ###################################################################################################
 #
 #   Created - 12/09/2021
@@ -50,18 +50,18 @@
 ###################################### VARIABLES ##################################################
 ###################################################################################################
 
-# Kandji tenant subdomain
+# Iru tenant subdomain
 SUBDOMAIN="accuhive" # accuhive
 
 # tenant region
 REGION="us" # us, eu
 
-# Kandji Bearer Token
+# Iru API token
 TOKEN="your_api_key_here"
 
 ########################################################################################
 
-# Kandji API base URL
+# Iru API base URL
 if [[ -z $REGION || $REGION == "us" ]]; then
   BASE_URL="https://${SUBDOMAIN}.api.kandji.io/api"
 elif [[ $REGION == "eu" ]]; then
@@ -129,7 +129,7 @@ device_record=$(/usr/bin/curl --silent --request GET \
     --header "Content-Type: application/json")
 
 if [[ -z "$device_record" ]]; then
-    echo "Had an issue pulling devices from Kandji ..."
+    echo "Had an issue pulling devices from Iru ..."
     exit 1
 fi
 
@@ -138,7 +138,7 @@ fi
 # echo "$device_record"
 # echo ""
 
-# Get the Kandji device_id based on the provided serial number.
+# Get the Iru device_id based on the provided serial number.
 device_id=$(get_device_info_value "$device_record" "$serial_number" "device_id")
 
 if [[ -z "$device_id" ]]; then
@@ -154,7 +154,7 @@ user_response=$(/usr/bin/osascript -e 'display dialog "Please enter you Mac 🐝
 # parse asset_tag entered by user
 asset_tag=$(echo "$user_response" | /usr/bin/awk -F ":" '{print $NF}')
 
-# Update asset tag in Kandji
+# Update asset tag in Iru
 update_asset_tag_response=$(/usr/bin/curl --silent --request PATCH \
     --url "$BASE_URL/v1/devices/$device_id"/ \
     --header "Authorization: Bearer $TOKEN" \

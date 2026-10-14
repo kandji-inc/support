@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 ################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created - 2023-04-11
 # Updated - 2025-05-08
@@ -25,10 +25,10 @@
 #       COUNTRY="US"      # US - 2 letter country code
 #       STATE="Georgia"   # Giorgia - state or province
 #       LOCAL="Atlanta"   # Atlanta - locality name
-#       ORG_NAME="Kandji" # Kandji - organization name
-#       CERT_NAME="Kandji Bitdenfender CA SSL"      # Example: Kandji Bitdenfender CA SSL
+#       ORG_NAME="Iru" # Iru - organization name
+#       CERT_NAME="Iru Bitdenfender CA SSL"      # Example: Iru Bitdenfender CA SSL
 #
-#   Once the cert is generated, upload it to your Kandji tenant.
+#   Once the cert is generated, upload it to your Iru tenant.
 #
 #   Bitdefender kb: https://www.bitdefender.com/business/support/en/77209-157498-install-security-agents---use-cases.html#UUID-00e93090-1040-8119-d7cf-c48320a8d6b7
 #
@@ -65,7 +65,7 @@ COUNTRY=""                   # US - 2 letter country code
 STATE=""                     # Georgia - state or province
 LOCAL=""                     # Atlanta - locality name
 ORG_NAME="Endpoint"          # Leave as default value
-CERT_NAME="Kandji BD CA SSL" # Leave as default value
+CERT_NAME="Iru BD CA SSL" # Leave as default value
 
 ################################################################################################
 ############################ MAIN - DO NOT MODIFY BELOW ########################################
@@ -109,7 +109,7 @@ fi
 /bin/echo "Please enter the uninstall password that you used when configuring the "
 /bin/echo "package settings in the Bitdefender admin console. This password will be "
 /bin/echo "hashed and used in the generation of the .pfx certificate. Once generated, "
-/bin/echo "you will need to uploaded the certificate to Kandji in a Certificate library"
+/bin/echo "you will need to upload the certificate to Iru in a Certificate Library"
 /bin/echo "item. Be sure to add the hash in the password field in the Library item as well."
 /bin/echo ""
 /bin/echo "NOTE: You will not see any entered text"
@@ -156,11 +156,11 @@ hashed_password="$(/sbin/md5 -s $CERT_PASSWORD | awk '{ if (NF >= 4) print $4; e
 
 /bin/echo "The certificate.pfx file is on the Desktop."
 /bin/echo ""
-/bin/echo "NOTE: This cert needs to be uploaded to Kandji in a Certificate library item."
+/bin/echo "NOTE: This cert needs to be uploaded to Iru in a Certificate Library Item."
 /bin/echo "NOTE: Use the following hash as the password in the Certificate library item."
 /bin/echo "NOTE: This certificate needs to be added to the Bitdefender installer zip as well."
 /bin/echo ""
-/bin/echo "Please reference the Kandji Bitdefender support article for more information."
+/bin/echo "Please reference the Iru Bitdefender deployment article for more information."
 /bin/echo ""
 /bin/echo "Password hash: $hashed_password"
 /bin/echo ""

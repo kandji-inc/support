@@ -1,21 +1,21 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 06/24/2024
 ###################################################################################################
 # Software Information
 ###################################################################################################
 #
-# Version 1.0.0
+# Version 1.0.1
 #
-# Custom script to assign Configuration ID to TeamViewer Host install via Kandji
+# Custom script to assign Configuration ID to TeamViewer Host install via Iru
 # NOTE: Configuration ID (config_id) must be defined below by user prior to runtime
 # Script first confirms user-defined Configuration ID is set
 # Checks for existing TeamView Host install; if not, creates placeholder entry to assign ID
-# Once assigned, script triggers Kandji to install TeamViewer Host Auto App if not yet installed
+# Once assigned, script triggers Iru to install TeamViewer Host Auto App if not yet installed
 # If TeamViewer Host is already installed, script relaunches GUI TeamViewer Host processes
-# NOTE: If not yet installed, ensure Auto App 'TeamViewer Host' is first scoped to Kandji devices 
+# NOTE: If not yet installed, ensure Auto App 'TeamViewer Host' is first scoped to devices in Iru 
 #
 ###################################################################################################
 # License Information
@@ -56,7 +56,7 @@ config_id=""
 ########################################## DO NOT MODIFY ##########################################
 ###################################################################################################
 
-kandji_bin="/usr/local/bin/kandji"
+iru_bin="/usr/local/bin/iru"
 tv_host_path="/Applications/TeamViewerHost.app"
 tv_host_aa_name="TeamViewer Host"
 bundle_id_prefix="com.teamviewer"
@@ -136,38 +136,38 @@ function write_config() {
 }
 
 ##############################################
-# Invokes Kandji binary to trigger install of
+# Invokes Iru binary to trigger install of
 # TV Host; gets stdin from and redirects
 # to /dev/null in bg to allow parallel
-# execution without hanging Kandji binary
+# execution without hanging Iru binary
 # Outputs:
 #   Triggers TeamViewer Host install to disk
 ##############################################
-function kandji_self_call() {
+function iru_self_call() {
 
     echo "Triggering Auto App install of ${tv_host_aa_name}..."
 
-    # Redirecting stderr/out to /dev/null and bg'ing the Kandji proc
+    # Redirecting stderr/out to /dev/null and bg'ing the Iru proc
     # This allows the agent to end its run without waiting for our script exec
     # We also provide stdin from /dev/null as well, allowing us to detach from any active TTY connections
     # Serves to inform our program any input will not be coming from a terminal session
-    "${kandji_bin}" library --item "${tv_host_aa_name}" -F < /dev/null > /dev/null 2>&1 &
+    "${iru_bin}" library --item "${tv_host_aa_name}" -F < /dev/null > /dev/null 2>&1 &
 }
 
 ##############################################
 # Checks if TeamViewer Host is installed; if
 # so, relaunches GUI procs; if not, triggers
-# Kandji library run to install TV Host
+# Iru library run to install TV Host
 # Globals:
 #   bundle_id_prefix
-#   kandji_bin
+#   iru_bin
 #   tv_host_installed
 #   tv_host_aa_name
 # Outputs:
 #   Relaunches TV Host GUI if installed
 #   Installs TV Host if not installed
 # Returns:
-#   kandji_self_call if TV Host not installed
+#   iru_self_call if TV Host not installed
 #   Exit 1 if TV Host not scoped to Mac
 ##############################################
 function relaunch_or_install() {
@@ -177,14 +177,14 @@ function relaunch_or_install() {
         # If so, relaunch TeamViewer GUI procs
         /bin/launchctl print ${bundle_id_prefix} 2>&1  | /usr/bin/grep gui | /usr/bin/xargs -I {} /bin/launchctl kickstart -k "{}"
     else
-        # Validate Kandji library item is scoped to Mac
-        kandji_lib_items=$(${kandji_bin} library --list)
-        if [[ -z $(/usr/bin/grep -o "${tv_host_aa_name}" <<< "${kandji_lib_items}") ]]; then
+        # Validate Iru library item is scoped to Mac
+        iru_lib_items=$(${iru_bin} library --list)
+        if [[ -z $(/usr/bin/grep -o "${tv_host_aa_name}" <<< "${iru_lib_items}") ]]; then
             echo "${tv_host_aa_name} not scoped to Mac! Cannot complete install..."
             exit 1
         fi
-        # Once confirmed, trigger Kandji library run to install TV Host
-        kandji_self_call
+        # Once confirmed, trigger Iru library run to install TV Host
+        iru_self_call
     fi
 }
 
@@ -218,7 +218,7 @@ function main() {
     write_config
     
     # Relaunch TeamViewer GUI if already installed
-    # Otherwise trigger Kandji library install of Auto App
+    # Otherwise trigger Iru library install of Auto App
     relaunch_or_install
 
     exit 0

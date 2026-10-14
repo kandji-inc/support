@@ -12,7 +12,7 @@
 			<key>PayloadIdentifier</key>
 			<string>80964376-BF6C-41F2-9323-16A1E63C9EE1</string>
 			<key>PayloadOrganization</key>
-			<string>Kandji</string>
+			<string>Iru</string>
 			<key>PayloadType</key>
 			<string>com.apple.TCC.configuration-profile-policy</string>
 			<key>PayloadUUID</key>
@@ -85,7 +85,7 @@
 	<key>PayloadIdentifier</key>
 	<string>io.kandji.GoogleRemote.80964376-BF6C-41F2-9323-16A1E63C9EE1</string>
 	<key>PayloadOrganization</key>
-	<string>Kandji</string>
+	<string>Iru</string>
 	<key>PayloadScope</key>
 	<string>System</string>
 	<key>PayloadType</key>

@@ -1,7 +1,5 @@
 # IruPrep Enrollment Compatibility Utility
 
-**Version:** v1.5
-
 This is a pre-enrollment diagnostic tool for Windows devices. Run checks before enrollment to confirm requirements, network access, and common migration blockers, so you can resolve issues on the device instead of troubleshooting after a failed enrollment.
 
 ---
@@ -16,7 +14,7 @@ Iru enrollment requirements are documented in [Device requirements](https://docs
 
 ## What IruPrep does
 
-**IruPrep Enrollment Compatibility Utility** (`IruPrep.ps1`) automates pre-enrollment checks aligned with Iru documentation and common issues seen during MDM migrations. It surfaces problems before you enroll, with actionable output for IT staff and end users.
+**IruPrep Enrollment Compatibility Utility** (`IruPrep.ps1`) automates pre-enrollment checks aligned with [Iru device requirements](https://docs.iru.com/en/iru/requirements/device-requirements#windows) and common issues seen during MDM migrations. It surfaces problems before you enroll, with actionable output for IT staff and end users.
 
 The script uses a native Windows Form UI: no additional dependencies required, only the `.ps1` file and branding assets.
 
@@ -24,7 +22,7 @@ The script uses a native Windows Form UI: no additional dependencies required, o
 
 ## Features
 
-- ✅ Checks enrollment prerequisites aligned with current Iru documentation  
+- ✅ Checks enrollment prerequisites aligned with [current Iru device requirements](https://docs.iru.com/en/iru/requirements/device-requirements#windows)
 - ✅ Detects stale registry keys from previous MDM migrations that can block enrollment  
 - ✅ Simple Windows Forms UI built on native PowerShell; no external installs needed  
 - ✅ Region selection and subdomain entry via guided form inputs  
@@ -37,9 +35,10 @@ The script uses a native Windows Form UI: no additional dependencies required, o
 
 | Requirement | Details |
 | :---- | :---- |
-| OS | [Windows 11 24H2 and higher (Pro, Pro Education, Enterprise, Education)](https://docs.iru.com/en/iru/requirements/device-requirements#windows) |
+| OS | [Windows 11 24H2, 25H2, or 26H2 (Pro, Pro Education, Enterprise, Education)](https://docs.iru.com/en/iru/requirements/device-requirements#windows) |
 | PowerShell | 5.1 (does not support PowerShell 7+) |
-| Permissions | Standard user (some checks may require local admin) |
+| IruPrep permissions | Standard user (some checks may require local administrator rights) |
+| Enrollment permissions | Local administrator rights |
 | Dependencies | None (Windows Forms is built into Windows) |
 
 ---

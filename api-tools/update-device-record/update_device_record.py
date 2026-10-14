@@ -78,7 +78,7 @@ from requests.packages.urllib3.util.retry import Retry
 
 SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
 
-# us("") and eu - this can be found in the Kandji settings on the Access tab
+# us("") and eu - this can be found in Account Menu > Access > API tokens
 REGION = ""
 
 # Kandji Bearer Token

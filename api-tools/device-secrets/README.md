@@ -26,7 +26,7 @@ The API permissions required to run the reporting script are as follows. Checkou
 1. Open the script in a text editor such as BBEdit, Atom, or VSCode.
 1. Update the `SUBDOMAIN` variable to match your Kandji subdomain, the Kandji tenant `REGION`, and update `TOKEN` information with your Bearer token.
 
-- The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Kandji then navigate to `Settings > Access > API Token`. From there, you can copy the information out of the API URL and generate API tokens.
+- The `BASE_URL`, `REGION`, and `TOKEN` can be found by logging into Iru, then go to `Account Menu > Access > API tokens`. From there, you can copy the information out of the API URL and generate API tokens.
 
     *NOTE*: The API token is only visible at the point of creation so be sure to copy it to a safe location.
 
@@ -37,7 +37,7 @@ The API permissions required to run the reporting script are as follows. Checkou
     
     SUBDOMAIN = "accuhive"  # bravewaffles, example, company_name
     
-    # us("") and eu - this can be found in the Kandji settings on the Access tab
+    # us("") and eu - this can be found in Account Menu > Access > API tokens
     REGION = ""
     
     # Kandji Bearer Token

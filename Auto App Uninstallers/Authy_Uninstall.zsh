@@ -1,6 +1,6 @@
 #!/bin/zsh
 ###################################################################################################
-# Created by Noah Anderson | se@kandji.io | Kandji, Inc. | Systems Engineering
+# Created by Noah Anderson | se@iru.com | Iru, Inc. | Systems Engineering
 ###################################################################################################
 # Created on 04/23/2024
 ###################################################################################################
@@ -11,7 +11,7 @@
 #
 # Uninstaller script for Authy Desktop
 # NOTE: It is recommended you remove Authy from any Blueprints where this uninstaller is added
-# NOTE: Failure to do so may result in Authy being reinstalled upon next Kandji agent check-in
+# NOTE: Failure to do so may result in Authy being reinstalled upon next Iru Agent check-in
 # Code will first kill any active Authy processes
 # Next, if Authy application bundle exists in /Applications, it will be deleted
 # Finally, iterates over all users with UID ≥ 500, populates their home directory paths,

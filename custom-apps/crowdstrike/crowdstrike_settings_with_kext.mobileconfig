@@ -169,7 +169,7 @@
 		<key>PayloadIdentifier</key>
 		<string>com.kandji.crowdstrike</string>
 		<key>PayloadOrganization</key>
-		<string>Kandji, Inc.</string>
+		<string>Iru, Inc.</string>
 		<key>PayloadRemovalDisallowed</key>
 		<false/>
 		<key>PayloadScope</key>

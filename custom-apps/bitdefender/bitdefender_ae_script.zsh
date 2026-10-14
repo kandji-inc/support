@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ################################################################################################
-# Created by Matt Wilson | support@kandji.io | Kandji, Inc.
+# Created by Matt Wilson | support@iru.com | Iru, Inc.
 ################################################################################################
 # Created - 2022-02-09
 # Updated - 2025-05-08
@@ -23,7 +23,8 @@
 # after installation.
 #
 # Configuration profiles are included with the Bitdefender deployment instructions
-# found in the Kandji Knowledge Base.
+# found in the Iru documentation.
+# https://docs.iru.com/en/endpoint/library/deployment-guides/apple/deploy-bitdefender-endpoint-security-tool-as-a-custom-app
 #
 ################################################################################################
 # License Information
@@ -59,7 +60,7 @@ VERSION="1.1.0"
 
 # Change the PAYLOAD_ID_PREFIX variable to the profile prefix you want to wait on before
 # running the installer. The profile prefix below is associated with the Notifications
-# payload in the Kandji provided configuration profile.
+# payload in the Iru configuration profile.
 PAYLOAD_ID_PREFIX="io.kandji.bitdefender.D0DF2C14"
 
 # Service management profile prefix
@@ -125,7 +126,7 @@ profiles_list=$(profile_search "$PAYLOAD_ID_PREFIX")
 if [[ ${#profiles_list[@]} -eq 0 ]]; then
     /bin/echo "Settings profile not found ..."
     /bin/echo "Waiting until the profile is installed before proceeding ..."
-    /bin/echo "Will check again at the next Kandji agent check-in ..."
+    /bin/echo "Will check again at the next Iru Agent check-in ..."
     exit 0
 fi
 
@@ -144,7 +145,7 @@ if [[ "${osvers_major}" -ge 13 ]]; then
     # wait
     if [[ ${#profiles[@]} -eq 0 ]]; then
         /bin/echo "No profiles with ID $SERVICE_MANAGEMENT_PREFIX were found ..."
-        /bin/echo "Will check again at the next Kandji agent check in before moving on ..."
+        /bin/echo "Will check again at the next Iru Agent check in before moving on ..."
         exit 0
     fi
 
