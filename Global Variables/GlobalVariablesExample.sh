@@ -4,7 +4,15 @@
 ################################################################################################
 #
 # Created - 03/29/2021
-# Updated - 04/24/2025
+# Updated - 10/15/2026
+#
+################################################################################################
+# Tested macOS Versions
+################################################################################################
+#
+#   - macOS Golden Gate 27
+#   - macOS Tahoe 26
+#   - macOS Sequoia 15
 #
 ################################################################################################
 # Software Information
@@ -19,7 +27,7 @@
 # License Information
 ################################################################################################
 #
-# Copyright 2024 Kandji, Inc.
+# Copyright 2026 Iru, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -39,60 +47,48 @@
 #
 ################################################################################################
 
-FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-USERNAME=$(/usr/libexec/PlistBuddy -c 'print :USERNAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-USERNAME_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :USERNAME_PREFIX' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-JOB_TITLE=$(/usr/libexec/PlistBuddy -c 'print :JOB_TITLE' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-ASSET_TAG=$(/usr/libexec/PlistBuddy -c 'print :ASSET_TAG' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-DEVICE_ID=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-BLUEPRINT_NAME=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-BLUEPRINT_ID=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_ID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-MODEL_NAME=$(/usr/libexec/PlistBuddy -c 'print :MODEL_NAME' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
-MODEL_IDENTIFIER=$(/usr/libexec/PlistBuddy -c 'print :MODEL_IDENTIFIER' /Library/Managed\ Preferences/io.kandji.globalvariables.plist)
+globalVariablesPlist="/Library/Managed Preferences/io.kandji.globalvariables.plist"
 
-echo "
-Global Variables Summary
+if [[ ! -f "${globalVariablesPlist}" ]]; then
+    echo "Global Variables profile is not installed. ${globalVariablesPlist} was not found."
+    exit 1
+fi
 
+FULL_NAME=$(/usr/libexec/PlistBuddy -c 'print :FULL_NAME' "${globalVariablesPlist}")
+EMAIL=$(/usr/libexec/PlistBuddy -c 'print :EMAIL' "${globalVariablesPlist}")
+EMAIL_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :EMAIL_PREFIX' "${globalVariablesPlist}")
+USERNAME=$(/usr/libexec/PlistBuddy -c 'print :USERNAME' "${globalVariablesPlist}")
+USERNAME_PREFIX=$(/usr/libexec/PlistBuddy -c 'print :USERNAME_PREFIX' "${globalVariablesPlist}")
+DEPARTMENT=$(/usr/libexec/PlistBuddy -c 'print :DEPARTMENT' "${globalVariablesPlist}")
+JOB_TITLE=$(/usr/libexec/PlistBuddy -c 'print :JOB_TITLE' "${globalVariablesPlist}")
+DEVICE_NAME=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_NAME' "${globalVariablesPlist}")
+SERIAL_NUMBER=$(/usr/libexec/PlistBuddy -c 'print :SERIAL_NUMBER' "${globalVariablesPlist}")
+ASSET_TAG=$(/usr/libexec/PlistBuddy -c 'print :ASSET_TAG' "${globalVariablesPlist}")
+DEVICE_ID=$(/usr/libexec/PlistBuddy -c 'print :DEVICE_ID' "${globalVariablesPlist}")
+BLUEPRINT_NAME=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_NAME' "${globalVariablesPlist}")
+BLUEPRINT_ID=$(/usr/libexec/PlistBuddy -c 'print :BLUEPRINT_ID' "${globalVariablesPlist}")
+UDID=$(/usr/libexec/PlistBuddy -c 'print :UDID' "${globalVariablesPlist}")
+PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'print :PROFILE_UUID' "${globalVariablesPlist}")
+MODEL_NAME=$(/usr/libexec/PlistBuddy -c 'print :MODEL_NAME' "${globalVariablesPlist}")
+MODEL_IDENTIFIER=$(/usr/libexec/PlistBuddy -c 'print :MODEL_IDENTIFIER' "${globalVariablesPlist}")
+
+echo "Global Variables Summary
 Full Name: $FULL_NAME
-
 Email: $EMAIL
-
 Email Prefix: $EMAIL_PREFIX
-
 Username: $USERNAME
-
 Username Prefix: $USERNAME_PREFIX
-
 Department: $DEPARTMENT
-
 Job Title: $JOB_TITLE
-
 Device Name: $DEVICE_NAME
-
 Serial Number: $SERIAL_NUMBER
-
 Asset Tag: $ASSET_TAG
-
 Device ID: $DEVICE_ID
-
 Blueprint Name: $BLUEPRINT_NAME
-
 Blueprint ID: $BLUEPRINT_ID
-
 Hardware UDID: $UDID
-
 Model Name: $MODEL_NAME
-
 Model Identifier: $MODEL_IDENTIFIER
-
-Profile UUID: $PROFILE_UUID
-"
+Profile UUID: $PROFILE_UUID"
 
 exit 0
