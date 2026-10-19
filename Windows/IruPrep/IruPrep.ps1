@@ -46,7 +46,7 @@ try {
 # -----------------------------
 $BrandName      = "Iru"
 $ToolName       = "IruPrep Enrollment Compatibility Utility"
-$ToolVersion    = "v1.5"
+$ToolVersion    = "v1.6"
 
 $AccentColor          = [System.Drawing.Color]::FromArgb(18, 22, 61)
 $script:AccentDarkColor = [System.Drawing.Color]::FromArgb(
@@ -66,6 +66,7 @@ $IconUrl = "https://raw.githubusercontent.com/kandji-inc/support/refs/heads/main
 $UpstreamScriptUrl = "https://raw.githubusercontent.com/kandji-inc/support/refs/heads/main/Windows/IruPrep/IruPrep.ps1"
 
 $DocsNetworkUrl = "https://docs.iru.com/en/iru/requirements/using-iru-on-enterprise-networks"
+$DocsDeviceRequirementsUrl = "https://docs.iru.com/en/iru/requirements/device-requirements#windows"
 
 # Default output folder
 $DefaultOutputFolder = Join-Path $env:USERPROFILE "Documents"
@@ -158,30 +159,6 @@ $script:WindowsBuilds = (
     "19044=Windows 10 21H2","19043=Windows 10 21H1","19042=Windows 10 20H2",
     "19041=Windows 10 2004"
 ) | ForEach-Object { $K, $V = $_ -split '=', 2; @{ MinBuild = [int]$K; Name = $V } }
-
-# Per-region endpoints. SubdomainSuffixes/UuidSuffixes are joined to the tenant subdomain/UUID at run time.
-$script:RegionMap = @{
-    EU = @{
-        Base              = "kandji-prd-eu.s3.amazonaws.com","iru-prd-eu-managed-library-items.s3.amazonaws.com","managed-library.eu.kandji.io","managed-library.eu.iru.com","windows-agent.eu.kandji.io"
-        SubdomainSuffixes = "iru.com","gateway.eu.iru.com","id.iru.com","id.eu.iru.com","id.connect.iru.com","id.connect.eu.iru.com","id.devices.eu.iru.com","id.gateway.eu.iru.com"
-        UuidSuffixes      = "web-api.eu.kandji.io","devices.eu.kandji.io"
-        Wildcard          = "*.iot.eu.kandji.io"
-        GatewayHost       = "gateway.eu.iru.com"
-    }
-    US = @{
-        Base              = "kandji-prd.s3.amazonaws.com","iru-prd-managed-library-items.s3.amazonaws.com","managed-library.kandji.io","managed-library.iru.com","windows-agent.kandji.io"
-        SubdomainSuffixes = "iru.com","gateway.iru.com","id.iru.com","id.connect.iru.com","id.devices.iru.com","id.gateway.iru.com"
-        UuidSuffixes      = "web-api.kandji.io","devices.us-1.kandji.io"
-        Wildcard          = "*.iot.kandji.io"
-        GatewayHost       = "gateway.iru.com"
-    }
-}
-
-# Telemetry endpoints common to every region.
-$script:TelemetryDomains = "browser-intake-datadoghq.com","events.launchdarkly.com","updater.iru.com"
-
-# Endpoints not yet expected to resolve. Failures here surface as INFO so the overall score isn't dragged down.
-$script:NotYetActiveDomains = "managed-library.eu.iru.com","managed-library.iru.com"
 
 # HTML report template. Convert-ResultsToHtml does {{token}} substitution.
 $script:HtmlTemplate = @'
@@ -457,6 +434,150 @@ function Get-WindowsBuildName {
     "Windows (Build $Build)"
 }
 
+# Reads the current Windows versions and editions from Iru documentation.
+# There is no local supported-version list. A failed read fails the requirement checks.
+function Get-IruDocsMarkdown {
+    param([string]$PageUrl)
+
+    $fetchUrl = (($PageUrl -split '#')[0]).TrimEnd('/')
+    if ($fetchUrl -notmatch '\.md$') { $fetchUrl += '.md' }
+
+    try {
+        $resp = Invoke-WebRequest -Uri $fetchUrl -UseBasicParsing -TimeoutSec 15 -ErrorAction Stop
+    } catch {
+        return $null
+    }
+
+    if (-not $resp.Content) { return $null }
+    [string]$resp.Content
+}
+
+function Get-WindowsDocsSection {
+    param([string]$Markdown)
+
+    $start = [regex]::Match($Markdown, '(?m)^[ \t]*#{2,4} Windows Support\s*$')
+    if (-not $start.Success) { return $Markdown }
+
+    $end = [regex]::Match($Markdown.Substring($start.Index), '(?m)^[ \t]*#{2,4} Android Support\s*$')
+    if ($end.Success -and $end.Index -gt 0) {
+        return $Markdown.Substring($start.Index, $end.Index)
+    }
+    $Markdown.Substring($start.Index)
+}
+
+function Add-UniqueListItem {
+    param($List, [string]$Value)
+    if ($Value -and -not $List.Contains($Value)) { [void]$List.Add($Value) }
+}
+
+function Get-WindowsVersionNames {
+    param([string]$Markdown)
+
+    $versions = New-Object System.Collections.Generic.List[string]
+    foreach ($line in ($Markdown -split '\r?\n')) {
+        if ($line -notmatch '(?i)Windows 11' -or $line -notmatch '\d{2}H\d') { continue }
+        foreach ($match in [regex]::Matches($line, '\d{2}H\d')) {
+            Add-UniqueListItem $versions $match.Value
+        }
+    }
+    $versions
+}
+
+function ConvertTo-WindowsEditionName {
+    param([string]$Value)
+
+    switch -Regex ($Value) {
+        '(?i)^Pro Education$' { return 'Pro Education' }
+        '(?i)^Pro$'           { return 'Pro' }
+        '(?i)^Enterprise$'    { return 'Enterprise' }
+        '(?i)^Education$'     { return 'Education' }
+    }
+    $null
+}
+
+function Get-WindowsEditionNames {
+    param([string]$Markdown)
+
+    $editionNames = New-Object System.Collections.Generic.List[string]
+    foreach ($line in ($Markdown -split '\r?\n')) {
+        if ($line -notmatch '(?i)Pro Education' -or $line -notmatch '(?i)Enterprise') { continue }
+        foreach ($match in [regex]::Matches($line, '(?i)Pro Education|\bEnterprise\b|\bEducation\b|\bPro\b')) {
+            Add-UniqueListItem $editionNames (ConvertTo-WindowsEditionName $match.Value)
+        }
+        break
+    }
+    $editionNames
+}
+
+function Get-WindowsRequirementSnapshot {
+    param([string]$Markdown)
+
+    [pscustomobject]@{
+        Versions = @(Get-WindowsVersionNames $Markdown)
+        Editions = @(Get-WindowsEditionNames $Markdown)
+    }
+}
+
+function ConvertTo-WindowsEditionIds {
+    param([string[]]$EditionNames)
+
+    $ids = New-Object System.Collections.Generic.List[string]
+    foreach ($name in $EditionNames) {
+        switch ($name) {
+            'Pro' {
+                $ids.Add('Professional')
+                $ids.Add('Pro')
+            }
+            'Pro Education' {
+                $ids.Add('ProfessionalEducation')
+                $ids.Add('ProEducation')
+            }
+            'Enterprise' { $ids.Add('Enterprise') }
+            'Education'  { $ids.Add('Education') }
+            default      { $ids.Add($name) }
+        }
+    }
+    @($ids | Select-Object -Unique)
+}
+
+function Format-WindowsVersionList {
+    param([string[]]$Versions)
+
+    $ordered = @($Versions | Sort-Object { [int]($_ -replace '\D', '') })
+    if ($ordered.Count -eq 0) { return '' }
+    if ($ordered.Count -eq 1) { return "Windows 11 $($ordered[0])" }
+
+    $head = $ordered[0..($ordered.Count - 2)] -join ', '
+    "Windows 11 $head, or $($ordered[-1])"
+}
+
+function Get-IruWindowsRequirements {
+    $deviceMarkdown = Get-IruDocsMarkdown $DocsDeviceRequirementsUrl
+    $networkDetail = "Could not read Windows requirements from Iru documentation. Check network access and firewall rules for docs.iru.com. Device Requirements: $DocsDeviceRequirementsUrl"
+
+    if (-not $deviceMarkdown) {
+        return [pscustomobject]@{ Ok = $false; Detail = $networkDetail }
+    }
+
+    $fromDevice = Get-WindowsRequirementSnapshot (Get-WindowsDocsSection $deviceMarkdown)
+
+    if (-not $fromDevice.Versions.Count -or -not $fromDevice.Editions.Count) {
+        return [pscustomobject]@{
+            Ok = $false
+            Detail = "Windows versions or editions were not found in Iru documentation. Device Requirements: $DocsDeviceRequirementsUrl"
+        }
+    }
+
+    [pscustomobject]@{
+        Ok           = $true
+        Versions     = @($fromDevice.Versions)
+        EditionIds   = @(ConvertTo-WindowsEditionIds $fromDevice.Editions)
+        VersionLabel = Format-WindowsVersionList $fromDevice.Versions
+        EditionLabel = ($fromDevice.Editions -join ', ')
+        Detail       = $null
+    }
+}
+
 function Get-EdgeInfo {
     $edgeExe = $null
     $appPaths = @(
@@ -538,23 +659,37 @@ function Get-LoggedOnUser {
 }
 
 function Test-CurrentUserIsAdmin {
-    # Check group membership, not token elevation: an admin running unelevated should still pass.
+    # S-1-5-32-544 is the built-in Administrators group on every language of Windows.
+    # The sign-in token includes it for a local administrator, including when the
+    # process is not elevated. IsInRole hides that deny-only SID, so this checks
+    # the token groups directly. Membership is fixed at sign-in.
     try {
-        $Id  = [System.Security.Principal.WindowsIdentity]::GetCurrent()
-        $Sid = $Id.User.Value
-        $IsAdmin = [bool](Get-LocalGroupMember -Group Administrators -ErrorAction Stop |
-            Where-Object { $_.SID.Value -eq $Sid })
+        $Id = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+        if (-not $Id) { throw "Windows identity was not available." }
+
+        $adminSid = "S-1-5-32-544"
+        $IsAdmin = $false
+        foreach ($Group in @($Id.Groups)) {
+            if ($Group.Value -eq $adminSid) { $IsAdmin = $true; break }
+        }
+
+        $UserName = if ($Id.Name) { $Id.Name } else { Get-LoggedOnUser }
+        $Detail = if ($IsAdmin) {
+            "User is a local administrator."
+        } else {
+            "User is not a local administrator. Enrollment requires local administrator rights. If this account was just added to Administrators, sign out and back in, then run the check again."
+        }
 
         [pscustomobject]@{
-            User    = $Id.Name
-            IsAdmin = $IsAdmin
-            Detail  = if ($IsAdmin) { "User is a local administrator." } else { "User is NOT a local administrator." }
+            User   = $UserName
+            Status = if ($IsAdmin) { "PASS" } else { "FAIL" }
+            Detail = $Detail
         }
     } catch {
         [pscustomobject]@{
-            User    = (Get-LoggedOnUser)
-            IsAdmin = $false
-            Detail  = "Could not determine admin status reliably: $($_.Exception.Message)"
+            User   = (Get-LoggedOnUser)
+            Status = "INFO"
+            Detail = "Could not read the current sign-in token: $($_.Exception.Message)"
         }
     }
 }
@@ -787,31 +922,13 @@ function Test-PendingReboot {
         [void]$sources.Add("Windows Update")
     }
 
-    # Component Based Servicing (e.g. .NET, language packs)
+    # Component Based Servicing has an unfinished update transaction
     if (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending") {
         [void]$sources.Add("Component Based Servicing")
     }
     if (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress") {
         [void]$sources.Add("CBS Reboot In Progress")
     }
-
-    # Pending file rename operations (installers commonly set this)
-    try {
-        $pfro = Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager" `
-                    -Name PendingFileRenameOperations -ErrorAction Stop
-        if ($pfro.PendingFileRenameOperations) {
-            [void]$sources.Add("Pending File Rename Operations")
-        }
-    } catch {}
-
-    # SCCM / ConfigMgr client reboot pending
-    try {
-        $ccm = [WmiClass]"\\.\root\ccm\clientsdk:CCM_ClientUtilities"
-        $status = $ccm.DetermineIfRebootPending()
-        if ($status -and ($status.RebootPending -or $status.IsHardRebootPending)) {
-            [void]$sources.Add("SCCM Client")
-        }
-    } catch {}
 
     $pending = $sources.Count -gt 0
 
@@ -856,23 +973,186 @@ function Get-ExperienceEnrollmentPolicy {
     }
 }
 
-function Get-RegionDomains {
-    param([Parameter(Mandatory=$true)][ValidateSet("EU","US")]$Region,[string]$Subdomain,[string]$UUID)
+# Enrollment hosts come from the enterprise networks article for the selected region.
+# Windows and All rows are probed. macOS-only rows are not. Wildcards are reported
+# and not probed. A failed read fails the network checks.
+function Get-MarkdownHeadingSection {
+    param(
+        [Parameter(Mandatory=$true)][string]$Markdown,
+        [Parameter(Mandatory=$true)][string]$Title
+    )
 
-    $Map = $script:RegionMap[$Region]
-    $Domains = New-Object System.Collections.Generic.List[string]
+    $startPattern = '(?m)^[ \t]*(?<hashes>#{2,4})[ \t]+' + [regex]::Escape($Title) + '\s*$'
+    $start = [regex]::Match($Markdown, $startPattern)
+    if (-not $start.Success) { return $null }
 
-    foreach ($D in $script:TelemetryDomains) { [void]$Domains.Add($D) }
-    foreach ($D in $Map.Base)                { [void]$Domains.Add($D) }
+    $level = $start.Groups['hashes'].Value.Length
+    $rest = $Markdown.Substring($start.Index + $start.Length)
+    $endPattern = '(?m)^[ \t]{0,12}#{1,' + $level + '}[ \t]+\S'
+    $end = [regex]::Match($rest, $endPattern)
+    if ($end.Success) { return $rest.Substring(0, $end.Index) }
+    $rest
+}
 
-    if ($Subdomain) {
-        foreach ($Suffix in $Map.SubdomainSuffixes) { [void]$Domains.Add("$Subdomain.$Suffix") }
+function Get-MarkdownTableCells {
+    param([string]$Line)
+
+    if ($Line -notmatch '^\s*\|') { return $null }
+    if ($Line -match '^\s*\|\s*-+') { return $null }
+
+    $parts = @($Line.Trim() -split '\|' | ForEach-Object { $_.Trim() })
+    if ($parts.Count -lt 3 -or $parts[1] -notmatch '`') { return $null }
+    $parts
+}
+
+function Test-WindowsOrAllRow {
+    param($Parts)
+
+    if ($Parts.Count -lt 5) { return $false }
+    $osCell = [regex]::Replace([string]$Parts[4], '<[^>]+>', '')
+    ($osCell -match '(?i)\bAll\b') -or ($osCell -match '(?i)\bWindows\b')
+}
+
+function Add-BacktickHosts {
+    param($Names, [string]$Cell)
+
+    foreach ($match in [regex]::Matches($Cell, '`([^`]+)`')) {
+        $name = $match.Groups[1].Value.Trim()
+        if ($name) { [void]$Names.Add($name) }
     }
-    if ($UUID) {
-        foreach ($Suffix in $Map.UuidSuffixes) { [void]$Domains.Add("$UUID.$Suffix") }
+}
+
+function Get-ArticleHostNames {
+    param(
+        [string]$Section,
+        [switch]$WindowsOrAllOnly
+    )
+
+    $names = New-Object System.Collections.Generic.List[string]
+    foreach ($line in ($Section -split '\r?\n')) {
+        $parts = Get-MarkdownTableCells $line
+        if (-not $parts) { continue }
+        if ($WindowsOrAllOnly -and -not (Test-WindowsOrAllRow $parts)) { continue }
+        Add-BacktickHosts $names $parts[1]
+    }
+    $names
+}
+
+function Resolve-ArticleEndpoint {
+    param([string]$HostName, [string]$Subdomain, [string]$UUID)
+
+    if ($HostName -match '\*') {
+        return [pscustomobject]@{ Kind = 'Wildcard'; Name = $HostName }
     }
 
-    $Domains | Select-Object -Unique
+    $name = $HostName
+    if ($name -match '^(?i)subdomain\.(.+)$') {
+        if (-not $Subdomain) { return [pscustomobject]@{ Kind = 'Skipped'; Name = $HostName } }
+        $name = "$Subdomain.$($Matches[1])"
+    } elseif ($name -match '^(?i)UUID\.(.+)$') {
+        if (-not $UUID) { return [pscustomobject]@{ Kind = 'Skipped'; Name = $HostName } }
+        $name = "$UUID.$($Matches[1])"
+    }
+
+    $label = '[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?'
+    $pattern = '^' + $label + '(\.' + $label + ')+$'
+    if ($name -notmatch $pattern) {
+        return [pscustomobject]@{ Kind = 'Skipped'; Name = $HostName }
+    }
+    [pscustomobject]@{ Kind = 'Host'; Name = $name }
+}
+
+function New-EnrollmentEndpointResult {
+    param([bool]$Ok, $Hosts, $Wildcards, $GatewayHost, $Detail)
+
+    if ($null -eq $Hosts) { $Hosts = @() }
+    if ($null -eq $Wildcards) { $Wildcards = @() }
+
+    [pscustomobject]@{
+        Ok          = $Ok
+        Hosts       = $Hosts
+        Wildcards   = $Wildcards
+        GatewayHost = $GatewayHost
+        Detail      = $Detail
+    }
+}
+
+function Get-ArticleGatewaySuffix {
+    param($ArticleHosts)
+
+    foreach ($name in $ArticleHosts) {
+        if ($name -match '^(?i)subdomain\.(gateway(?:\.eu)?\.iru\.com)$') {
+            return $Matches[1]
+        }
+    }
+    $null
+}
+
+function Add-UniqueString {
+    param($List, [string]$Value)
+
+    foreach ($existing in $List) {
+        if ($existing -eq $Value) { return }
+    }
+    [void]$List.Add($Value)
+}
+
+function Add-ResolvedArticleHosts {
+    param($ArticleHosts, [string]$Subdomain, [string]$UUID, $Probe, $Wildcards)
+
+    foreach ($name in $ArticleHosts) {
+        $resolved = Resolve-ArticleEndpoint -HostName $name -Subdomain $Subdomain -UUID $UUID
+        if ($resolved.Kind -eq 'Wildcard') {
+            Add-UniqueString $Wildcards $resolved.Name
+        } elseif ($resolved.Kind -eq 'Host') {
+            Add-UniqueString $Probe $resolved.Name
+        }
+    }
+}
+
+function Get-IruEnrollmentEndpoints {
+    param(
+        [Parameter(Mandatory=$true)][ValidateSet("EU","US")]$Region,
+        [string]$Subdomain,
+        [string]$UUID
+    )
+
+    $page = ($DocsNetworkUrl -split '#')[0]
+    $fetchFailed = "Could not read enrollment hosts from Iru documentation. Check network access and firewall rules for docs.iru.com. Enterprise networks: $page"
+    $parseFailed = "Enrollment hosts for the $Region region were not found in Iru documentation. Enterprise networks: $page"
+    $empty = @()
+
+    $markdown = Get-IruDocsMarkdown $DocsNetworkUrl
+    if (-not $markdown) {
+        return New-EnrollmentEndpointResult $false $empty $empty $null $fetchFailed
+    }
+
+    $regionTitle = 'US-Hosted Region Domains'
+    if ($Region -eq 'EU') { $regionTitle = 'EU-Hosted Region Domains' }
+    $regionSection = Get-MarkdownHeadingSection -Markdown $markdown -Title $regionTitle
+    $windowsSection = Get-MarkdownHeadingSection -Markdown $markdown -Title 'Windows Required Hosts & Ports'
+    if (-not $regionSection -or -not $windowsSection) {
+        return New-EnrollmentEndpointResult $false $empty $empty $null $parseFailed
+    }
+
+    $articleHosts = New-Object System.Collections.Generic.List[string]
+    foreach ($name in (Get-ArticleHostNames -Section $regionSection -WindowsOrAllOnly)) {
+        [void]$articleHosts.Add($name)
+    }
+    foreach ($name in (Get-ArticleHostNames -Section $windowsSection)) {
+        [void]$articleHosts.Add($name)
+    }
+
+    $probe = New-Object System.Collections.Generic.List[string]
+    $wildcards = New-Object System.Collections.Generic.List[string]
+    $gateway = Get-ArticleGatewaySuffix $articleHosts
+    Add-ResolvedArticleHosts $articleHosts $Subdomain $UUID $probe $wildcards
+
+    if ($probe.Count -eq 0) {
+        return New-EnrollmentEndpointResult $false $empty $empty $gateway $parseFailed
+    }
+
+    New-EnrollmentEndpointResult $true $probe $wildcards $gateway $null
 }
 
 # -----------------------------
@@ -1056,7 +1336,7 @@ function Convert-ResultsToHtml {
 
     # ---- OS callout ---- (reads structured fields from .Data, no regex on .Details)
     $osDetectedRow = $script:Results | Where-Object { $_.Check -eq "Detected OS" }  | Select-Object -First 1
-    $osVersionRow  = $script:Results | Where-Object { $_.Check -like "OS version*" } | Select-Object -First 1
+    $osVersionRow  = $script:Results | Where-Object { $_.Check -eq "Supported Windows version" } | Select-Object -First 1
     $osData        = if ($osDetectedRow) { $osDetectedRow.Data } else { @{} }
     $osStatus      = if ($osVersionRow) { $osVersionRow.Status } else { "INFO" }
     $osReason      = if ($osVersionRow -and $osVersionRow.Data -and $osVersionRow.Data.Reason) { & $esc $osVersionRow.Data.Reason } else { "" }
@@ -1294,7 +1574,7 @@ $lblRegion.AutoSize = $true
 $cmbRegion = New-Object System.Windows.Forms.ComboBox
 $cmbRegion.DropDownStyle = "DropDownList"
 $cmbRegion.Items.AddRange(@("EU", "US"))
-$cmbRegion.SelectedIndex = 0
+$cmbRegion.SelectedItem = "US"
 
 $lblSubdomain = New-Object System.Windows.Forms.Label
 $lblSubdomain.Text = "Tenant Subdomain"
@@ -1337,7 +1617,7 @@ $btnCancel.Add_Click({
     $lblStatus.Text = "Cancelling..."
 })
 
-$btnDocs = New-FlatButton -Text "Open Docs"
+$btnDocs = New-FlatButton -Text "Enterprise Networks Doc"
 $btnDocs.Add_Click({ try { Start-Process $DocsNetworkUrl } catch {} })
 
 # Enrollment button (Edge only).
@@ -1702,9 +1982,10 @@ $script:Grid.Add_SelectionChanged({
 
 $resultsPanel = New-Object System.Windows.Forms.Panel
 $resultsPanel.Dock = "Fill"
-# Add detail panel before grid so docking resolves correctly (Bottom claimed first, Fill takes remainder)
-$resultsPanel.Controls.Add($detailPanel)
+# Add Fill first, then the bottom detail panel. WinForms docks later controls
+# first, so the detail panel keeps its height and the grid scrolls above it.
 $resultsPanel.Controls.Add($script:Grid)
+$resultsPanel.Controls.Add($detailPanel)
 $resultsPanel.Controls.Add($lblWatermark)
 $resultsPanel.Add_Resize({
     $x = [int]($resultsPanel.ClientSize.Width - $lblWatermark.Width - 14)
@@ -1795,7 +2076,7 @@ function Set-Progress {
 }
 
 $btnClear.Add_Click({
-    $cmbRegion.SelectedIndex = 0
+    $cmbRegion.SelectedItem = "US"
     $txtSubdomain.Clear()
     $txtUUID.Clear()
     $txtDeviceDomain.Clear()
@@ -1842,39 +2123,47 @@ function Invoke-AllChecks {
     $IsWin11 = ($null -ne $Win.BuildNumberInt -and $Win.BuildNumberInt -ge 22000)
 
     $Dv = if ($Win.DisplayVersion) { $Win.DisplayVersion } else { $Win.ReleaseId }
-    $Is24Or25ByDv    = $Dv -in @("24H2", "25H2")
-    $Is24Or25ByBuild = ($null -ne $Win.BuildNumberInt -and $Win.BuildNumberInt -ge 26100)
-    $StatusWin       = if ($IsWin11 -and ($Is24Or25ByDv -or $Is24Or25ByBuild)) { "PASS" } else { "FAIL" }
-
-    $TrueName = if ($Win.BuildNumberInt) { Get-WindowsBuildName $Win.BuildNumberInt } else { "Unknown" }
+    $TrueName = if ($IsWin11 -and $Dv) {
+        "Windows 11 $Dv"
+    } elseif ($Win.BuildNumberInt) {
+        Get-WindowsBuildName $Win.BuildNumberInt
+    } else {
+        "Unknown"
+    }
 
     # Row 1 - what was actually detected (always INFO so it is always visible)
     Add-CheckResult $WinSection "Detected OS" "INFO" `
         "OS: $TrueName | Build: $($Win.Build) | DisplayVersion: $Dv | Edition: $($Win.EditionId) | Kernel: $($Win.Version)" `
         -Data @{ Name = $TrueName; Build = $Win.Build; DisplayVersion = $Dv; Edition = $Win.EditionId }
 
-    # Row 2 - does it meet the requirement?
-    $SupportedVersions = "Supported: Windows 11 24H2 (Build 26100+), Windows 11 25H2"
-    $ReqReason = if ($StatusWin -eq "PASS") {
-        "$TrueName meets the minimum OS requirement."
-    } elseif (-not $IsWin11) {
-        "$TrueName is not Windows 11. Iru requires Windows 11 24H2 or later."
+    $Requirements = Get-IruWindowsRequirements
+    if (-not $Requirements.Ok) {
+        Add-CheckResult $WinSection "Supported Windows version" "FAIL" $Requirements.Detail
+        Set-Progress 15 "Checking Windows edition..."
+        Add-CheckResult $WinSection "Supported Windows edition" "FAIL" $Requirements.Detail
     } else {
-        "$TrueName does not meet the minimum feature update. Upgrade to 24H2 or later."
-    }
-    Add-CheckResult $WinSection "OS version (min: Win 11 24H2)" $StatusWin "$ReqReason $SupportedVersions" `
-        -Data @{ Reason = $ReqReason }
+        $IsSupportedVersion = $IsWin11 -and (@($Requirements.Versions) -contains $Dv)
+        $StatusWin = if ($IsSupportedVersion) { "PASS" } else { "FAIL" }
+        $SupportedVersions = "Supported: $($Requirements.VersionLabel)"
+        $ReqReason = if ($StatusWin -eq "PASS") {
+            "$TrueName is supported."
+        } elseif (-not $IsWin11) {
+            "$TrueName is not Windows 11. Iru requires $($Requirements.VersionLabel)."
+        } else {
+            "$TrueName is not a supported Windows 11 feature update. Install $($Requirements.VersionLabel)."
+        }
+        Add-CheckResult $WinSection "Supported Windows version" $StatusWin "$ReqReason $SupportedVersions" `
+            -Data @{ Reason = $ReqReason }
 
-    Set-Progress 15 "Checking Windows edition..."
-    $AllowedEditions = @("Professional","ProfessionalEducation","Enterprise","Education","Pro","ProEducation")
-    $OkEdition = $false
-    if ($Win.EditionId) {
-        $OkEdition = ($AllowedEditions -contains $Win.EditionId) -or
-                     ($Win.EditionId -match "Professional|Education|Enterprise")
+        Set-Progress 15 "Checking Windows edition..."
+        $OkEdition = $false
+        if ($Win.EditionId) {
+            $OkEdition = @($Requirements.EditionIds) -contains $Win.EditionId
+        }
+        $StatusEdition = if ($OkEdition) { "PASS" } else { "FAIL" }
+        Add-CheckResult $WinSection "Supported Windows edition" $StatusEdition `
+            "EditionID: $($Win.EditionId) (Allowed: $($Requirements.EditionLabel))"
     }
-    $StatusEdition = if ($OkEdition) { "PASS" } else { "FAIL" }
-    Add-CheckResult $WinSection "Supported Windows edition" $StatusEdition `
-        "EditionID: $($Win.EditionId) (Allowed: Pro, Pro Education, Enterprise, Education)"
 
     Set-Progress 25 "Checking Microsoft Edge..."
     $Edge = Get-EdgeInfo
@@ -1902,8 +2191,7 @@ function Invoke-AllChecks {
 
     Set-Progress 36 "Checking current user + admin status..."
     $AdminCheck = Test-CurrentUserIsAdmin
-    $StatusAdmin = if ($AdminCheck.IsAdmin) { "PASS" } else { "FAIL" }
-    Add-CheckResult $WinSection "Current user is local admin" $StatusAdmin `
+    Add-CheckResult $WinSection "Current user is local admin" $AdminCheck.Status `
         "User: $($AdminCheck.User) | $($AdminCheck.Detail)"
 
     Set-Progress 38 "Checking for pending reboot..."
@@ -1922,9 +2210,6 @@ function Invoke-AllChecks {
     $Exp = Get-ExperienceEnrollmentPolicy
     Add-CheckResult $WinSection "AllowManualMDMUnenrollment policy" $Exp.Status $Exp.Details
 
-    Add-CheckResult $WinSection "SSO configured (recommended)" "INFO" `
-        "Not automatically detectable here. If your org uses SSO, confirm its configured in Iru."
-
     # Network
     Set-Progress 50 "Preparing network tests..."
     $Region = $cmbRegion.SelectedItem.ToString()
@@ -1935,64 +2220,68 @@ function Invoke-AllChecks {
 
     Add-CheckResult $NetSection "Region selected" "INFO" $Region
 
-    $Domains = Get-RegionDomains -Region $Region -Subdomain $Sub -UUID $Uuid
+    Set-Progress 52 "Reading enrollment hosts..."
+    $Endpoints = Get-IruEnrollmentEndpoints -Region $Region -Subdomain $Sub -UUID $Uuid
 
-    if ($Sub) {
-        Set-Progress 52 "Validating tenant subdomain..."
-        $GwHost = $script:RegionMap[$Region].GatewayHost
-        $TenantCheck = Test-TenantSubdomain -Subdomain $Sub -GatewayHost $GwHost
-        Add-CheckResult $NetSection "Tenant subdomain exists" $TenantCheck.Status $TenantCheck.Detail
+    if (-not $Endpoints.Ok) {
+        Add-CheckResult $NetSection "Enrollment network hosts" "FAIL" $Endpoints.Detail
     } else {
-        Add-CheckResult $NetSection "Tenant subdomain domains" "INFO" `
-            "Enter Tenant Subdomain to test subdomain.iru.com and related gateway/id domains."
-    }
-    if (-not $Uuid) {
-        Add-CheckResult $NetSection "Tenant UUID domains" "INFO" `
-            "Enter Tenant UUID to test UUID.web-api.* and UUID.devices.* domains."
-    }
-
-    if ($Dd) {
-        $Domains = @($Domains + $Dd) | Select-Object -Unique
-        Add-CheckResult $NetSection "Device Domain override" "INFO" "Including override hostname: $Dd"
-    }
-
-    $Wildcard = $script:RegionMap[$Region].Wildcard
-    Add-CheckResult $NetSection "Wildcard telemetry domain" "INFO" `
-        "Allow outbound TCP/443 to $Wildcard (wildcards cannot be directly probed without a concrete host)."
-
-    $UniqueEndpoints = ($Domains | Where-Object { $_ } | Select-Object -Unique)
-    $Total = $UniqueEndpoints.Count
-    $I = 0
-
-    foreach ($Endpoint in $UniqueEndpoints) {
-        if ($script:CancelRequested) {
-            Add-CheckResult $NetSection "Checks cancelled" "INFO" `
-                "User cancelled remaining network checks after $I of $Total endpoints."
-            break
+        if ($Sub) {
+            Set-Progress 54 "Validating tenant subdomain..."
+            if ($Endpoints.GatewayHost) {
+                $TenantCheck = Test-TenantSubdomain -Subdomain $Sub -GatewayHost $Endpoints.GatewayHost
+                Add-CheckResult $NetSection "Tenant subdomain exists" $TenantCheck.Status $TenantCheck.Detail
+            } else {
+                Add-CheckResult $NetSection "Tenant subdomain exists" "FAIL" `
+                    "Regional gateway host was not found in Iru documentation. Enterprise networks: $DocsNetworkUrl"
+            }
+        } else {
+            Add-CheckResult $NetSection "Tenant subdomain domains" "INFO" `
+                "Enter Tenant Subdomain to test the tenant enrollment hosts for this region."
+        }
+        if (-not $Uuid) {
+            Add-CheckResult $NetSection "Tenant UUID domains" "INFO" `
+                "Enter Tenant UUID to test the device domains listed for this region."
         }
 
-        $I++
-        $Pct = 50 + [int](50 * ($I / [double]([math]::Max($Total, 1))))
-        Set-Progress $Pct ("Testing: $Endpoint")
-
-        # Single TCP connection per host: derive connectivity and latency from one call
-        $Lat = Test-TcpLatency443 -TargetHost $Endpoint -TimeoutMs $TcpConnectTimeoutMs `
-            -PassMaxMs $TcpRttPassMaxMs -InfoMaxMs $TcpRttInfoMaxMs
-
-        $StatusNet  = if ($Lat.Status -ne "FAIL") { "PASS" } else { "FAIL" }
-        $ConnDetail = if ($StatusNet -eq "PASS") { "TCP 443 reachable" } else { $Lat.Detail }
-        $LatStatus  = $Lat.Status
-        $LatDetail  = "$($Lat.Detail) (Healthy <= $TcpRttPassMaxMs ms)"
-
-        # Provisioned but not yet serving traffic -- don't drag the score down.
-        if ($script:NotYetActiveDomains -contains $Endpoint) {
-            $Note = " Note: $Endpoint is not yet expected to be reachable; reported as INFO."
-            if ($StatusNet -eq "FAIL") { $StatusNet = "INFO"; $ConnDetail = "$ConnDetail$Note" }
-            if ($LatStatus -eq "FAIL") { $LatStatus = "INFO"; $LatDetail  = "$LatDetail$Note"  }
+        $Domains = @($Endpoints.Hosts)
+        if ($Dd) {
+            $Domains = @($Domains + $Dd) | Select-Object -Unique
+            Add-CheckResult $NetSection "Device Domain override" "INFO" "Including override hostname: $Dd"
         }
 
-        Add-CheckResult $NetSection "TCP 443 to $Endpoint" $StatusNet $ConnDetail
-        Add-CheckResult $NetSection "Latency (TCP/443) to $Endpoint" $LatStatus $LatDetail
+        if (@($Endpoints.Wildcards).Count -gt 0) {
+            Add-CheckResult $NetSection "Wildcard domains" "INFO" `
+                ("Allow outbound TCP/443 to {0}. Wildcards cannot be probed without a concrete host." -f ($Endpoints.Wildcards -join ', '))
+        }
+
+        $UniqueEndpoints = @($Domains | Where-Object { $_ } | Select-Object -Unique)
+        $Total = $UniqueEndpoints.Count
+        $I = 0
+
+        foreach ($Endpoint in $UniqueEndpoints) {
+            if ($script:CancelRequested) {
+                Add-CheckResult $NetSection "Checks cancelled" "INFO" `
+                    "User cancelled remaining network checks after $I of $Total endpoints."
+                break
+            }
+
+            $I++
+            $Pct = 50 + [int](50 * ($I / [double]([math]::Max($Total, 1))))
+            Set-Progress $Pct ("Testing: $Endpoint")
+
+            # Single TCP connection per host: derive connectivity and latency from one call
+            $Lat = Test-TcpLatency443 -TargetHost $Endpoint -TimeoutMs $TcpConnectTimeoutMs `
+                -PassMaxMs $TcpRttPassMaxMs -InfoMaxMs $TcpRttInfoMaxMs
+
+            $StatusNet  = if ($Lat.Status -ne "FAIL") { "PASS" } else { "FAIL" }
+            $ConnDetail = if ($StatusNet -eq "PASS") { "TCP 443 reachable" } else { $Lat.Detail }
+            $LatStatus  = $Lat.Status
+            $LatDetail  = "$($Lat.Detail) (Healthy <= $TcpRttPassMaxMs ms)"
+
+            Add-CheckResult $NetSection "TCP 443 to $Endpoint" $StatusNet $ConnDetail
+            Add-CheckResult $NetSection "Latency (TCP/443) to $Endpoint" $LatStatus $LatDetail
+        }
     }
 
     Update-SummaryUI

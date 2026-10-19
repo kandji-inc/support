@@ -84,3 +84,5 @@ You can export results as an **HTML report** when you want a record of the run o
 
 - IruPrep checks reflect the same requirements described in Iru enrollment documentation. Update the script when documentation changes so checks stay in sync.  
 - Registry checks include known stale keys from common MDM migration paths. These are not always called out in public docs but can prevent enrollment until they are removed.
+- If your organization uses single sign-on (SSO), confirm it is configured in Iru before you enroll. See [SSO Setup](https://docs.iru.com/en/endpoint/getting-started/foundation/sso-setup).
+- The local administrator check reads the current sign-in. Enrollment requires local administrator rights. If an account was just added to Administrators, sign out and back in before running IruPrep again.
