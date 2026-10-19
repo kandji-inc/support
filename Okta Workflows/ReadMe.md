@@ -355,6 +355,9 @@ Get the FileVault Recovery Key for a Mac.
 |---|---|---|
 | Key | FileVault recovery key | String |
 
+> [!NOTE]
+> Using **Get FileVault Recovery Key** counts as viewing the key. If **Automatically rotate keys after viewing** is enabled in the FileVault Library Item, Iru Endpoint rotates the key after the number of hours set in **Rotate keys after viewing (hours)**. See [Configure FileVault](https://docs.iru.com/en/endpoint/library/deployment-guides/apple/configure-filevault#view-filevault-recovery-keys).
+
 ---
 
 ### Get Mac Recovery Lock Password
