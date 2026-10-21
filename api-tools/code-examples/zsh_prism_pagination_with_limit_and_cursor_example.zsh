@@ -96,8 +96,8 @@ CONTENT_TYPE="application/json;charset=utf-8"
 function install_jq() {
     # Download and install jq
 
-    # univeral install hosted by Kandji
-    universal_jq_release="https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.1-UNIVERSAL.pkg.tar.gz"
+    # universal install hosted by Iru
+    universal_jq_release="https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.2-UNIVERSAL.pkg.tar.gz"
 
     # jq temp download location
     jq_tmp="/private/tmp/jq.tar.gz"

@@ -108,9 +108,9 @@ check_jq() {
             else
                 # Install Iru provided jq
                 cd /Library/KandjiSE/ || exit
-                /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.1-UNIVERSAL.pkg.tar.gz"
-                /usr/bin/tar -xf JQ-1.8.1-UNIVERSAL.pkg.tar.gz
-                /usr/sbin/installer -pkg JQ-1.8.1-UNIVERSAL.pkg -target / >/dev/null
+                /usr/bin/curl -LOs --url "https://github.com/kandji-inc/support/raw/main/UniversalJQ/JQ-1.8.2-UNIVERSAL.pkg.tar.gz"
+                /usr/bin/tar -xf JQ-1.8.2-UNIVERSAL.pkg.tar.gz
+                /usr/sbin/installer -pkg JQ-1.8.2-UNIVERSAL.pkg -target / >/dev/null
                 jq_binary="/Library/KandjiSE/jq"
             fi
 
@@ -135,8 +135,8 @@ check_jq() {
                 /bin/rm -rf /Library/KandjiSE
             else
                 /bin/rm /Library/KandjiSE/jq
-                /bin/rm /Library/KandjiSE/JQ-1.8.1-UNIVERSAL.pkg.tar.gz
-                /bin/rm /Library/KandjiSE/JQ-1.8.1-UNIVERSAL.pkg
+                /bin/rm /Library/KandjiSE/JQ-1.8.2-UNIVERSAL.pkg.tar.gz
+                /bin/rm /Library/KandjiSE/JQ-1.8.2-UNIVERSAL.pkg
             fi
         else
             logging "INFO" "Iru provided jq was not used. Nothing to do..."
